@@ -1,0 +1,375 @@
+import React, { FC, useCallback, useMemo, useState } from 'react'
+import {
+  Address,
+  Cell,
+  TonClient,
+  beginCell,
+  contractAddress,
+  toNano,
+} from '@ton/ton'
+import { useTonAddress, useTonConnectUI } from '@tonconnect/ui-react'
+import { Formik, FormikConfig } from 'formik'
+import { getTokenInfo } from 'api'
+import { MainButton } from 'features/MainButton'
+import { useTelegram } from 'hooks/useTelegram/useTelegram'
+import { Modal } from 'ui/Modal/Modal'
+import * as S from './style'
+import { validationSchema } from './validationSchema'
+
+const TOKEN_SALE_CONTRACT_CODE_BOC =
+  'te6cckECFgEABL0AART_APSkE_S88sgLAQIBYgsCAgN5YAoDBPmvEngCgLhACORlg-WD5f_kkDhkAWgJZ4tlh-ToQIgQuEoRY4BZxxQBaYPBg0mQYQBHDIJVACmSWEjSbwJVgBJCB95LgkIH2BHZAm90GBiBdDYQkFScA4DVg-Rlg-WD5OQBaAlniwDoZ4tk7Z5oOGRlj8Tni3wlZ4tE54sAwAcGBQQAps8WiyIiyM8WyItyJhbXQiOiKM8W-ERwAZx6qQymMEMTpFEQwADmMJLLB-QCjhiNBIiLCJtZW1vIjoiY2FuY2VsIn2ASzxaXiyIn2BLPFuLJAczJABAiLCJ0byI6IgB6ZGF0YTphcHBsaWNhdGlvbi9qc29uLHsicCI6ImdyYW0tMjAiLCJvcCI6InRyYW5zZmVyIiwidGljayI6IgH0gEGAQoBDgESARYBGgEeASIBJgEqAS4BMgE2AToBPgFCAUYBSgFOAVIBVgFaAV4BYgFmAWoBhgGKAY4BkgGWAZoBngGiAaYBqgGuAbIBtgG6Ab4BwgHGAcoBzgHSAdYB2gHeAeIB5gHqAMIAxgDKAM4A0gDWANoA3gDgIATKAOYAtgF-APYBBb4AB0MiUIccAs4robCHJCQDkAdcNB2-jAdcNB2-jAdcNB2-jBcD_knA23yLA_5JwNN8kwP-ScDLfJasBBnOwqgMkqwOxBIAPsKoBIqsFsQKAP7ADwACVNFuAQCCZBMAAk4BAMt4B4lJgb4FSYm-BUmNvgVJlb4FQBcsHE8sHEssHEssHAVGsKfgCxYF8IMdCmHwl7Z5vfCD8IXwh_CJ8IvwjfCP8JHwk_CV8JaqFQBUCAs0PDAIBIA4NAFdPhL-Ej4R_hF-ET4QsjLH_hDzxbLf8sH-EbPFssPyw_4SfoC-ErPFszJ7VSACJXtRNDTHwH4YvpAAfhj038B-GTTBwH4ZfpAAfhm0w8B-GfTDwH4aPoAAfhp1h8B-GogxwCXMHD4YW34a5d_-GHUMPhr4oAsXQDoOmuQ_SAYeAL8INnHCDYRfCHjgvlwyOoA_DXo-ANwAOmP_CLgAEvCB5FgAHl6bxBFmxOrzGOC8YEaEcWzGwtzGytkY4LxgTYJQIGZ3U78I2OC-XDI6mmDmH2AcC3CB_l4QREAHWMDL4QxLHBfLhkYIQC-vCAL7y4ZL4RcAA8uGT-EvbPPhD-kQxf4IBXiTtQ9hx-EtTEYAQyMsFUAbPFoIIas_A-gIVy2kUywATzBLLAMzJcfsAcIAQyMsF-EPPFiH6AstqyYEAgvsAcvhl8AYVBPxb-EmCEA7msoCgUiC-8uGS-EXAAPLhkyD6RDFwggFeJO1D2PhL2zz4SfhHqPhIqQRx-EtTEYAQyMsFUAbPFoIIas_A-gIVy2kUywATzBLLABLMyXH7AHCAEMjLBfhGzxYi-gLLaslx-wBwyMsfic8W-ERwAYrmMJLLB-SLEggVFBMSAH7PFvhKzxbJcYAQyMsF-EPPFvhJUAShUAagUASh-gITy2rMyXH7AHCAEMjLBVjPFiH6AstqyYEAgvsAcfhl8AYAGHqpDKYwQxOkURDAAAAmcGF5b3V0IGZvciBzZWxsaW5nIAAa-QBwdMjLAsoHy__J0FP1Bp4'
+
+type ConfirmLotProps = {
+  onClose: () => void
+  tick: string
+  tokenBalance: number
+  updateIsSuccessfulTransactionStatus: (
+    successfulTransactionStatus: boolean
+  ) => void
+  updateSuccessfulPopupDisplayMode: (
+    successfulPopupDisplayMode: boolean
+  ) => void
+}
+
+type InitialValues = {
+  amount: string
+  price: string
+}
+
+const PROTOCOL_FEE = 0.02
+
+export const ConfirmLotPopup: FC<ConfirmLotProps> = (props) => {
+  const {
+    onClose,
+    tick,
+    tokenBalance,
+    updateIsSuccessfulTransactionStatus,
+    updateSuccessfulPopupDisplayMode,
+  } = props
+
+  const { currentWalletBalance, tonPrice } = useTelegram()
+
+  const [unit, setUnit] = useState<'TON' | 'NANO'>('TON')
+
+  const [isMainButtonLoading, setIsMainButtonLoading] = useState<boolean>(false)
+  const [isMainButtonDisabled, setIsMainButtonDisabled] =
+    useState<boolean>(false)
+
+  const [tonConnectUI] = useTonConnectUI()
+
+  const userWalletAddres = useTonAddress()
+
+  const initialValues: InitialValues = {
+    amount: '',
+    price: '',
+  }
+
+  const tonClient = useMemo(
+    () =>
+      new TonClient({
+        endpoint: 'https://toncenter-v4.gram20.com/jsonRPC',
+      }),
+    []
+  )
+
+  const retryableTonClientMethod = useCallback(
+    async (method: any, ...args: any) => {
+      const maxRetries = 3
+      let retryCount = 0
+
+      while (retryCount < maxRetries) {
+        try {
+          await new Promise((resolve) => setTimeout(resolve, 1000)) // Задержка в 1 секунду
+          const result = await (tonClient as any)[method](...args)
+          return result
+        } catch (error: any) {
+          retryCount++
+          console.error(
+            `Error in ${method}: ${error.message}. Retrying (${retryCount}/${maxRetries})...`
+          )
+        }
+      }
+
+      setIsMainButtonLoading(false)
+      setIsMainButtonDisabled(false)
+
+      alert('Oops ! Network error. Please, try again')
+    },
+    [tonClient]
+  )
+
+  const handleSubmit = useCallback<FormikConfig<InitialValues>['onSubmit']>(
+    async (values, helpers) => {
+      if (Number(values.amount) > tokenBalance) {
+        helpers.setFieldError(
+          'amount',
+          `Amount can't be more then your ${tick} balance `
+        )
+
+        return
+      }
+
+      if (!currentWalletBalance || currentWalletBalance < 0.1) {
+        alert(
+          "Ooops, you don't have enough TON to complete this transaction. Minimum 0.1 TON required on your balance"
+        )
+
+        return
+      }
+
+      try {
+        const totalCount =
+          Number(values.amount) *
+          (unit === 'TON'
+            ? Number(values.price)
+            : Number(values.price) / Math.pow(10, 9))
+
+        setIsMainButtonLoading(true)
+        setIsMainButtonDisabled(true)
+
+        const tokenSaleContractData = beginCell()
+          .storeUint(Math.floor(Date.now() / 1000), 32)
+          .storeAddress(Address.parse(userWalletAddres))
+          .storeUint(Number(values.amount), 128)
+          .storeUint(0, 8)
+          .storeAddress(
+            Address.parse('UQAmQNz4IPGHpVklTBpD_SV7Bx9jcimHb1gqmjQG_k2Bi0vY')
+          )
+          .storeUint(199, 16)
+          .storeUint(10000, 16)
+          .storeCoins(totalCount * Math.pow(10, 9))
+          .storeStringTail(tick)
+          .endCell()
+
+        const tokenSaleContractCodeCell = Cell.fromBase64(
+          TOKEN_SALE_CONTRACT_CODE_BOC
+        )
+
+        const saleAddress = contractAddress(0, {
+          code: tokenSaleContractCodeCell,
+          data: tokenSaleContractData,
+        })
+
+        const stateInit = beginCell()
+          .storeBit(0)
+          .storeBit(0)
+          .storeBit(1)
+          .storeRef(tokenSaleContractCodeCell)
+          .storeBit(1)
+          .storeRef(tokenSaleContractData)
+          .storeBit(0)
+          .endCell()
+
+        const tokenData = await getTokenInfo(tick)
+
+        const userData = await retryableTonClientMethod(
+          'runMethod',
+          Address.parse(tokenData.address),
+          'get_user_data',
+          [
+            {
+              type: 'slice',
+              cell: beginCell()
+                .storeAddress(Address.parse(userWalletAddres))
+                .endCell(),
+            },
+          ]
+        )
+        const userStateInit = userData.stack.readCell()
+        const userContractAddress = userData.stack.readAddress()
+
+        const userState = await retryableTonClientMethod(
+          'getContractState',
+          userContractAddress
+        )
+
+        const lotData = await retryableTonClientMethod(
+          'runMethod',
+          Address.parse(tokenData.address),
+          'get_user_data',
+          [
+            {
+              type: 'slice',
+              cell: beginCell().storeAddress(saleAddress).endCell(),
+            },
+          ]
+        )
+        const saleStateInit = lotData.stack.readCell()
+
+        const tokenSaleBody = beginCell().storeRef(saleStateInit).endCell()
+
+        const tokenTransferMessage = `data:application/json,{"p":"gram-20","op":"transfer","tick":"${tick}","amt":"${values.amount}","to":"${saleAddress}","memo":""}`
+        const tokenTransferPayload = beginCell()
+          .storeUint(0, 32)
+          .storeStringTail(tokenTransferMessage)
+          .endCell()
+
+        setIsMainButtonLoading(false)
+        setIsMainButtonDisabled(false)
+
+        onClose()
+
+        try {
+          await tonConnectUI.sendTransaction({
+            validUntil: Math.floor(Date.now() / 1000) + 180,
+            messages: [
+              {
+                address: saleAddress.toString(),
+                amount: toNano('0.02').toString(),
+                payload: tokenSaleBody.toBoc().toString('base64'),
+                stateInit: stateInit.toBoc().toString('base64'),
+              },
+              {
+                address: userContractAddress.toString(),
+                amount: toNano('0.007').toString(),
+                payload: tokenTransferPayload.toBoc().toString('base64'),
+                stateInit:
+                  userState.state !== 'active'
+                    ? userStateInit.toBoc().toString('base64')
+                    : undefined,
+              },
+            ],
+          })
+          updateIsSuccessfulTransactionStatus(true)
+        } catch (e) {
+          updateIsSuccessfulTransactionStatus(false)
+        }
+
+        updateSuccessfulPopupDisplayMode(true)
+      } catch (e) {
+        alert('Oops ! Network error. Please, try again')
+      }
+    },
+    [
+      currentWalletBalance,
+      onClose,
+      retryableTonClientMethod,
+      tick,
+      tokenBalance,
+      tonConnectUI,
+      unit,
+      updateIsSuccessfulTransactionStatus,
+      updateSuccessfulPopupDisplayMode,
+      userWalletAddres,
+    ]
+  )
+
+  return tonPrice ? (
+    <Modal onClose={onClose} title="Listing Confirmation">
+      <Formik
+        initialValues={initialValues}
+        onSubmit={handleSubmit}
+        validateOnBlur={false}
+        validateOnChange={false}
+        validationSchema={validationSchema}
+      >
+        {({ values, handleSubmit, setFieldValue }) => {
+          const total =
+            Number(values.amount) *
+            (unit === 'TON'
+              ? Number(values.price)
+              : Number(values.price) / Math.pow(10, 9))
+
+          const totalUsd = total * tonPrice
+          const fee = total * PROTOCOL_FEE
+          const feeUsd = fee * tonPrice
+          const receive = total - fee
+          const receiveUsd = receive * tonPrice
+
+          return (
+            <S.Wrapper>
+              <S.FieldWrapper>
+                <S.FieldLabelWrapper>
+                  <S.FieldLabel>List Amount</S.FieldLabel>
+                  <S.FieldSecondaryLabel>
+                    Available balance:{' '}
+                    <S.FieldSecondaryLabelLink
+                      onClick={() => setFieldValue('amount', tokenBalance)}
+                    >
+                      {tokenBalance}
+                    </S.FieldSecondaryLabelLink>{' '}
+                    {tick}
+                  </S.FieldSecondaryLabel>
+                </S.FieldLabelWrapper>
+
+                <S.FormInput
+                  editorProps={{
+                    type: 'number',
+                    actionElement: (
+                      <S.InnerContentText>{tick}</S.InnerContentText>
+                    ),
+                  }}
+                  name="amount"
+                  placeholder="0.00"
+                />
+              </S.FieldWrapper>
+
+              <S.FieldWrapper>
+                <S.FieldLabelWrapper>
+                  <S.FieldLabel>Unit Price</S.FieldLabel>
+                </S.FieldLabelWrapper>
+                <S.FormInput
+                  editorProps={{
+                    type: 'number',
+                    actionElement: (
+                      <S.InnerToggleWrapper>
+                        <S.InnerToggleOption
+                          active={(unit === 'TON').toString()}
+                          onClick={() => setUnit('TON')}
+                        >
+                          TON
+                        </S.InnerToggleOption>
+                        <S.InnerToggleOption
+                          active={(unit === 'NANO').toString()}
+                          onClick={() => setUnit('NANO')}
+                        >
+                          NANOTON
+                        </S.InnerToggleOption>
+                      </S.InnerToggleWrapper>
+                    ),
+                  }}
+                  name="price"
+                  placeholder="0.00"
+                />
+              </S.FieldWrapper>
+
+              <S.PositionsWrapper>
+                <S.PositionWrapper>
+                  <S.PositionText>Total Value</S.PositionText>
+                  <S.PositionValue>
+                    {total.toFixed(9).replace(/\.?0+$/, '')} TON /{' '}
+                    {totalUsd.toFixed(4).replace(/\.?0+$/, '')} USD
+                  </S.PositionValue>
+                </S.PositionWrapper>
+
+                <S.PositionWrapper>
+                  <S.PositionText>
+                    Service fee <S.PositionTextLabel>1.99%</S.PositionTextLabel>
+                  </S.PositionText>
+                  <S.PositionValue>
+                    {fee.toFixed(9).replace(/\.?0+$/, '')} TON /{' '}
+                    {feeUsd.toFixed(4).replace(/\.?0+$/, '')} USD
+                  </S.PositionValue>
+                </S.PositionWrapper>
+
+                <S.PositionWrapper>
+                  <S.PositionText>Receive</S.PositionText>
+                  <S.PositionValue>
+                    {receive.toFixed(9).replace(/\.?0+$/, '')} TON /{' '}
+                    {receiveUsd.toFixed(2).replace(/\.?0+$/, '')} USD
+                  </S.PositionValue>
+                </S.PositionWrapper>
+              </S.PositionsWrapper>
+              <MainButton
+                disabled={isMainButtonDisabled}
+                onClick={handleSubmit}
+                progress={isMainButtonLoading}
+                text="Confirm"
+              />
+            </S.Wrapper>
+          )
+        }}
+      </Formik>
+    </Modal>
+  ) : null
+}
