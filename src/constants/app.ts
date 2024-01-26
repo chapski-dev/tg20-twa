@@ -6,4 +6,6 @@ export const AppRoutes = {
   Marketplace: '/marketplace',
   Token: '/token',
   MyWallet: '/my-wallet',
+  Inscriptions: '/inscriptions',
+
 } as const
