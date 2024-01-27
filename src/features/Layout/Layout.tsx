@@ -6,7 +6,6 @@ import * as S from './style'
 export const Layout: FC = () => {
   return (
     <S.Wrapper>
-      <Header />
       <S.ContentWrapper>
         <Outlet />
       </S.ContentWrapper>
