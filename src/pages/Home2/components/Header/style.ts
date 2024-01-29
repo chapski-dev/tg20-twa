@@ -26,6 +26,7 @@ export const Search = styled.input`
   padding: 11px 12px;
   border-radius: 6px;
   border: none;
+  width: 225px;
   background-color: ${({ theme }) => theme.color.bgSecondary};
   color: ${({ theme }) => theme.color.hint};
   &:before {

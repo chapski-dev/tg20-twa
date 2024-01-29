@@ -10,7 +10,7 @@ export const Container = styled.div<{ position: ChartPosition }>`
       position === 'up' ? theme.color.greenSuccess : theme.color.redAlert};
   }
 
-  & div {
+  & p {
     color: ${({ position, theme }) =>
       position === 'up' ? theme.color.greenSuccess : theme.color.redAlert};
   }
