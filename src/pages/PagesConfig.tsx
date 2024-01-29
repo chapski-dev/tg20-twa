@@ -3,6 +3,7 @@ import { AppRoutes } from 'constants/app'
 import { Layout } from 'features/Layout/Layout'
 import { Home } from './Home/Home'
 import { Inscribe } from './Inscribe/Inscribe'
+import { Inscriptions } from './Inscriptions/Inscriptions'
 import { Marketplace } from './Marketplace/Marketplace'
 import { MyWallet } from './MyWallet/MyWallet'
 import { Token } from './Token/Token'
@@ -32,6 +33,10 @@ export const PagesConfig = () => {
         {
           element: <MyWallet />,
           path: AppRoutes.MyWallet,
+        },
+        {
+          element: <Inscriptions />,
+          path: AppRoutes.Inscriptions,
         },
       ],
     },
