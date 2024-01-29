@@ -15,7 +15,7 @@ type TabsProps = {
   containerClassName?: string
 }
 
-export const Tabs: FC<TabsProps> = ({
+export const TabsFilled: FC<TabsProps> = ({
   tabs,
   selectedTab,
   onChange,

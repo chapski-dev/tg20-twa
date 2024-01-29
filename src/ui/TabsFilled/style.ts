@@ -9,16 +9,13 @@ export const Wrapper = styled.div`
   background-color: ${({ theme }) => theme.color.bg};
 `
 
-export const TabItem = styled.div<{
-  $isActive?: boolean
-  $itemsCount?: number
-}>`
+export const TabItem = styled.div<{ $isActive?: boolean }>`
   border-radius: 7px;
-  width: ${({ $itemsCount }) =>
-    $itemsCount === 3 ? '33%' : $itemsCount === 2 ? '50%' : '100%'};
+  width: 50%;
   height: 28px;
   display: flex;
   align-items: center;
+  gap: 6px;
   justify-content: center;
   background-color: ${({ theme, $isActive }) =>
     $isActive ? theme.color.bgSecondary : theme.color.bg};
@@ -29,4 +26,13 @@ export const TabItem = styled.div<{
   font-weight: 590;
   line-height: 18px;
   letter-spacing: -0.078px;
+
+  svg {
+    width: 20px;
+    height: 20px;
+
+    path {
+      stroke: ${({ theme }) => theme.color.text};
+    }
+  }
 `

@@ -8,7 +8,7 @@ import { Modal } from 'ui/Modal/Modal'
 import { formatNumberWithSeparators } from 'utils/formNumberWithSeparators'
 import { shortenAddress } from 'utils/shortenAddress'
 import * as S from './style'
-import { InitialValues } from '../InscribeForm/types'
+import { type InitialValues } from '../InscribeForm/types'
 
 type ConfirmPopupProps = {
   onClose: () => void
