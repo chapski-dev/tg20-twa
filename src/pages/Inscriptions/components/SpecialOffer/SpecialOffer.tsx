@@ -10,14 +10,18 @@ export const SpecialOffer = () => {
 
   return (
     <S.Wrapper>
-      <SvgGramIcon style={{ maxWidth: 78 }} />
-      <div>
-        <S.Title children="RARE is now Live!" />
-        <S.Description children="Start Minting Today" />
+      <S.IconWrapper>
+        <SvgGramIcon style={{ maxWidth: 78 }} />
+      </S.IconWrapper>
+      <S.Info>
+        <div>
+          <S.Title children="RARE is now Live!" />
+          <S.Description children="Start Minting Today" />
+        </div>
         <S.Button
           children="Let’s Go"
         />
-      </div>
+      </S.Info>
     </S.Wrapper>
   )
 }

@@ -137,7 +137,7 @@ export const SpecialOfferButton = styled.button`
   outline: none;
   border-radius: 5px;
   padding: 7px 12px;
-  font-size: 9.632px;
+  font-size: 10px;
   font-style: normal;
   font-weight: 500;
   line-height: 8.892px;

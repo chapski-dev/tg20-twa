@@ -143,4 +143,7 @@ export const Verified = styled(SvgVerified)`
   height: 16;
 `
 
-
+export const Header = styled.div`
+  display: flex;
+  align-items: center;
+`

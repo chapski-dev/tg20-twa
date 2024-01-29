@@ -10,6 +10,21 @@ export const Wrapper = styled.div`
   width: 100%;
   color: ${({ theme }) => theme.color.text};
 `
+
+export const IconWrapper = styled.div`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+`
+
+export const Info = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex: 1;
+`
+
 export const Title = styled.p`
   font-size: 17px;
   font-style: normal;
@@ -23,8 +38,7 @@ export const Description = styled.p`
   font-style: normal;
   font-weight: 500;
   line-height: 16.3px;
-  color: #474747;
-  margin-bottom: 5px;
+  color: ${({ theme }) => theme.color.text};
 `
 
 export const Button = styled.button`
@@ -32,7 +46,7 @@ export const Button = styled.button`
   outline: none;
   border-radius: 5px;
   padding: 7px 12px;
-  font-size: 9.632px;
+  font-size: 10px;
   font-style: normal;
   font-weight: 500;
   line-height: 8.892px;
@@ -42,8 +56,8 @@ export const Button = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
   background-color: ${({ theme }) => theme.color.bg};
   color: ${({ theme }) => theme.color.text};
   border: 1px solid ${({ theme }) => theme.color.bgSecondary};
+  width: fit-content;
 `
