@@ -5,12 +5,12 @@ import { BackButton } from 'features/BackButton'
 import { useClipboard } from 'hooks/useClipboard/useClipboard'
 import { Container } from 'ui/Container/Container'
 import { SvgAssetsIcon, SvgTransfersIcon } from 'ui/icons'
-import { ITab } from 'ui/TabsFilled/TabsFilled'
+import { type Tab } from 'ui/TabsFilled/TabsFilled'
 import { shortenAddress } from 'utils/shortenAddress'
 import { MyAssets, MyTransfers, BalancesBlock } from './components'
 import * as S from './style'
 
-const tabs: ITab[] = [
+const tabs: Tab[] = [
   {
     label: 'Assets',
     value: 'assets',

@@ -1,21 +1,21 @@
 import { FC, ReactElement } from 'react'
 import * as S from './style'
 
-export interface ITab {
+export type Tab = {
   label: string
   value: string
   icon?: ReactElement
 }
 
-interface ITabsProps {
-  tabs: ITab[]
-  selectedTab: ITab
-  onChange: (tab: ITab) => void
+type TabsProps = {
+  tabs: Tab[]
+  selectedTab: Tab
+  onChange: (tab: Tab) => void
   tabClassName?: string
   containerClassName?: string
 }
 
-export const Tabs: FC<ITabsProps> = ({
+export const Tabs: FC<TabsProps> = ({
   tabs,
   selectedTab,
   onChange,
