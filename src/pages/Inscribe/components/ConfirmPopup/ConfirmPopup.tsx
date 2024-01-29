@@ -8,7 +8,7 @@ import { Modal } from 'ui/Modal/Modal'
 import { formatNumberWithSeparators } from 'utils/formNumberWithSeparators'
 import { shortenAddress } from 'utils/shortenAddress'
 import * as S from './style'
-import { InitialValues } from '../InscribeForm/types'
+import { IInitialValues } from '../InscribeForm/types'
 
 type ConfirmPopupProps = {
   onClose: () => void
@@ -31,7 +31,7 @@ const mainButtonLabelDictionary = {
 export const ConfirmPopup: FC<ConfirmPopupProps> = (props) => {
   const { onClose, formType, isLoading, onConfirm, fee, userBalance } = props
 
-  const { values } = useFormikContext<InitialValues>()
+  const { values } = useFormikContext<IInitialValues>()
 
   const { webApp } = useTelegram()
 

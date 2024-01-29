@@ -1,4 +1,4 @@
-export type InitialValues = {
+export interface IInitialValues {
   tick: string
   amount: string
   premintAmount?: string

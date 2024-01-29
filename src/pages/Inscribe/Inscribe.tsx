@@ -22,13 +22,13 @@ import { MainButton } from 'features/MainButton'
 import { ActionsStatusContext } from 'providers/ActionsStatusProvider'
 import { Container } from 'ui/Container/Container'
 import { Tabs, InscribeForm, ConfirmPopup } from './components'
-import { type InitialValues } from './components/InscribeForm/types'
-import { type Tab } from './components/Tabs/Tabs'
+import { type IInitialValues } from './components/InscribeForm/types'
+import { type ITab } from './components/Tabs/Tabs'
 import * as S from './style'
 import { ActionStatusData } from './types'
 import { getValidationSchema } from './validationSchema'
 
-type CurrentConfirmData = {
+interface ICurrentConfirmData {
   messages: SendTransactionRequest['messages']
   fee: string
   tick: string
@@ -56,7 +56,7 @@ export const Inscribe: FC = () => {
   const [isInscribing, setIsInscribing] = useState<boolean>(false)
 
   const [currentConfirmData, setCurrentConfirmData] =
-    useState<CurrentConfirmData | null>(null)
+    useState<ICurrentConfirmData | null>(null)
 
   const [intervalFreeze, setIntervalFreeze] = useState<number | null>(null)
 
@@ -76,7 +76,7 @@ export const Inscribe: FC = () => {
     }
   }, [intervalFreeze])
 
-  const tabs: Tab[] = useMemo(() => {
+  const tabs: ITab[] = useMemo(() => {
     if (fromSearchParam === 'home' || fromSearchParam === 'wallet') {
       return [
         {
@@ -126,7 +126,7 @@ export const Inscribe: FC = () => {
     return tabs[0]
   }
 
-  const [selectedTab, setSelectedTab] = useState<Tab>(() =>
+  const [selectedTab, setSelectedTab] = useState<ITab>(() =>
     getInitialSelectedTab()
   )
 
@@ -136,7 +136,7 @@ export const Inscribe: FC = () => {
 
   const navigate = useNavigate()
 
-  const getInitialValues = (): InitialValues => {
+  const getInitialValues = (): IInitialValues => {
     switch (selectedTab.value) {
       case 'mint':
         return {
@@ -163,13 +163,13 @@ export const Inscribe: FC = () => {
     }
   }
 
-  const handleTabChange = useCallback((tab: Tab, resetForm: () => void) => {
+  const handleTabChange = useCallback((tab: ITab, resetForm: () => void) => {
     setSelectedTab(tab)
     resetForm()
   }, [])
 
   const handleFormikSubmit = useCallback<
-    FormikConfig<InitialValues>['onSubmit']
+    FormikConfig<IInitialValues>['onSubmit']
   >(
     async (values, helpers) => {
       const tonClient = new TonClient({

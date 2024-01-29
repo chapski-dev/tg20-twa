@@ -6,7 +6,7 @@ import { getTokenInfo } from 'api'
 import { FormInput } from 'features/FormFields/FormInput/FormInput'
 import { RepeatBlock } from './components'
 import * as S from './style'
-import { InitialValues } from './types'
+import { IInitialValues } from './types'
 import { type InscribeFormType } from '../../types'
 
 type InscribeFormProps = {
@@ -18,7 +18,7 @@ export const InscribeForm: FC<InscribeFormProps> = (props) => {
 
   const [searchParams] = useSearchParams()
 
-  const { values, setFieldValue } = useFormikContext<InitialValues>()
+  const { values, setFieldValue } = useFormikContext<IInitialValues>()
 
   const [currentMintAmount, setCurrentMintAmount] = useState<string>('')
 
