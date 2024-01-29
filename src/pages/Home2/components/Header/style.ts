@@ -7,37 +7,21 @@ export const Flex = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 15px;
+  gap: 7px;
 
   #Vector_6,
   #Vector_5 {
     fill: ${({ theme }) => theme.color.btn};
   }
 
+  .tg-20 {
+    margin-right: auto;
+  }
   #Vector,
   #Vector_2,
   #Vector_3,
   #Vector_4 {
     fill: ${({ theme }) => theme.color.text};
-  }
-`
-
-export const Search = styled.input`
-  padding: 11px 12px;
-  border-radius: 6px;
-  border: none;
-  width: 225px;
-  background-color: ${({ theme }) => theme.color.bgSecondary};
-  color: ${({ theme }) => theme.color.hint};
-  &:before {
-    content: '';
-    background: url('assets/icons/search.svg');
-    width: 18px;
-    height: 18px;
-  }
-  &:focus {
-    border: none;
-    outline: none;
   }
 `
 
@@ -57,10 +41,15 @@ export const Notifications = styled.button<{ value: number }>`
     display: flex;
     justify-content: center;
     align-items: center;
-    right: 15px;
+    right: 20px;
     top: 10px;
     content: '${(props) => props.value}';
     position: absolute;
     z-index: 10;
+  }
+  #Vector,
+  #Vector_2,
+  #Vector_3 {
+    fill: ${({ theme }) => theme.color.hint};
   }
 `
