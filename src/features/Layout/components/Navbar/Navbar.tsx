@@ -7,11 +7,9 @@ export const Navbar = () => {
     const navigate = useNavigate();
     return (
         <S.Container>
-            {navigations.map(({ text, logo, to }) => {
-                const Logo = logo;
-                const navigateFn = () => navigate(to);
+            {navigations.map(({ text, Logo, to }) => {
                 return (
-                    <S.NavItem active={location.pathname === to} onClick={navigateFn}>
+                    <S.NavItem active={location.pathname === to} onClick={() => navigate(to)}>
                         <Logo />
                         <S.Text>{text}</S.Text>
                     </S.NavItem>
