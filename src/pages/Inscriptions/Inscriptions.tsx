@@ -1,7 +1,10 @@
 import { ChangeEvent, FC, useCallback, useState } from 'react'
 import { useQuery } from 'react-query'
 import { createSearchParams, useNavigate } from 'react-router-dom'
-import { getTopTokensList } from 'api'
+import {
+  getSearchedTokensList,
+  getTopTokensList,
+} from 'api'
 import { AppRoutes } from 'constants/app'
 import { useDebounce } from 'hooks/useDebounce/useDebounce'
 import { Container } from 'ui/Container/Container'
@@ -20,6 +23,14 @@ export const Inscriptions: FC = () => {
     isLoading: isTopTokensLoading,
     isSuccess: isTopTokensLoaded,
   } = useQuery(['topTokens'], () => getTopTokensList())
+
+  const {
+    data: searchedTokens,
+    isLoading: isSearchedTokensLoading,
+    isSuccess: isSearchedTokensLoaded,
+  } = useQuery(['searchedTokens', debauncedSearchValue?.toLocaleLowerCase()], () =>
+    getSearchedTokensList({ query: debauncedSearchValue?.toLocaleLowerCase() })
+  )
 
   const updateSeachedValue = useCallback(
     (evt: ChangeEvent<HTMLInputElement>) => {
@@ -66,7 +77,8 @@ export const Inscriptions: FC = () => {
           <S.ArrowIcon />
         </S.DeployTokenBlock>
       </Container>
-      {isTopTokensLoading ? (
+      {isTopTokensLoading ||
+        isSearchedTokensLoading ? (
         <S.Loader />
       ) : (
         <Container>
@@ -94,10 +106,56 @@ export const Inscriptions: FC = () => {
                 )
               )}
 
+
+            {Boolean(debauncedSearchValue) &&
+              isSearchedTokensLoaded &&
+              searchedTokens.slice(0, 8).map(
+                ({
+                  tick,
+                  holders,
+                  supply,
+                  total_supply,
+                  mintable,
+                  verified,
+                }) => (
+                  <TokenCard
+                    key={tick}
+                    holders={holders}
+                    mintable={mintable}
+                    supply={supply}
+                    tick={tick}
+                    total_supply={total_supply}
+                    verified={verified}
+                  />
+                )
+              )}
             <SpecialOffer />
             {!debauncedSearchValue &&
               isTopTokensLoaded &&
               topTokens.slice(8).map(
+                ({
+                  tick,
+                  holders,
+                  supply,
+                  total_supply,
+                  mintable,
+                  verified,
+                }) => (
+                  <TokenCard
+                    key={tick}
+                    holders={holders}
+                    mintable={mintable}
+                    supply={supply}
+                    tick={tick}
+                    total_supply={total_supply}
+                    verified={verified}
+                  />
+                )
+              )}
+
+            {Boolean(debauncedSearchValue) &&
+              isSearchedTokensLoaded &&
+              searchedTokens.slice(8).map(
                 ({
                   tick,
                   holders,
