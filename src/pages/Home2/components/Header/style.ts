@@ -23,6 +23,14 @@ export const Flex = styled.div`
   #Vector_4 {
     fill: ${({ theme }) => theme.color.text};
   }
+
+  .search {
+    border-radius: 10px;
+    width: 225px;
+    height: 42px;
+    font-size: 14px;
+    line-height: 16px;
+  }
 `
 
 export const Notifications = styled.button<{ value: number }>`
@@ -32,6 +40,7 @@ export const Notifications = styled.button<{ value: number }>`
   border: none;
   padding: 9px;
   cursor: pointer;
+  height: 42px;
   &:after {
     color: ${({ theme }) => theme.color.btnText};
     background: ${({ theme }) => theme.color.btn};
@@ -41,7 +50,7 @@ export const Notifications = styled.button<{ value: number }>`
     display: flex;
     justify-content: center;
     align-items: center;
-    right: 20px;
+    right: 10px;
     top: 10px;
     content: '${(props) => props.value}';
     position: absolute;
