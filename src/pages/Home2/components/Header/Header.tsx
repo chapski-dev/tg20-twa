@@ -1,15 +1,14 @@
-import Notification from 'ui/icons/Notification';
-import Tg20 from 'ui/icons/Tg20';
+import { SvgNotification, SvgTg20 } from 'ui/icons';
 
 import * as S from './style';
 
 export const Header = () => {
     return (
         <S.Flex>
-            <Tg20 />
+            <SvgTg20 />
             <S.Search placeholder='Search tokens' />
             <S.Notifications value={1}>
-                <Notification/>
+                <SvgNotification/>
             </S.Notifications>
         </S.Flex>    
     )

@@ -1,8 +1,10 @@
+import { ChartPosition } from "../Chart";
+
 type Stats = {
   amount: string,
   title: string,
   changes?: {
-    position: 'up' | 'down',
+    position: ChartPosition,
     amount: string
   }
 }

@@ -1,21 +1,23 @@
-import styled from "styled-components";
+import styled from 'styled-components'
+import { ChartPosition } from './types'
 
-export const Container = styled.div<{position: 'up' | 'down'}>`
-    display: flex;
-    align-items: center;
+export const Container = styled.div<{ position: ChartPosition }>`
+  display: flex;
+  align-items: center;
 
-    & svg path {
-      fill: ${(props) => props.position === 'up' ? props.theme.color.greenSuccess : props.theme.color.redAlert};
+  & svg path {
+    fill: ${({ position, theme }) =>
+      position === 'up' ? theme.color.greenSuccess : theme.color.redAlert};
+  }
 
-    }
+  & div {
+    color: ${({ position, theme }) =>
+      position === 'up' ? theme.color.greenSuccess : theme.color.redAlert};
+  }
+`
 
-    & div {
-        color: ${(props) => props.position === 'up' ? props.theme.color.greenSuccess : props.theme.color.redAlert}
-    }
-`;
-
-export const Text = styled.div`
-    font-size: 10px;
-    font-weight: 600;
-    line-height: 16px;
+export const Text = styled.p`
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 16px;
 `
