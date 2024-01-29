@@ -1,38 +1,37 @@
 import styled from 'styled-components'
 
 export const Wrapper = styled.div`
-  max-width: 100%;
   display: flex;
-  align-items: flex-end;
-  border-radius: 10px;
-  padding: 2px;
-  background-color: ${({ theme }) => theme.color.bgSecondary};
+  flex-wrap: nowrap;
+  column-gap: 16px;
+  row-gap: 8px;
+
+  overflow-x: scroll;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `
 
 export const TabItem = styled.div<{ $isActive?: boolean }>`
-  border-radius: 7px;
-  width: 50%;
-  height: 28px;
   display: flex;
   align-items: center;
-  gap: 6px;
   justify-content: center;
-  background-color: ${({ theme, $isActive }) =>
-    $isActive ? theme.color.bg : theme.color.bgSecondary};
-  color: ${({ theme }) => theme.color.text};
+  color: ${({ theme, $isActive }) =>
+    $isActive ? theme.color.text : theme.color.hint};
   cursor: ${({ $isActive }) => ($isActive ? 'auto' : 'pointer')};
-  font-size: 13px;
-  font-style: normal;
-  font-weight: 590;
-  line-height: 18px;
-  letter-spacing: -0.078px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 16px;
 
   svg {
-    width: 20px;
-    height: 20px;
+    width: 16px;
+    height: 16px;
 
     path {
-      stroke: ${({ theme }) => theme.color.text};
+      fill: ${({ theme, $isActive }) => ($isActive ? theme.color.btn : 'none')};
+      stroke: ${({ theme, $isActive }) =>
+        $isActive ? theme.color.text : theme.color.hint};
     }
   }
 `

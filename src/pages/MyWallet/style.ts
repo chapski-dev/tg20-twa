@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { SvgCopy } from 'ui/icons'
-import { Tabs as UITabs } from 'ui/Tabs/Tabs'
+import { TabsFilled as UITabs } from 'ui/TabsFilled/TabsFilled'
 
 export const Wrapper = styled.div`
   display: flex;

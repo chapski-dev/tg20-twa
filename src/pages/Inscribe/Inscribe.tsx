@@ -21,11 +21,11 @@ import { BackButton } from 'features/BackButton'
 import { MainButton } from 'features/MainButton'
 import { ActionsStatusContext } from 'providers/ActionsStatusProvider'
 import { Container } from 'ui/Container/Container'
-import { Tabs, InscribeForm, ConfirmPopup } from './components'
+import { ITab, TabsFilled } from 'ui/TabsFilled/TabsFilled'
+import { InscribeForm, ConfirmPopup } from './components'
 import { type IInitialValues } from './components/InscribeForm/types'
-import { type ITab } from './components/Tabs/Tabs'
 import * as S from './style'
-import { ActionStatusData } from './types'
+import { ActionStatusData, InscribeFormType } from './types'
 import { getValidationSchema } from './validationSchema'
 
 interface ICurrentConfirmData {
@@ -137,7 +137,7 @@ export const Inscribe: FC = () => {
   const navigate = useNavigate()
 
   const getInitialValues = (): IInitialValues => {
-    switch (selectedTab.value) {
+    switch (selectedTab.value as InscribeFormType) {
       case 'mint':
         return {
           tick: tickSearchParam || '',
@@ -636,18 +636,18 @@ export const Inscribe: FC = () => {
           onSubmit={handleFormikSubmit}
           validateOnBlur={false}
           validateOnChange={false}
-          validationSchema={getValidationSchema(selectedTab.value)}
+          validationSchema={getValidationSchema(selectedTab.value as InscribeFormType)}
         >
           {({ resetForm, handleSubmit }) => (
             <S.FormWrapper>
-              <Tabs
+              <TabsFilled
                 onChange={(tab) => {
                   handleTabChange(tab, resetForm)
                 }}
                 selectedTab={selectedTab}
                 tabs={tabs}
               />
-              <InscribeForm type={selectedTab.value} />
+              <InscribeForm type={selectedTab.value as InscribeFormType} />
               {!currentConfirmData && (
                 <MainButton
                   disabled={intervalFreeze !== null && intervalFreeze > 0}
@@ -663,7 +663,7 @@ export const Inscribe: FC = () => {
               {currentConfirmData !== null && (
                 <ConfirmPopup
                   fee={currentConfirmData.fee}
-                  formType={selectedTab.value}
+                  formType={selectedTab.value as InscribeFormType}
                   isLoading={isInscribing}
                   onClose={() => setCurrentConfirmData(null)}
                   onConfirm={signConfirmTransaction}

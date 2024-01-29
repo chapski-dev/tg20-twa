@@ -11,19 +11,22 @@ interface ITabsProps {
   tabs: ITab[]
   selectedTab: ITab
   onChange: (tab: ITab) => void
-  className?: string
+  tabClassName?: string
+  containerClassName?: string
 }
 
 export const Tabs: FC<ITabsProps> = ({
   tabs,
   selectedTab,
   onChange,
-  className
+  tabClassName,
+  containerClassName
 }) => (
-  <S.Wrapper className={className}>
+  <S.Wrapper className={containerClassName}>
     {tabs.map((tab) => (
       <S.TabItem
         $isActive={selectedTab.value === tab.value}
+        className={tabClassName}
         onClick={() => onChange(tab)}
       >
         {tab.icon}
