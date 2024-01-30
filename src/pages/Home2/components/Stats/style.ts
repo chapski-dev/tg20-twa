@@ -1,7 +1,8 @@
 import styled from "styled-components";
 
 export const Stats = styled.div`
-    background: linear-gradient(90deg, rgba(0, 152, 234, 0.60) 0%, rgba(0, 102, 255, 0.60) 100%);
+    background: linear-gradient(90deg, #0098ea99 0%, #0066ff99 100%);
+    
     padding: 20px 16px;
     display: flex;
     justify-content: center;
@@ -14,8 +15,9 @@ export const StatItem = styled.div`
     border-radius: 6px;
     padding: 15px 10px 7px 7px;
     display: flex;
-    width: 115px;
+    flex: 1;
     flex-direction: column;
+    gap: 5px;
 `;
 
 export const StatTitle = styled.div`
@@ -29,7 +31,7 @@ export const StatText = styled.div`
     font-size: 12px;
     font-weight: 500;
     line-height: 16px;
-    color: ${({theme}) => theme.color.hint};
+    color: ${({theme}) => theme.color.text};
 `;
 
 export const Head = styled.div`

@@ -7,14 +7,21 @@ import {
 } from 'api'
 import { AppRoutes } from 'constants/app'
 import { useDebounce } from 'hooks/useDebounce/useDebounce'
+import { Tabs } from 'ui'
 import { Container } from 'ui/Container/Container'
+import { SvgVerified } from 'ui/icons'
 import { Input } from 'ui/Input/Input'
 
-import { SpecialOffer, TokenCard } from './components'
+import { SpecialOffer } from 'features/SpecialOffer'
+import { Tab } from 'ui/Tabs/Tabs'
+import {  TokenCard } from './components'
 import * as S from './style'
+
 
 export const Inscriptions: FC = () => {
   const [searchedValue, setSearchedValue] = useState<string>('')
+  const [currentTab, setCurrentTab] = useState<Tab>(tabs[0])
+
   const navigate = useNavigate()
   const debauncedSearchValue = useDebounce(searchedValue)
 
@@ -38,6 +45,7 @@ export const Inscriptions: FC = () => {
     },
     []
   )
+  console.log(topTokens?.length && topTokens[0]);
 
   return (
     <S.Wrapper>
@@ -76,6 +84,13 @@ export const Inscriptions: FC = () => {
           </S.DeployInfoBlock>
           <S.ArrowIcon />
         </S.DeployTokenBlock>
+      </Container>
+      <Container>
+        <Tabs
+          onChange={setCurrentTab}
+          selectedTab={currentTab}
+          tabs={tabs}
+        />
       </Container>
       {isTopTokensLoading ||
         isSearchedTokensLoading ? (
@@ -186,3 +201,31 @@ export const Inscriptions: FC = () => {
     </S.Wrapper>
   )
 }
+
+const tabs: Tab[] = [
+  {
+    label: 'All',
+    value: 'all',
+  },
+  {
+    label: 'Verified',
+    value: 'verified',
+    icon: <SvgVerified />,
+  },
+  {
+    label: 'Trending',
+    value: 'trending',
+  },
+  {
+    label: 'New',
+    value: 'new',
+  },
+  {
+    label: 'Minted',
+    value: 'minted',
+  },
+  {
+    label: 'Deployed',
+    value: 'deployed',
+  },
+];

@@ -1,13 +1,13 @@
 import { styled } from 'styled-components'
 
 export const Flex = styled.div`
-  padding: 16px 17px 18px 21px;
+  padding: 16px 18px;
   border-top: 1px solid ${({ theme }) => theme.color.bgSecondary};
   background-color: ${({ theme }) => theme.color.bg};
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 7px;
+  gap: 14px;
 
   #Vector_6,
   #Vector_5 {
@@ -25,9 +25,8 @@ export const Flex = styled.div`
   }
 
   .search {
-    border-radius: 10px;
-    width: 225px;
-    height: 42px;
+    flex: 1;
+    height: 40px;
     font-size: 14px;
     line-height: 16px;
   }
@@ -38,9 +37,9 @@ export const Notifications = styled.button<{ value: number }>`
   outline: none;
   border-radius: 6px;
   border: none;
-  padding: 9px;
+  padding: 8px;
   cursor: pointer;
-  height: 42px;
+  height: 40px;
   &:after {
     color: ${({ theme }) => theme.color.btnText};
     background: ${({ theme }) => theme.color.btn};

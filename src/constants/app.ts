@@ -4,8 +4,9 @@ export const AppRoutes = {
   Home: '/',
   Inscribe: '/inscribe',
   Marketplace: '/marketplace',
-  Token: '/token',
+  Token: '/token:id',
   MyWallet: '/my-wallet',
   Inscriptions: '/inscriptions',
+  Swap: '/swap',
 
 } as const

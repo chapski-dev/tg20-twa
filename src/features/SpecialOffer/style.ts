@@ -1,5 +1,12 @@
 import styled from 'styled-components'
 
+
+export const Container = styled.div`
+  width: 100%;
+  padding: 0 16px;
+  margin: 16px 0;
+`;
+
 export const Wrapper = styled.div`
   padding: 9px;
   display: flex;
@@ -9,6 +16,7 @@ export const Wrapper = styled.div`
   border-radius: 10px;
   width: 100%;
   color: ${({ theme }) => theme.color.text};
+  position: relative;
 `
 
 export const IconWrapper = styled.div`
@@ -56,8 +64,29 @@ export const Button = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: ${({ theme }) => theme.color.bg};
-  color: ${({ theme }) => theme.color.text};
+  background-color: #fff;
+  color: #000;
   border: 1px solid ${({ theme }) => theme.color.bgSecondary};
   width: fit-content;
 `
+export const Img = styled.img`
+  width: 78px;
+  height: 66px;
+`;
+
+export const CrossBtn = styled.button`
+  border: none;
+  outline: none;
+  background: transparent;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: ${({ theme }) => theme.color.hint};
+  font-size: 18px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  cursor: ${({ disabled }) => (!disabled ? 'pointer' : 'not-allowed')};
+`;
