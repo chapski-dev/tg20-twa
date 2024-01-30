@@ -13,6 +13,8 @@ import { formatNumberWithSeparators } from 'utils/formNumberWithSeparators'
 import { HoldersTable, ProgressLine, TransferPopup } from './components'
 
 import * as S from './style'
+import { convertNumberToShortFormat } from 'utils/convertNumberToShortFormat'
+import { Accordion } from 'ui'
 
 const ROYALTY_ADDRESS = 'EQBAeW5Kypzgt4WcgJZV8JLIhGUFYmHJfoKrJlBKHde74ps4'
 
@@ -54,88 +56,48 @@ export const Token: FC = () => {
       )
     }
 
+    console.log(tokenData)
     return (
       <S.Wrapper>
         <BackButton onClick={() => navigate(AppRoutes.Home)} />
-        <Container>
-          <S.TokenCardWrapper>
-            <S.TokenCardHeader>
-              <S.TokenCardHeaderLeftSideWrapper>
-                {/* {tokenData.tick === 'gram' ? (
-                  <S.TokenIcon />
-                ) : (
-                  <S.DynamicTickLogo tick={tokenData.tick} />
-                )} */}
 
-                <S.TokenIcon />
+        <S.TokenCardHeader>
+          <S.TokenCardHeaderLeftSideWrapper>
 
-                <S.TitleWrapper>
-                  <S.Title>{tokenData.tick}</S.Title>
-                  {(tokenData.tick === 'gram' || tokenData.verified) && (
-                    <SvgVerified />
-                  )}
-                </S.TitleWrapper>
-              </S.TokenCardHeaderLeftSideWrapper>
-              {/* <S.SupplyLabel>
-                {formatNumberWithSeparators(tokenData.supply)}{' '}
-                <S.SupplyLabel $type="value">
-                  / {formatNumberWithSeparators(tokenData.total_supply)}
-                </S.SupplyLabel>
-              </S.SupplyLabel> */}
-              {tokenData.mintable && (
-                <Button
-                  onClick={() =>
-                    navigate({
-                      pathname: AppRoutes.Inscribe,
-                      search: createSearchParams({
-                        type: 'mint',
-                        tick: tokenData.tick,
-                        from: 'token',
-                      }).toString(),
-                    })
-                  }
-                >
-                  Mint
-                </Button>
+            <S.TokenIconWrapper>
+              <S.TokenIcon />
+            </S.TokenIconWrapper>
+
+            <S.TitleWrapper>
+              <S.Title>{tokenData.tick}</S.Title>
+              {(tokenData.tick === 'gram' || tokenData.verified) && (
+                <SvgVerified />
               )}
-            </S.TokenCardHeader>
-
-            <ProgressLine mintedSupplyPercent={mintedSupplyPercent} />
-
-            {/* <S.Line /> */}
-
-            <S.InfoBlockWrapper>
-              <S.FieldWrapper>
-                <S.Label $isBold>Minted Supply </S.Label>
-                <S.Label>
-                  {formatNumberWithSeparators(tokenData.supply)} (
-                  {mintedSupplyPercent.toFixed(2)}%)
-                </S.Label>
-              </S.FieldWrapper>
-
-              <S.FieldWrapper>
-                <S.Label $isBold>Total Supply</S.Label>
-                <S.Label>
-                  {formatNumberWithSeparators(tokenData.total_supply)}
-                </S.Label>
-              </S.FieldWrapper>
-
-              <S.FieldWrapper>
-                <S.Label $isBold>Limit per Mint</S.Label>
-                <S.Label>{tokenData.mint_limit}</S.Label>
-              </S.FieldWrapper>
-
-              <S.FieldWrapper>
-                <S.Label $isBold>Decimal</S.Label>
-                <S.Label>{9}</S.Label>
-              </S.FieldWrapper>
-
-              <S.FieldWrapper>
-                <S.Label $isBold>Hodlers</S.Label>
-                <S.Label>
-                  {formatNumberWithSeparators(tokenData.holders)}
-                </S.Label>
-              </S.FieldWrapper>
+              {tokenData.mintable && <S.Mintable>Minting Fast 🔥</S.Mintable>}
+              {!tokenData.mintable && <S.NotMintable>Trading ✅</S.NotMintable>}
+            </S.TitleWrapper>
+          </S.TokenCardHeaderLeftSideWrapper>
+        </S.TokenCardHeader>
+        <S.TokenCardHeaderList>
+          <S.TokenCardHeaderListItem align='flex-start'>
+            <S.TokenCardHeaderListItemTitle>Total Supply</S.TokenCardHeaderListItemTitle>
+            <S.TokenCardHeaderListItemText>{convertNumberToShortFormat(tokenData.total_supply)}</S.TokenCardHeaderListItemText>
+          </S.TokenCardHeaderListItem>
+          <S.TokenCardHeaderListItem align='flex-start'>
+            <S.TokenCardHeaderListItemTitle>Minted Supply</S.TokenCardHeaderListItemTitle>
+            <S.TokenCardHeaderListItemText>{convertNumberToShortFormat(tokenData.supply)}</S.TokenCardHeaderListItemText>
+          </S.TokenCardHeaderListItem>
+          <S.TokenCardHeaderListItem align='flex-end'>
+            <S.TokenCardHeaderListItemTitle>Minted %</S.TokenCardHeaderListItemTitle>
+            <S.TokenCardHeaderListItemText>
+              {mintedSupplyPercent.toFixed(2)}
+              %
+            </S.TokenCardHeaderListItemText>
+          </S.TokenCardHeaderListItem>
+        </S.TokenCardHeaderList>
+        <S.Container>
+          <Accordion className='accordion' height='240px' title='Inscription Details'>
+            <S.Field>
 
               <S.FieldWrapper>
                 <S.Label $isBold>Inscription Address</S.Label>
@@ -147,7 +109,6 @@ export const Token: FC = () => {
                   <S.LinkIcon />
                 </S.LinkFieldWrapper>
               </S.FieldWrapper>
-
               <S.FieldWrapper>
                 <S.Label $isBold>Deployed by</S.Label>
                 <S.LinkFieldWrapper
@@ -158,18 +119,6 @@ export const Token: FC = () => {
                   <S.LinkIcon />
                 </S.LinkFieldWrapper>
               </S.FieldWrapper>
-
-              <S.FieldWrapper>
-                <S.Label $isBold>Royalty Address</S.Label>
-                <S.LinkFieldWrapper
-                  href={`https://tonviewer.com/${tokenData.royalty_address}`}
-                  target="_blank"
-                >
-                  <S.Label>{tokenData.royalty_address}</S.Label>
-                  <S.LinkIcon />
-                </S.LinkFieldWrapper>
-              </S.FieldWrapper>
-
               <S.FieldWrapper>
                 <S.Label $isBold>Deploy time</S.Label>
                 <S.Label>
@@ -178,20 +127,81 @@ export const Token: FC = () => {
                   )}
                 </S.Label>
               </S.FieldWrapper>
-            </S.InfoBlockWrapper>
-          </S.TokenCardWrapper>
-          <HoldersTable
-            supplied={tokenData.supply}
-            totalSupply={tokenData.total_supply}
-          />
-        </Container>
-        {isTradePopupOpened && (
-          <TransferPopup onClose={toggleTradePopup} tick={tokenData.tick} />
-        )}
-        {isTokenDataLoaded && !tokenData.mintable && !isTradePopupOpened && (
-          <MainButton onClick={toggleTradePopup} text={'Trade'} />
-        )}
-      </S.Wrapper>
+              <S.FieldFlex>
+                <S.FieldFlexItem>
+                  <S.FieldFlexItemLabel $isBold>Limit/Mint</S.FieldFlexItemLabel>
+                  <S.FieldFlexItemLabel>
+                    {tokenData.mint_limit}
+                  </S.FieldFlexItemLabel>
+                </S.FieldFlexItem>
+                <S.FieldFlexItem>
+                  <S.FieldFlexItemLabel $isBold>Decimal</S.FieldFlexItemLabel>
+                  <S.FieldFlexItemLabel>
+                    9
+                  </S.FieldFlexItemLabel>
+                </S.FieldFlexItem>
+                <S.FieldFlexItem>
+                  <S.FieldFlexItemLabel $isBold>Holders</S.FieldFlexItemLabel>
+                  <S.FieldFlexItemLabel>
+                    {formatNumberWithSeparators(tokenData.holders)}
+                  </S.FieldFlexItemLabel>
+                </S.FieldFlexItem>
+              </S.FieldFlex>
+            </S.Field>
+          </Accordion>
+          {tokenData.mintable && (
+            <Button
+              className='btn'
+              onClick={() =>
+                navigate({
+                  pathname: AppRoutes.Inscribe,
+                  search: createSearchParams({
+                    type: 'mint',
+                    tick: tokenData.tick,
+                    from: 'token',
+                  }).toString(),
+                })
+              }
+            >
+              Mint Now
+            </Button>
+          )}
+          {!tokenData.mintable && (
+            <Button
+              className='btn'
+              onClick={() =>
+                navigate({
+                  pathname: AppRoutes.Inscribe,
+                  search: createSearchParams({
+                    type: 'mint',
+                    tick: tokenData.tick,
+                    from: 'token',
+                  }).toString(),
+                })
+              }
+            >
+              Buy / Sell {tokenData.tick.toUpperCase()}
+            </Button>
+          )}
+        </S.Container>
+        <S.TableWrapper >
+          <S.TableTitle>Holdings</S.TableTitle>
+        </S.TableWrapper>
+        <HoldersTable
+          supplied={tokenData.supply}
+          totalSupply={tokenData.total_supply}
+        />        {
+          isTradePopupOpened && (
+            <TransferPopup onClose={toggleTradePopup} tick={tokenData.tick} />
+          )
+        }
+        {
+          isTokenDataLoaded && !tokenData.mintable && !isTradePopupOpened && (
+            <MainButton onClick={toggleTradePopup} text={'Trade'} />
+          )
+        }
+
+      </S.Wrapper >
     )
   }
 

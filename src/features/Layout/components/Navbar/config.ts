@@ -15,7 +15,7 @@ export const navigations = [
   },
   {
     text: 'Inscriptions',
-    to: AppRoutes.Inscribe,
+    to: AppRoutes.Inscriptions,
     Logo: SvgLevel,
   },
   {
@@ -25,7 +25,7 @@ export const navigations = [
   },
   {
     text: 'Swap',
-    to: AppRoutes.Token,
+    to: `${AppRoutes.Token}/gram`,
     Logo: SvgArrowSwapHorizontal,
   },
   {

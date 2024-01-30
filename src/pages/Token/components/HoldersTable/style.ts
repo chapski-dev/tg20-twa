@@ -9,44 +9,52 @@ export const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 20px;
-  margin-top: 12px;
 `
 
-export const Table = styled.table`
-  table-layout: auto;
+export const Table = styled.div`
   width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
+  display: flex;
+  flex-direction: column;
 `
 
-export const TableHeadLabel = styled.th`
+export const HeadLabel = styled.div`
   text-align: left;
-  font-size: 17px;
+  font-size: 11px;
   font-style: normal;
-  font-weight: 590;
+  font-weight: 600;
+  padding: 12px 0;
   line-height: normal;
   color: ${({ theme }) => theme.color.hint};
-  padding: 10px;
-
   &:last-child {
     text-align: right;
   }
 `
 
-export const TableRow = styled.tr<{ $isHeadRow?: boolean }>`
-  &:nth-child(odd) {
+export const RowHeader = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 0 30px;
+  justify-content: space-between;
+  background-color: ${({ theme }) => theme.color.bgSecondary};
+`
+
+export const TableRow = styled.div<{ $isHeadRow?: boolean }>`
+  display: flex;
+  align-items: center;
+  padding: 16px 30px;
+  justify-content: space-between;
+  &:nth-child(even) {
     background-color: ${({ theme, $isHeadRow }) =>
       $isHeadRow ? theme.color.bg : theme.color.bgSecondary};
   }
 `
 
-export const TableData = styled.td`
+export const TableData = styled.div`
   font-size: 14px;
   font-style: normal;
-  font-weight: 400;
-  line-height: normal;
+  font-weight: 500;
+  line-height: 16px;
   color: ${({ theme }) => theme.color.text};
-  padding: 10px;
 
   &:last-child {
     text-align: right;
