@@ -1,11 +1,8 @@
 import styled from 'styled-components'
 
-
 export const Container = styled.div`
   width: 100%;
-  padding: 0 16px;
-  margin: 16px 0;
-`;
+`
 
 export const Wrapper = styled.div`
   padding: 9px;
@@ -72,7 +69,7 @@ export const Button = styled.button`
 export const Img = styled.img`
   width: 78px;
   height: 66px;
-`;
+`
 
 export const CrossBtn = styled.button`
   border: none;
@@ -89,4 +86,4 @@ export const CrossBtn = styled.button`
   top: 0;
   right: 0;
   cursor: ${({ disabled }) => (!disabled ? 'pointer' : 'not-allowed')};
-`;
+`

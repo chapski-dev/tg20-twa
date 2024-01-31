@@ -23,7 +23,10 @@ export const Flex = styled.div`
   #Vector_4 {
     fill: ${({ theme }) => theme.color.text};
   }
-
+  .search-container {
+    flex: 1;
+  }
+  
   .search {
     flex: 1;
     height: 40px;

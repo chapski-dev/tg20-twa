@@ -26,7 +26,7 @@ export const Input = styled.input<{ disabled?: boolean }>`
   border: none;
   padding: 12px 0;
   border-radius: 6px;
-  height: 37px;
+  height: 40px;
 
   &::placeholder {
     color: ${({ theme }) => theme.color.hint};
@@ -59,7 +59,6 @@ export const InputContainer = styled.div<{
 export const InputWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 2px;
 `
 
 export const Label = styled.span<{ error?: boolean; isFocused?: boolean }>`

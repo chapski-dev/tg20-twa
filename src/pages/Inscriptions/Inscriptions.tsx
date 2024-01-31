@@ -1,20 +1,20 @@
 import { ChangeEvent, FC, useCallback, useState } from 'react'
 import { useQuery } from 'react-query'
-import { createSearchParams, useNavigate } from 'react-router-dom'
+import { createSearchParams, generatePath, useNavigate } from 'react-router-dom'
 import {
   getSearchedTokensList,
   getTopTokensList,
 } from 'api'
 import { AppRoutes } from 'constants/app'
+import { SpecialOffer } from 'features/SpecialOffer'
 import { useDebounce } from 'hooks/useDebounce/useDebounce'
 import { Tabs } from 'ui'
 import { Container } from 'ui/Container/Container'
 import { SvgVerified } from 'ui/icons'
 import { Input } from 'ui/Input/Input'
 
-import { SpecialOffer } from 'features/SpecialOffer'
 import { Tab } from 'ui/Tabs/Tabs'
-import {  TokenCard } from './components'
+import { TokenCard } from './components'
 import * as S from './style'
 
 
@@ -45,7 +45,6 @@ export const Inscriptions: FC = () => {
     },
     []
   )
-  console.log(topTokens?.length && topTokens[0]);
 
   return (
     <S.Wrapper>
@@ -144,7 +143,9 @@ export const Inscriptions: FC = () => {
                   />
                 )
               )}
+
             <SpecialOffer />
+
             {!debauncedSearchValue &&
               isTopTokensLoaded &&
               topTokens.slice(8).map(
