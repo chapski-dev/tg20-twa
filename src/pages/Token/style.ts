@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { Container as Container2 } from 'ui/Container/Container'
 import { DynamicTickLogo as UIDynamicTickLogo } from 'ui/DynamicTickLogo/DynamicTickLogo'
-import { SvgGramIcon, SvgLink } from 'ui/icons'
+import { SvgLink, SvgLogos } from 'ui/icons'
 import { Loader as UILoader } from 'ui/Loader/Loader'
 
 export const Wrapper = styled.div`
@@ -240,7 +240,9 @@ export const NotFountLabel = styled.span`
   color: ${({ theme }) => theme.color.text};
 `
 
-export const TokenIcon = styled(SvgGramIcon)`
+export const TokenIcon = styled(SvgLogos)`
   max-width: 60px;
+  width: 100%;
+  height: 100%;
   max-height: 60px;
 `
