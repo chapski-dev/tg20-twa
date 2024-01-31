@@ -1,5 +1,4 @@
 import { FC, useCallback, useEffect, useMemo, useState } from 'react'
-import { Address } from '@ton/core'
 import { useTonAddress } from '@tonconnect/ui-react'
 import { useInView } from 'react-intersection-observer'
 import { useInfiniteQuery } from 'react-query'
@@ -53,7 +52,6 @@ export const ListedLotsTab: FC<ListedLotsTabProps> = (props) => {
     data: listedLotsData,
     fetchNextPage,
     hasNextPage,
-    isFetching: isListedLotsDataFetching,
     isLoading: isListedLotsDataLoading,
     isError: isListedLotsDataError,
     isSuccess: isListedLotsDataLoaded,
@@ -61,14 +59,11 @@ export const ListedLotsTab: FC<ListedLotsTabProps> = (props) => {
   } = useInfiniteQuery(['listed-lots', tick, sort, direction], getListedLots, {
     getNextPageParam: (lastPage, pages) => {
       const { total } = lastPage
-      const currentTotalItems = pages.reduce(
-        (acc, page) => acc + page.items.length,
-        0
-      )
+      const currentTotalItems = pages.reduce((acc, page) => acc + page.items.length, 0)
 
-      return currentTotalItems < total
-        ? currentTotalItems / ITEMS_ON_PAGE
-        : undefined
+      const isCurrentLessTotal = currentTotalItems < total;
+      
+      return isCurrentLessTotal ? currentTotalItems / ITEMS_ON_PAGE : undefined
     },
   })
 
@@ -124,7 +119,6 @@ export const ListedLotsTab: FC<ListedLotsTabProps> = (props) => {
                   ...pricesData,
                 })
               }}
-              tonPrice={tonPrice}
             />
           ))}
           <div ref={ref} />
