@@ -18,10 +18,10 @@ export const TabItem = styled.div<{ $isActive?: boolean }>`
   align-items: center;
   justify-content: center;
   color: ${({ theme, $isActive }) =>
-    $isActive ? theme.color.text : theme.color.hint};
+    $isActive ? theme.color.btn : theme.color.hint};
+  font-weight: ${({ $isActive }) => ($isActive ? 800 : 500)};
   cursor: ${({ $isActive }) => ($isActive ? 'auto' : 'pointer')};
   font-size: 14px;
-  font-weight: 500;
   line-height: 16px;
 
   svg {

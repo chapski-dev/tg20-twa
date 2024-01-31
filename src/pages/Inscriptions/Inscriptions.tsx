@@ -1,20 +1,27 @@
 import { ChangeEvent, FC, useCallback, useState } from 'react'
 import { useQuery } from 'react-query'
-import { createSearchParams, useNavigate } from 'react-router-dom'
+import { createSearchParams, generatePath, useNavigate } from 'react-router-dom'
 import {
   getSearchedTokensList,
   getTopTokensList,
 } from 'api'
 import { AppRoutes } from 'constants/app'
+import { SpecialOffer } from 'features/SpecialOffer'
 import { useDebounce } from 'hooks/useDebounce/useDebounce'
+import { Tabs } from 'ui'
 import { Container } from 'ui/Container/Container'
+import { SvgVerified } from 'ui/icons'
 import { Input } from 'ui/Input/Input'
 
-import { SpecialOffer, TokenCard } from './components'
+import { Tab } from 'ui/Tabs/Tabs'
+import { TokenCard } from './components'
 import * as S from './style'
+
 
 export const Inscriptions: FC = () => {
   const [searchedValue, setSearchedValue] = useState<string>('')
+  const [currentTab, setCurrentTab] = useState<Tab>(tabs[0])
+
   const navigate = useNavigate()
   const debauncedSearchValue = useDebounce(searchedValue)
 
@@ -77,6 +84,13 @@ export const Inscriptions: FC = () => {
           <S.ArrowIcon />
         </S.DeployTokenBlock>
       </Container>
+      <Container>
+        <Tabs
+          onChange={setCurrentTab}
+          selectedTab={currentTab}
+          tabs={tabs}
+        />
+      </Container>
       {isTopTokensLoading ||
         isSearchedTokensLoading ? (
         <S.Loader />
@@ -129,7 +143,9 @@ export const Inscriptions: FC = () => {
                   />
                 )
               )}
+
             <SpecialOffer />
+
             {!debauncedSearchValue &&
               isTopTokensLoaded &&
               topTokens.slice(8).map(
@@ -186,3 +202,31 @@ export const Inscriptions: FC = () => {
     </S.Wrapper>
   )
 }
+
+const tabs: Tab[] = [
+  {
+    label: 'All',
+    value: 'all',
+  },
+  {
+    label: 'Verified',
+    value: 'verified',
+    icon: <SvgVerified />,
+  },
+  {
+    label: 'Trending',
+    value: 'trending',
+  },
+  {
+    label: 'New',
+    value: 'new',
+  },
+  {
+    label: 'Minted',
+    value: 'minted',
+  },
+  {
+    label: 'Deployed',
+    value: 'deployed',
+  },
+];

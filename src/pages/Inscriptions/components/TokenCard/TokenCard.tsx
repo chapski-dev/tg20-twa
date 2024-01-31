@@ -1,5 +1,5 @@
 import { FC, useMemo } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { generatePath, useNavigate } from 'react-router-dom'
 import { AppRoutes } from 'constants/app'
 import { convertNumberToShortFormat } from 'utils/convertNumberToShortFormat'
 import * as S from './style'
@@ -22,8 +22,13 @@ export const TokenCard: FC<TokenCardProps> = (props) => {
     return Math.floor((supply / total_supply) * 100)
   }, [supply, total_supply])
 
+  const goToToken = (id: string ) => {
+    const path = generatePath(AppRoutes.Token, { id });
+    navigate(path);
+  };
+
   return (
-    <S.Wrapper onClick={() => navigate(`${AppRoutes.Token}/${tick}`)}>
+    <S.Wrapper onClick={() => goToToken(tick)}>
       <S.ContentWrapper>
         <S.InfoWrapper>
           <S.Header>
@@ -40,7 +45,7 @@ export const TokenCard: FC<TokenCardProps> = (props) => {
             </S.InfoLabelsWrapper>
             <S.InfoValuesWrapper>
               <S.Label children="Minted:" />
-              <S.InfoValue children={`${convertNumberToShortFormat(total_supply)} (${mintedPercent}%)`} />
+              <S.InfoValue children={`${convertNumberToShortFormat(supply)} (${mintedPercent}%)`} />
             </S.InfoValuesWrapper>
           </div>
         </S.InfoWrapper>
