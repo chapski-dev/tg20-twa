@@ -8,7 +8,7 @@ export const Container = styled.div`
   justify-content: space-between;
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
-  border-top: 1px solid ${({ theme }) => theme.color.hint};
+  border-top: .9px solid ${({ theme }) => theme.color.hint};
   align-items: center;
   position: fixed;
   bottom: 0;
@@ -22,6 +22,7 @@ export const NavItem = styled.div<{ active: boolean }>`
   justify-content: center;
   cursor: pointer;
   align-items: center;
+  flex: 1;
   transition: all 0.5s ease;
   div {
     color: ${({ active, theme }) =>

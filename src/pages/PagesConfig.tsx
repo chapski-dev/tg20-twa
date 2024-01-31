@@ -6,6 +6,7 @@ import { Inscribe } from './Inscribe/Inscribe'
 import { Inscriptions } from './Inscriptions/Inscriptions'
 import { Marketplace } from './Marketplace/Marketplace'
 import { MyWallet } from './MyWallet/MyWallet'
+import { Swap } from './Swap/Swap'
 import { Token } from './Token/Token'
 
 export const PagesConfig = () => {
@@ -19,6 +20,10 @@ export const PagesConfig = () => {
           path: AppRoutes.Home,
         },
         {
+          element: <Inscriptions />,
+          path: AppRoutes.Inscriptions,
+        },
+        {
           element: <Inscribe />,
           path: AppRoutes.Inscribe,
         },
@@ -28,7 +33,11 @@ export const PagesConfig = () => {
         },
         {
           element: <Token />,
-          path: `${AppRoutes.Token}/:id`,
+          path: AppRoutes.Token,
+        },
+        {
+          element: <Swap />,
+          path: AppRoutes.Swap,
         },
         {
           element: <MyWallet />,

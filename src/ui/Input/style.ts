@@ -25,8 +25,8 @@ export const Input = styled.input<{ disabled?: boolean }>`
   outline: none;
   border: none;
   padding: 12px 0;
-  border-radius: 10px;
-  height: 37px;
+  border-radius: 6px;
+  height: 40px;
 
   &::placeholder {
     color: ${({ theme }) => theme.color.hint};
@@ -53,13 +53,12 @@ export const InputContainer = styled.div<{
     error ? `1px solid ${theme.color.redAlert}` : 'none'};
   padding: 0 12px;
   gap: 8px;
-  border-radius: 10px;
+  border-radius: 6px;
 `
 
 export const InputWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 2px;
 `
 
 export const Label = styled.span<{ error?: boolean; isFocused?: boolean }>`
