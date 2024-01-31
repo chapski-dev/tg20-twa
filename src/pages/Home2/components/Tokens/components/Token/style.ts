@@ -2,9 +2,9 @@ import styled from "styled-components";
 
 export const Box = styled.div`
     display: flex;
-    gap: 45px;
     justify-content: center;
     align-items: center;
+    width: 100%;
 `;
 
 export const Logo = styled.div`
@@ -12,6 +12,7 @@ export const Logo = styled.div`
     gap: 8px;
     justify-content: center;
     align-items: center;
+    flex: 1;
 `;
 
 export const Img = styled.img`
@@ -28,6 +29,7 @@ export const Wrapper2 = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-end;
+    flex: 1;
 `;
 
 export const TokenTitleWrapper = styled.div`
@@ -56,4 +58,5 @@ export const Volume = styled.div`
     font-size: 16px;
     font-weight: 500;
     line-height: 16px;
+    flex: 1;
 `;

@@ -16,6 +16,7 @@ export const Header = () => {
         onChange={(e) => setValue(e.target.value)}
         placeholder="Search tokens"
         value={value}
+        wrapperClassName='search-container'
       />
       <S.Notifications value={1}>
         <SvgNotification />

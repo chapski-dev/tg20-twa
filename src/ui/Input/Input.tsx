@@ -11,6 +11,7 @@ import * as S from './style'
 //TODO: props refactoring
 
 export type InputProps = InputHTMLAttributes<HTMLInputElement> & {
+  wrapperClassName?: string;
   className?: string
   disabled?: boolean
   onChange: (evt: ChangeEvent<HTMLInputElement>) => void
@@ -29,6 +30,7 @@ export type InputProps = InputHTMLAttributes<HTMLInputElement> & {
 
 export const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   const {
+    wrapperClassName,
     className,
     disabled,
     onChange,
@@ -78,7 +80,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   }
 
   return (
-    <S.InputWrapper>
+    <S.InputWrapper className={wrapperClassName}>
       {label && (
         <S.Label error={error} isFocused={isFocused}>
           {label}
