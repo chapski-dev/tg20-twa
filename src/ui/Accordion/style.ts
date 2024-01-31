@@ -19,6 +19,9 @@ export const Icon = styled(SvgArrowLeft)<IsOpen>`
   height: 24px;
   transition: all 0.5s ease-in-out;
   overflow: hidden;
+  path {
+    fill: ${({ theme }) => theme.color.text};
+  }
 `
 
 export const Container = styled.button`
