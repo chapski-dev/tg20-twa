@@ -14,7 +14,7 @@ export const Title = styled.div`
 
 export const Icon = styled(SvgArrowLeft)<IsOpen>`
   width: 24px;
-  fill: ${({ theme }) => theme.color.hint};
+  fill: ${({ theme }) => theme.color.text};
   rotate: ${({ isOpen }) => isOpen && '90deg'};
   height: 24px;
   transition: all 0.5s ease-in-out;

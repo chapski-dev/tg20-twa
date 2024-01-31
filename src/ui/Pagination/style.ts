@@ -15,13 +15,14 @@ export const Paginate = styled(ReactPaginate).attrs({
   /* max-width: 250px; */
   height: 28px;
   margin: 0 auto;
-  gap: 10px;
+  gap: 5px;
 
   li a {
     border-radius: 7px;
-    padding: 4px 10px;
-    background-color: ${({ theme }) => theme.color.bg};
-    color: ${({ theme }) => theme.color.hint};
+    padding: 6px 10px;
+    background-color: ${({ theme }) => theme.color.bgSecondary};
+    border: solid 1px solid ${({ theme }) => theme.color.hint};
+    color: ${({ theme }) => theme.color.text};
     cursor: pointer;
   }
   li.previous a,
@@ -36,7 +37,7 @@ export const Paginate = styled(ReactPaginate).attrs({
     min-width: 32px;
   }
   li.disabled a {
-    color: grey;
+    color: ${({ theme }) => theme.color.hint};
   }
   li.disable,
   li.disabled a {
@@ -45,7 +46,10 @@ export const Paginate = styled(ReactPaginate).attrs({
 
   .previous,
   .next {
-    display: none;
+    a {
+      background: transparent;
+      color: ${({ theme }) => theme.color.text};
+    }
   }
 
   .break {

@@ -5,16 +5,8 @@ import { SvgGramIcon, SvgLink } from 'ui/icons'
 import { Loader as UILoader } from 'ui/Loader/Loader'
 
 export const Wrapper = styled.div`
-  padding: 25px 0 51px 0;
+  padding: 25px 0 0 0;
   background-color: ${({ theme }) => theme.color.bgSecondary};
-  width: 100%;
-`
-
-export const TokenCardWrapper = styled.div`
-  border-radius: 10px;
-  background-color: ${({ theme }) => theme.color.bg};
-  display: flex;
-  flex-direction: column;
   width: 100%;
 `
 
@@ -22,6 +14,9 @@ export const TokenCardHeaderList = styled.div`
   border-radius: 8px;
   background-color: ${({ theme }) => theme.color.bg};
   width: 100%;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+
   padding: 10px 40px;
   align-items: center;
   justify-content: space-between;
@@ -67,6 +62,17 @@ export const TokenCardHeaderLeftSideWrapper = styled.div`
   gap: 12px;
 `
 
+export const PromoContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow-x: scroll;
+  padding: 30px 0 0 0;
+  &::-webkit-scrollbar {
+    height: 0px;
+  }
+`
+
 export const Title = styled.h4`
   margin: 0;
   padding: 0;
@@ -109,12 +115,7 @@ export const NotMintable = styled.div`
   font-style: normal;
   font-weight: 500;
   line-height: 16px;
-  background: linear-gradient(
-      0deg,
-      rgba(98, 197, 109, 0.2) 0%,
-      rgba(98, 197, 109, 0.2) 100%
-    ),
-    #fff;
+  background: rgba(98, 197, 109, 0.5);
 `
 
 export const TitleWrapper = styled.div`
@@ -126,29 +127,6 @@ export const TitleWrapper = styled.div`
     width: 16px;
     height: 16px;
   }
-`
-
-export const SupplyBlock = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-`
-
-export const SupplyLabel = styled.span<{ $type?: 'value' }>`
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 400;
-  color: ${({ $type, theme }) =>
-    $type === 'value' ? theme.color.text : theme.color.hint};
-`
-
-export const InfoBlockWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding: 12px;
-  gap: 12px;
-  width: 100%;
 `
 
 export const FieldWrapper = styled.div`
@@ -217,13 +195,6 @@ export const Field = styled.div`
   flex-direction: column;
   gap: 8px;
 `
-
-export const Line = styled.div`
-  width: 100%;
-  height: 1px;
-  background-color: ${({ theme }) => theme.color.bg};
-`
-
 export const LinkFieldWrapper = styled.a`
   text-decoration: none;
   display: flex;
@@ -272,12 +243,4 @@ export const NotFountLabel = styled.span`
 export const TokenIcon = styled(SvgGramIcon)`
   max-width: 60px;
   max-height: 60px;
-`
-
-export const DynamicTickLogo = styled(UIDynamicTickLogo)`
-  min-width: 32px;
-  min-height: 32px;
-  width: 32px;
-  height: 32px;
-  font-size: 10px;
 `

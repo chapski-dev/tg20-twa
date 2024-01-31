@@ -25,7 +25,7 @@ export const navigations = [
   },
   {
     text: 'Swap',
-    to: `${AppRoutes.Token}/gram`,
+    to: `/swap`,
     Logo: SvgArrowSwapHorizontal,
   },
   {

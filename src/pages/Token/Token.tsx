@@ -5,18 +5,16 @@ import { createSearchParams, useNavigate, useParams } from 'react-router-dom'
 import { getTokenInfo } from 'api'
 import { AppRoutes } from 'constants/app'
 import { BackButton } from 'features/BackButton'
-import { MainButton } from 'features/MainButton'
 import { Button } from 'ui/Button/Button'
-import { Container } from 'ui/Container/Container'
 import { SvgVerified } from 'ui/icons'
 import { formatNumberWithSeparators } from 'utils/formNumberWithSeparators'
-import { HoldersTable, ProgressLine, TransferPopup } from './components'
+import { HoldersTable, TransferPopup } from './components'
 
 import * as S from './style'
 import { convertNumberToShortFormat } from 'utils/convertNumberToShortFormat'
 import { Accordion } from 'ui'
+import { Promo } from 'ui/Promo'
 
-const ROYALTY_ADDRESS = 'EQBAeW5Kypzgt4WcgJZV8JLIhGUFYmHJfoKrJlBKHde74ps4'
 
 export const Token: FC = () => {
   const { id: tick } = useParams()
@@ -56,10 +54,9 @@ export const Token: FC = () => {
       )
     }
 
-    console.log(tokenData)
     return (
       <S.Wrapper>
-        <BackButton onClick={() => navigate(AppRoutes.Home)} />
+        <BackButton onClick={() => navigate(AppRoutes.Inscriptions)} />
 
         <S.TokenCardHeader>
           <S.TokenCardHeaderLeftSideWrapper>
@@ -171,11 +168,9 @@ export const Token: FC = () => {
               className='btn'
               onClick={() =>
                 navigate({
-                  pathname: AppRoutes.Inscribe,
+                  pathname: AppRoutes.Marketplace,
                   search: createSearchParams({
-                    type: 'mint',
-                    tick: tokenData.tick,
-                    from: 'token',
+                    from: 'token'
                   }).toString(),
                 })
               }
@@ -183,6 +178,13 @@ export const Token: FC = () => {
               Buy / Sell {tokenData.tick.toUpperCase()}
             </Button>
           )}
+          <S.PromoContainer>
+            <Promo title='See what’s new in
+your wallet!' variant='purple' subtitle='Explore wallet' />
+            <Promo title='See what’s new in
+your wallet!' variant='yellow' subtitle='Explore wallet' />
+          </S.PromoContainer>
+
         </S.Container>
         <S.TableWrapper >
           <S.TableTitle>Holdings</S.TableTitle>
@@ -193,11 +195,6 @@ export const Token: FC = () => {
         />        {
           isTradePopupOpened && (
             <TransferPopup onClose={toggleTradePopup} tick={tokenData.tick} />
-          )
-        }
-        {
-          isTokenDataLoaded && !tokenData.mintable && !isTradePopupOpened && (
-            <MainButton onClick={toggleTradePopup} text={'Trade'} />
           )
         }
 

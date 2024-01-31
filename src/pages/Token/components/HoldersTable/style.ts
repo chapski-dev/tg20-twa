@@ -3,12 +3,15 @@ import { Loader as UILoader } from 'ui/Loader/Loader'
 
 export const Wrapper = styled.div`
   max-width: 100%;
+  padding-bottom: 80px;
   border-radius: 10px;
+  border-bottom-right-radius: 0px;
+  border-bottom-left-radius: 0px;
   background-color: ${({ theme }) => theme.color.bg};
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  gap: 24px;
 `
 
 export const Table = styled.div`
