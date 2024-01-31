@@ -4,8 +4,8 @@ import { BackButton } from 'features/BackButton'
 export const Swap = () => {
   return (
     <>
-    <BackButton />
-    <div>Swap</div>
+      <BackButton />
+      <div>Swap</div>
     </>
   )
 }
