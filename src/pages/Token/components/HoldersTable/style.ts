@@ -3,9 +3,7 @@ import { Loader as UILoader } from 'ui/Loader/Loader'
 
 export const Wrapper = styled.div`
   max-width: 100%;
-  border-radius: 10px;
-  border-bottom-right-radius: 0px;
-  border-bottom-left-radius: 0px;
+  border-radius: 10px 10px 0 0;
   background-color: ${({ theme }) => theme.color.bg};
   display: flex;
   flex-direction: column;

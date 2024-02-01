@@ -6,23 +6,28 @@ import { useState } from 'react';
 import { AppRoutes } from 'constants/app';
 
 
-export const Promo = ({ variant, title, subtitle }: PromoProps) => {
+export const Promo = (props: PromoProps) => {
+    const { variant, title, subtitle } = props;
     const [isVisible, setIsVisible] = useState(true);
 
     const handleRemoveClick = () => {
         setIsVisible(false);
     };
-    if (isVisible) return (
-        <S.Container variant={variant}>
-            <S.Img src={Coins} alt={variant} />
-            <S.Wrapper>
-                <S.Title>{title}</S.Title>
-                <S.SubtitleWrapper variant={variant}>
-                    <S.Subtitle to={AppRoutes.MyWallet} variant={variant}>{subtitle}</S.Subtitle>
-                    <SvgArrowRight />
-                </S.SubtitleWrapper>
-            </S.Wrapper>
-            <SvgCloseCircle onClick={handleRemoveClick} />
-        </S.Container>
-    );
+    if (isVisible) {
+        return (
+            <S.Container variant={variant}>
+                <S.Img src={Coins} alt={variant} />
+                <S.Wrapper>
+                    <S.Title>{title}</S.Title>
+                    <S.SubtitleWrapper variant={variant}>
+                        <S.Subtitle to={AppRoutes.MyWallet} variant={variant}>{subtitle}</S.Subtitle>
+                        <SvgArrowRight />
+                    </S.SubtitleWrapper>
+                </S.Wrapper>
+                <SvgCloseCircle onClick={handleRemoveClick} />
+            </S.Container>
+        );
+    }
+
+    return null;
 }

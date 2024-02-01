@@ -1,8 +1,6 @@
 import styled from 'styled-components'
 import { SvgArrowLeft } from 'ui/icons'
 
-type IsOpen = { isOpen: boolean }
-
 export const Title = styled.div`
   font-size: 16px;
   font-style: normal;
@@ -12,7 +10,7 @@ export const Title = styled.div`
   text-align: left;
 `
 
-export const Icon = styled(SvgArrowLeft)<IsOpen>`
+export const Icon = styled(SvgArrowLeft)<{ isOpen: boolean }>`
   width: 24px;
   fill: ${({ theme }) => theme.color.text};
   rotate: ${({ isOpen }) => isOpen && '90deg'};
@@ -36,10 +34,10 @@ export const Container = styled.button`
   cursor: pointer;
 `
 
-export const Wrapper = styled.div<IsOpen>`
+export const Wrapper = styled.div<{ isOpen: boolean }>`
   overflow: ${({ isOpen }) => (isOpen ? 'visible' : 'hidden')};
 `
-export const Content = styled.div<IsOpen & { myHeight: string }>`
+export const Content = styled.div<{ isOpen: boolean; myHeight: string }>`
   padding: ${({ isOpen }) => (isOpen ? '10px 0 0 0' : '0')};
   transition: all 0.3s ease-in-out;
   height: ${({ isOpen, myHeight }) => (isOpen ? myHeight : '0px')};

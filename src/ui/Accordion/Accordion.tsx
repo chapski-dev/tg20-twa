@@ -1,9 +1,15 @@
 import { ReactNode, useState } from 'react';
 import * as S from './style';
 
-type AccordionProps = { title: string, children: ReactNode, height: string, className?: string };
+type AccordionProps = {
+    title: string,
+    children: ReactNode,
+    height: string,
+    className?: string
+};
 
-export const Accordion = ({ title, children, height, className = '' }: AccordionProps) => {
+export const Accordion = (props: AccordionProps) => {
+    const { title, children, height, className } = props;
     const [isOpen, setIsOpen] = useState(false);
 
     return (

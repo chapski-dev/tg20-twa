@@ -179,10 +179,10 @@ export const Token: FC = () => {
             </Button>
           )}
           <S.PromoContainer>
-            <Promo title='See what’s new in
-your wallet!' variant='purple' subtitle='Explore wallet' />
-            <Promo title='See what’s new in
-your wallet!' variant='yellow' subtitle='Explore wallet' />
+            <Promo title='See what’s new in your wallet!'
+              variant='purple' subtitle='Explore wallet' />
+            <Promo title='See what’s new in your wallet!'
+              variant='yellow' subtitle='Explore wallet' />
           </S.PromoContainer>
 
         </S.Container>
@@ -192,7 +192,8 @@ your wallet!' variant='yellow' subtitle='Explore wallet' />
         <HoldersTable
           supplied={tokenData.supply}
           totalSupply={tokenData.total_supply}
-        />        {
+        />
+        {
           isTradePopupOpened && (
             <TransferPopup onClose={toggleTradePopup} tick={tokenData.tick} />
           )

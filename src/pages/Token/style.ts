@@ -11,11 +11,9 @@ export const Wrapper = styled.div`
 `
 
 export const TokenCardHeaderList = styled.div`
-  border-radius: 8px;
   background-color: ${({ theme }) => theme.color.bg};
   width: 100%;
-  border-bottom-left-radius: 0px;
-  border-bottom-right-radius: 0px;
+  border-radius: 8px 8px 0 0;
 
   padding: 10px 40px;
   align-items: center;
@@ -67,7 +65,7 @@ export const PromoContainer = styled.div`
   align-items: center;
   gap: 8px;
   overflow-x: scroll;
-  padding: 30px 0 0 0;
+  padding: 30px 0 0;
   &::-webkit-scrollbar {
     height: 0px;
   }
@@ -141,7 +139,7 @@ export const FieldWrapper = styled.div`
 export const Container = styled.div`
   background-color: ${({ theme }) => theme.color.bg};
   width: 100%;
-  padding: 30px 16px 30px 16px;
+  padding: 30px 16px;
 
   .accordion {
     margin-bottom: 30px;
