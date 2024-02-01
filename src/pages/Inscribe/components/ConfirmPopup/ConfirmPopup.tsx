@@ -4,6 +4,7 @@ import { useFormikContext } from 'formik'
 import { MainButton } from 'features/MainButton'
 import { useTelegram } from 'hooks/useTelegram/useTelegram'
 import { InscribeFormType } from 'pages/Inscribe/types'
+import { SvgToncoinIcon } from 'ui/icons'
 import { Modal } from 'ui/Modal/Modal'
 import { formatNumberWithSeparators } from 'utils/formNumberWithSeparators'
 import { shortenAddress } from 'utils/shortenAddress'
@@ -33,7 +34,7 @@ export const ConfirmPopup: FC<ConfirmPopupProps> = (props) => {
 
   const { values } = useFormikContext<InitialValues>()
 
-  const { webApp } = useTelegram()
+  const { webApp, tonPrice } = useTelegram()
 
   const currentTotalAmount = useMemo(() => {
     switch (formType) {
@@ -60,128 +61,89 @@ export const ConfirmPopup: FC<ConfirmPopupProps> = (props) => {
     switch (formType) {
       case 'mint':
         return (
-          <S.Wrapper>
-            <S.FieldsWrapper>
-              <S.FieldWrapper>
-                <S.Label>TICK:</S.Label>
-                <S.ValueLabel>{values.tick}</S.ValueLabel>
-              </S.FieldWrapper>
+          <>
+            <S.FieldWrapper>
+              <S.Label children="Amount:" />
+              <S.ValueLabel children={formatNumberWithSeparators(Number(values.amount))} />
+            </S.FieldWrapper>
 
-              <S.Line />
+            <S.Line />
 
-              <S.FieldWrapper>
-                <S.Label>AMOUNT:</S.Label>
-                <S.ValueLabel>
-                  {formatNumberWithSeparators(Number(values.amount))}
-                  {/* 50 */}
-                </S.ValueLabel>
-              </S.FieldWrapper>
+            <S.FieldWrapper>
+              <S.Label children="Repeat mint:" />
+              <S.ValueLabel children={`${values.repeat} times`} />
+            </S.FieldWrapper>
 
-              <S.Line />
+            <S.Line />
 
-              <S.FieldWrapper>
-                <S.Label>REPEAT MINT:</S.Label>
-                <S.ValueLabel>{values.repeat}</S.ValueLabel>
-              </S.FieldWrapper>
-
-              <S.Line />
-
-              <S.FieldWrapper>
-                <S.Label>PROTOCOL FEE:</S.Label>
-                <S.ValueLabel>{Number(fee) / 1e9} TON</S.ValueLabel>
-              </S.FieldWrapper>
-            </S.FieldsWrapper>
-
-            <S.FieldsWrapper>
-              <S.FieldWrapper>
-                <S.Label>TOTAL AMOUNT:</S.Label>
-                <S.ValueLabel>{currentTotalAmount.toString()} TON</S.ValueLabel>
-              </S.FieldWrapper>
-            </S.FieldsWrapper>
-          </S.Wrapper>
+            <S.FieldWrapper>
+              <S.Label children="Protocol Fee/Mint:" />
+              <S.ValueLabel children={`${Number(fee) / 1e9} TON`} />
+            </S.FieldWrapper>
+          </>
         )
       case 'deploy':
         return (
-          <S.Wrapper>
-            <S.FieldsWrapper>
-              <S.FieldWrapper>
-                <S.Label>TICK:</S.Label>
-                <S.ValueLabel>{values.tick}</S.ValueLabel>
-              </S.FieldWrapper>
+          <>
+            <S.FieldWrapper>
+              <S.Label children="Total supply:" />
+              <S.ValueLabel children={formatNumberWithSeparators(Number(values.amount))} />
+            </S.FieldWrapper>
 
-              <S.Line />
+            <S.Line />
 
-              <S.FieldWrapper>
-                <S.Label>TOTAL SUPPLY:</S.Label>
-                <S.ValueLabel>
-                  {formatNumberWithSeparators(Number(values.amount))}
-                </S.ValueLabel>
-              </S.FieldWrapper>
-
-              <S.Line />
-
-              <S.FieldWrapper>
-                <S.Label>LIMIT PER MINT</S.Label>
-                <S.ValueLabel>{values.limit}</S.ValueLabel>
-              </S.FieldWrapper>
-            </S.FieldsWrapper>
-
-            <S.FieldsWrapper>
-              <S.FieldWrapper>
-                <S.Label>TOTAL AMOUNT:</S.Label>
-                <S.ValueLabel>0.1 TON</S.ValueLabel>
-              </S.FieldWrapper>
-            </S.FieldsWrapper>
-          </S.Wrapper>
+            <S.FieldWrapper>
+              <S.Label children="Limit per mint" />
+              <S.ValueLabel>{values.limit}</S.ValueLabel>
+            </S.FieldWrapper>
+          </>
         )
       case 'transfer':
         return (
-          <S.Wrapper>
-            <S.FieldsWrapper>
-              <S.FieldWrapper>
-                <S.Label>TICK:</S.Label>
-                <S.ValueLabel>{values.tick}</S.ValueLabel>
-              </S.FieldWrapper>
+          <>
+            <S.FieldWrapper>
+              <S.Label children="To:" />
+              <S.ValueLabel>{shortenAddress(values.to!)}</S.ValueLabel>
+            </S.FieldWrapper>
 
-              <S.Line />
+            <S.Line />
 
-              <S.FieldWrapper>
-                <S.Label>TO:</S.Label>
-                <S.ValueLabel>{shortenAddress(values.to!)}</S.ValueLabel>
-              </S.FieldWrapper>
-
-              <S.Line />
-
-              <S.FieldWrapper>
-                <S.Label>AMOUNT</S.Label>
-                <S.ValueLabel>{values.amount}</S.ValueLabel>
-              </S.FieldWrapper>
-
-              <S.Line />
-
-              {/* <S.FieldWrapper>
-                <S.Label>FEE:</S.Label>
-                <S.ValueLabel>{fee} TON</S.ValueLabel>
-              </S.FieldWrapper> */}
-            </S.FieldsWrapper>
-
-            <S.FieldsWrapper>
-              <S.FieldWrapper>
-                <S.Label>TOTAL AMOUNT:</S.Label>
-                <S.ValueLabel>{currentTotalAmount.toString()} TON</S.ValueLabel>
-              </S.FieldWrapper>
-            </S.FieldsWrapper>
-          </S.Wrapper>
+            <S.FieldWrapper>
+              <S.Label children="Amount" />
+              <S.ValueLabel children={values.amount} />
+            </S.FieldWrapper>
+          </>
         )
     }
-  }, [currentTotalAmount, fee, formType, values])
+  }, [fee, formType, values.amount, values.limit, values.repeat, values.to])
+
+  const totalFeeTon = +(values.repeat || 0) * (+fee / 1e9);
+  const totalFeeUsd = ((tonPrice || 0) * totalFeeTon).toFixed(5);
 
   return (
     <Modal
       onClose={onClose}
       title={'Confirm ' + mainButtonLabelDictionary[formType]}
     >
-      {currentConfirmInfoContent}
+      <S.Wrapper>
+        <S.FieldsWrapper>
+          <S.FieldWrapper>
+            <S.Label children="Tick:" />
+            <S.ValueLabel children={values.tick} />
+          </S.FieldWrapper>
+
+          <S.Line />
+          {currentConfirmInfoContent}
+        </S.FieldsWrapper>
+
+        <S.TotalFeeContainer>
+          <S.Label children="Total Fees:" />
+          <S.TotalFeeValueContainer>
+            <SvgToncoinIcon />
+            <S.ValueLabel children={` ${totalFeeTon}TON ~ $${totalFeeUsd}`} />
+          </S.TotalFeeValueContainer>
+        </S.TotalFeeContainer>
+      </S.Wrapper>
 
       <MainButton
         onClick={
