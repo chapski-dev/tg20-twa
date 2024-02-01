@@ -1,9 +1,9 @@
-import * as S from './style';
-import type { PromoProps } from './type';
-import Coins from './assets/Coins.png';
-import { SvgArrowRight, SvgCloseCircle } from 'ui/icons';
 import { useState } from 'react';
 import { AppRoutes } from 'constants/app';
+import { SvgArrowRight, SvgCloseCircle } from 'ui/icons';
+import Coins from './assets/Coins.png';
+import * as S from './style';
+import type { PromoProps } from './type';
 
 
 export const Promo = (props: PromoProps) => {

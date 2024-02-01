@@ -1,6 +1,6 @@
+import { Link } from 'react-router-dom'
 import { styled } from 'styled-components'
 import type { Theme } from './type'
-import { Link } from 'react-router-dom'
 
 export const Container = styled.div<Theme>`
   width: 257px;

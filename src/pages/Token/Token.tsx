@@ -5,15 +5,16 @@ import { createSearchParams, useNavigate, useParams } from 'react-router-dom'
 import { getTokenInfo } from 'api'
 import { AppRoutes } from 'constants/app'
 import { BackButton } from 'features/BackButton'
+import { Accordion } from 'ui'
 import { Button } from 'ui/Button/Button'
 import { SvgVerified } from 'ui/icons'
+import { Promo } from 'ui/Promo'
+import { convertNumberToShortFormat } from 'utils/convertNumberToShortFormat'
 import { formatNumberWithSeparators } from 'utils/formNumberWithSeparators'
 import { HoldersTable, TransferPopup } from './components'
 
 import * as S from './style'
-import { convertNumberToShortFormat } from 'utils/convertNumberToShortFormat'
-import { Accordion } from 'ui'
-import { Promo } from 'ui/Promo'
+
 
 
 export const Token: FC = () => {
