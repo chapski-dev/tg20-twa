@@ -30,24 +30,19 @@ export const WrapModal = styled.div`
 
 export const CardWrapper = styled.div`
   width: 100%;
-  border-radius: 16px 16px 0px 0px;
+  gap: 30px;
+  border-radius: 20px 20px 0px 0px;
+  padding: 60px 30px 24px;
   display: flex;
   flex-direction: column;
   background-color: ${({ theme }) => theme.color.bg};
   transition: height 0.3s ease;
   animation: ${fadeIn} 0.3s ease;
-`
-
-export const Header = styled.div`
-  border-bottom: 1px solid ${({ theme }) => theme.color.bgSecondary};
-  padding: 12px 16px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  position: relative;
 `
 
 export const Title = styled.h4`
-  font-size: 20px;
+  font-size: 24px;
   font-style: normal;
   font-weight: 700;
   line-height: 32px;
@@ -56,6 +51,15 @@ export const Title = styled.h4`
 
 export const Close = styled(SvgClose)`
   cursor: pointer;
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 30px;
+  height: 30px;
+  padding: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   path {
     fill: ${({ theme }) => theme.color.text};
   }
