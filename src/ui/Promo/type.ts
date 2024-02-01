@@ -1,0 +1,8 @@
+export type ThemeVariants = 'purple' | 'yellow'
+
+export type Theme = { variant: ThemeVariants }
+
+export type PromoProps = {
+  title: string
+  subtitle: string
+} & Theme

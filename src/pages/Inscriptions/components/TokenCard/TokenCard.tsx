@@ -13,8 +13,6 @@ type TokenCardProps = {
   verified: boolean
 }
 
-
-
 export const TokenCard: FC<TokenCardProps> = (props) => {
   const { tick, supply, total_supply, verified } = props
 

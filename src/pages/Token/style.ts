@@ -1,26 +1,57 @@
 import styled from 'styled-components'
+import { Container as Container2 } from 'ui/Container/Container'
 import { DynamicTickLogo as UIDynamicTickLogo } from 'ui/DynamicTickLogo/DynamicTickLogo'
-import { SvgGramIcon, SvgLink } from 'ui/icons'
+import { SvgLink, SvgLogos } from 'ui/icons'
 import { Loader as UILoader } from 'ui/Loader/Loader'
 
 export const Wrapper = styled.div`
-  padding: 15px 0;
+  padding: 25px 0 0 0;
+  background-color: ${({ theme }) => theme.color.bgSecondary};
   width: 100%;
 `
 
-export const TokenCardWrapper = styled.div`
-  border-radius: 10px;
-  background-color: ${({ theme }) => theme.color.bgSecondary};
+export const TokenCardHeaderList = styled.div`
+  background-color: ${({ theme }) => theme.color.bg};
+  width: 100%;
+  border-radius: 8px 8px 0 0;
+
+  padding: 10px 40px;
+  align-items: center;
+  justify-content: space-between;
+  display: flex;
+  margin-bottom: 2px;
+`
+
+export const TokenCardHeaderListItem = styled.div<{
+  align: 'flex-start' | 'flex-end'
+}>`
   display: flex;
   flex-direction: column;
-  width: 100%;
+  align-items: ${({ align }) => align};
+`
+
+export const TokenCardHeaderListItemTitle = styled.div`
+  color: ${({ theme }) => theme.color.hint};
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  line-height: 20px;
+`
+export const TokenCardHeaderListItemText = styled.div`
+  color: ${({ theme }) => theme.color.text};
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  line-height: 20px;
 `
 
 export const TokenCardHeader = styled.div`
-  padding: 12px;
+  padding: 0 26px 28px 26px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
 `
 
 export const TokenCardHeaderLeftSideWrapper = styled.div`
@@ -29,15 +60,60 @@ export const TokenCardHeaderLeftSideWrapper = styled.div`
   gap: 12px;
 `
 
+export const PromoContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow-x: scroll;
+  padding: 30px 0 0;
+  &::-webkit-scrollbar {
+    height: 0px;
+  }
+`
+
 export const Title = styled.h4`
   margin: 0;
   padding: 0;
-  font-size: 17px;
   font-style: normal;
-  font-weight: 590;
+  font-weight: 600;
+  font-size: 24px;
   line-height: 22px;
-  letter-spacing: -0.43px;
+  text-transform: uppercase;
   color: ${({ theme }) => theme.color.text};
+`
+export const Mintable = styled.div`
+  color: #ffb524;
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 16px;
+  background: linear-gradient(
+      0deg,
+      rgba(255, 181, 36, 0.2) 0%,
+      rgba(255, 181, 36, 0.2) 100%
+    ),
+    #fff;
+`
+export const TokenIconWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 78px;
+  background: ${({ theme }) => theme.color.bg};
+  height: 78px;
+  border-radius: 6px;
+`
+export const NotMintable = styled.div`
+  color: #62c56d;
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 16px;
+  background: rgba(98, 197, 109, 0.5);
 `
 
 export const TitleWrapper = styled.div`
@@ -51,54 +127,72 @@ export const TitleWrapper = styled.div`
   }
 `
 
-export const SupplyBlock = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-`
-
-export const SupplyLabel = styled.span<{ $type?: 'value' }>`
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 400;
-  color: ${({ $type, theme }) =>
-    $type === 'value' ? theme.color.text : theme.color.hint};
-`
-
-export const InfoBlockWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding: 12px;
-  gap: 12px;
-  width: 100%;
-`
-
 export const FieldWrapper = styled.div`
-  display: flex;
+  display: flex30px
   flex-direction: column;
-  border-radius: 0 0 10px 10px;
-  gap: 4px;
+  width: 100%;
+  border-bottom: 1px solid ${({ theme }) => theme.color.hint};
   max-width: 100%;
+  padding-bottom: 5px;
 `
 
-export const Label = styled.p<{ $isBold?: boolean }>`
-  max-width: 100%;
-  font-size: 14px;
+export const Container = styled.div`
+  background-color: ${({ theme }) => theme.color.bg};
+  width: 100%;
+  padding: 30px 16px;
+
+  .accordion {
+    margin-bottom: 30px;
+  }
+
+  .btn {
+    width: 100%;
+    padding: 16px 30px;
+    border-radius: 6px;
+  }
+`
+
+export const TableWrapper = styled.div`
+  margin-top: 4px;
+  background-color: ${({ theme }) => theme.color.bg};
+  padding: 16px 30px;
+`
+
+export const FieldFlex = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 40px;
+`
+export const FieldFlexItem = styled.div`
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+`
+export const FieldFlexItemLabel = styled.p<{ $isBold?: boolean }>`
+  font-size: ${({ $isBold }) => ($isBold ? '14px' : '12px')};
   font-style: normal;
-  word-break: break-all;
-  font-weight: ${({ $isBold }) => ($isBold ? 590 : 400)};
-  line-height: 20px;
+  font-weight: ${({ $isBold }) => ($isBold ? 600 : 400)};
+  line-height: ${({ $isBold }) => ($isBold ? '20px' : '17px')};
+  color: ${({ $isBold, theme }) =>
+    $isBold ? theme.color.text : theme.color.hint};
+`
+export const Label = styled.p<{ $isBold?: boolean }>`
+  font-size: ${({ $isBold }) => ($isBold ? '14px' : '12px')};
+  font-style: normal;
+  text-wrap: wrap;
+  width: 90%;
+  word-wrap: break-word;
+  font-weight: ${({ $isBold }) => ($isBold ? 600 : 400)};
+  line-height: ${({ $isBold }) => ($isBold ? '20px' : '17px')};
   color: ${({ $isBold, theme }) =>
     $isBold ? theme.color.text : theme.color.hint};
 `
 
-export const Line = styled.div`
-  width: 100%;
-  height: 1px;
-  background-color: ${({ theme }) => theme.color.bg};
+export const Field = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 `
-
 export const LinkFieldWrapper = styled.a`
   text-decoration: none;
   display: flex;
@@ -122,6 +216,13 @@ export const NotFoundBlock = styled.div`
   align-items: center;
   justify-content: center;
 `
+export const TableTitle = styled.div`
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 16px;
+  color: ${({ theme }) => theme.color.text};
+`
 
 export const NotFountInfoBlockWrapper = styled.div`
   display: flex;
@@ -137,15 +238,9 @@ export const NotFountLabel = styled.span`
   color: ${({ theme }) => theme.color.text};
 `
 
-export const TokenIcon = styled(SvgGramIcon)`
-  max-width: 32px;
-  max-height: 32px;
-`
-
-export const DynamicTickLogo = styled(UIDynamicTickLogo)`
-  min-width: 32px;
-  min-height: 32px;
-  width: 32px;
-  height: 32px;
-  font-size: 10px;
+export const TokenIcon = styled(SvgLogos)`
+  max-width: 60px;
+  width: 100%;
+  height: 100%;
+  max-height: 60px;
 `
