@@ -1,5 +1,16 @@
-import styled from 'styled-components';
-
+import styled, { DefaultTheme } from 'styled-components';
+const statusColoring = (theme: DefaultTheme, status?: 'success' | 'in_progress' | 'failed') => {
+  switch (status) {
+    case 'success':
+      return '#6AFF70'
+    case 'in_progress':
+      return '#FFDE6A'
+    case 'failed':
+      return theme.color.redAlert
+    default:
+      return theme.color.hint
+  }
+}
 export const Wrapper = styled.div`
   width: 100%;
   display: flex;
@@ -65,16 +76,5 @@ export const StatusBlockLabel = styled.span<{
   /* font-weight: ${({ $status }) => ($status ? 600 : 400)}; */
   font-weight: 600;
   line-height: 20px;
-  color: ${({ theme, $status }) => {
-    switch ($status) {
-      case 'success':
-        return '#6AFF70'
-      case 'in_progress':
-        return '#FFDE6A'
-      case 'failed':
-        return theme.color.redAlert
-      default:
-        return theme.color.hint
-    }
-  }};
+  color: ${({ theme, $status }) => statusColoring(theme, $status)};
 `;
