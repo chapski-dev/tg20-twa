@@ -7,27 +7,29 @@ import type { PromoProps } from './type';
 
 
 export const Promo = (props: PromoProps) => {
-    const { variant, title, subtitle } = props;
-    const [isVisible, setIsVisible] = useState(true);
+    const { variant, title, subtitle, className } = props
+    const [isVisible, setIsVisible] = useState(true)
 
     const handleRemoveClick = () => {
-        setIsVisible(false);
-    };
+        setIsVisible(false)
+    }
     if (isVisible) {
         return (
-            <S.Container variant={variant}>
-                <S.Img src={Coins} alt={variant} />
+            <S.Container className={className} variant={variant}>
+                <S.Img alt={variant} src={Coins} />
                 <S.Wrapper>
                     <S.Title>{title}</S.Title>
                     <S.SubtitleWrapper variant={variant}>
-                        <S.Subtitle to={AppRoutes.MyWallet} variant={variant}>{subtitle}</S.Subtitle>
+                        <S.Subtitle to={AppRoutes.MyWallet} variant={variant}>
+                            {subtitle}
+                        </S.Subtitle>
                         <SvgArrowRight />
                     </S.SubtitleWrapper>
                 </S.Wrapper>
                 <SvgCloseCircle onClick={handleRemoveClick} />
             </S.Container>
-        );
+        )
     }
 
-    return null;
+    return null
 }

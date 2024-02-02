@@ -44,9 +44,29 @@ export const CardWrapper = styled.div`
 export const Title = styled.h4`
   font-size: 24px;
   font-style: normal;
+  text-align: center;
   font-weight: 700;
   line-height: 32px;
   color: ${({ theme }) => theme.color.text};
+`
+export const Image = styled.img`
+  width: 64px;
+  height: 64px;
+`
+
+export const Flex = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+`
+export const Description = styled.h4`
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 157%;
+  letter-spacing: -0.03em;
+  text-align: center;
+  color: ${({ theme }) => theme.color.hint};
 `
 
 export const Close = styled(SvgClose)`

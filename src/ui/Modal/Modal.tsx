@@ -7,6 +7,8 @@ type ModalProps = {
   className?: string
   onClose: () => void
   title: string | ReactElement
+  description?: string
+  image?: string
 }
 
 const PORTAL_TARGET = 'portal'
@@ -14,7 +16,7 @@ const PORTAL_TARGET = 'portal'
 const portalElement = document.getElementById(PORTAL_TARGET) as HTMLElement
 
 export const Modal: FCWithChildren<ModalProps> = (props) => {
-  const { children, className, onClose, title } = props
+  const { children, className, onClose, title, description, image } = props
 
   const outsideRef = useRef(null)
 
@@ -52,10 +54,12 @@ export const Modal: FCWithChildren<ModalProps> = (props) => {
   return ReactDOM.createPortal(
     <S.WrapModal ref={outsideRef} onClick={handleWrapperClick}>
       <S.CardWrapper className={className}>
-        <div>
+        <S.Flex>
+          <S.Image src={image} alt='image' />
           <S.Title children={title} />
+          <S.Description children={description} />
           <S.Close onClick={onClose} />
-        </div>
+        </S.Flex>
         {children}
       </S.CardWrapper>
     </S.WrapModal>,

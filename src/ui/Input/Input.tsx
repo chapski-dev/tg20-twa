@@ -26,6 +26,7 @@ export type InputProps = InputHTMLAttributes<HTMLInputElement> & {
   actionElement?: ReactNode
   label?: string
   icon?: ReactNode
+  sublabel?: string
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
@@ -34,6 +35,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
     className,
     disabled,
     onChange,
+    sublabel,
     value,
     error,
     placeholder,
@@ -82,8 +84,9 @@ export const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   return (
     <S.InputWrapper className={wrapperClassName}>
       {label && (
-        <S.Label error={error} isFocused={isFocused}>
+        <S.Label error={error}>
           {label}
+          {sublabel && <S.Sublabel error={error}>{sublabel}</S.Sublabel>}
         </S.Label>
       )}
       <S.InputContainer

@@ -15,8 +15,6 @@ import { HoldersTable, TransferPopup } from './components'
 
 import * as S from './style'
 
-
-
 export const Token: FC = () => {
   const { id: tick } = useParams()
 
@@ -61,7 +59,6 @@ export const Token: FC = () => {
 
         <S.TokenCardHeader>
           <S.TokenCardHeaderLeftSideWrapper>
-
             <S.TokenIconWrapper>
               <S.TokenIcon />
             </S.TokenIconWrapper>
@@ -77,26 +74,38 @@ export const Token: FC = () => {
           </S.TokenCardHeaderLeftSideWrapper>
         </S.TokenCardHeader>
         <S.TokenCardHeaderList>
-          <S.TokenCardHeaderListItem align='flex-start'>
-            <S.TokenCardHeaderListItemTitle>Total Supply</S.TokenCardHeaderListItemTitle>
-            <S.TokenCardHeaderListItemText>{convertNumberToShortFormat(tokenData.total_supply)}</S.TokenCardHeaderListItemText>
-          </S.TokenCardHeaderListItem>
-          <S.TokenCardHeaderListItem align='flex-start'>
-            <S.TokenCardHeaderListItemTitle>Minted Supply</S.TokenCardHeaderListItemTitle>
-            <S.TokenCardHeaderListItemText>{convertNumberToShortFormat(tokenData.supply)}</S.TokenCardHeaderListItemText>
-          </S.TokenCardHeaderListItem>
-          <S.TokenCardHeaderListItem align='flex-end'>
-            <S.TokenCardHeaderListItemTitle>Minted %</S.TokenCardHeaderListItemTitle>
+          <S.TokenCardHeaderListItem align="flex-start">
+            <S.TokenCardHeaderListItemTitle>
+              Total Supply
+            </S.TokenCardHeaderListItemTitle>
             <S.TokenCardHeaderListItemText>
-              {mintedSupplyPercent.toFixed(2)}
-              %
+              {convertNumberToShortFormat(tokenData.total_supply)}
+            </S.TokenCardHeaderListItemText>
+          </S.TokenCardHeaderListItem>
+          <S.TokenCardHeaderListItem align="flex-start">
+            <S.TokenCardHeaderListItemTitle>
+              Minted Supply
+            </S.TokenCardHeaderListItemTitle>
+            <S.TokenCardHeaderListItemText>
+              {convertNumberToShortFormat(tokenData.supply)}
+            </S.TokenCardHeaderListItemText>
+          </S.TokenCardHeaderListItem>
+          <S.TokenCardHeaderListItem align="flex-end">
+            <S.TokenCardHeaderListItemTitle>
+              Minted %
+            </S.TokenCardHeaderListItemTitle>
+            <S.TokenCardHeaderListItemText>
+              {mintedSupplyPercent.toFixed(2)}%
             </S.TokenCardHeaderListItemText>
           </S.TokenCardHeaderListItem>
         </S.TokenCardHeaderList>
         <S.Container>
-          <Accordion className='accordion' height='240px' title='Inscription Details'>
+          <Accordion
+            className="accordion"
+            height="240px"
+            title="Inscription Details"
+          >
             <S.Field>
-
               <S.FieldWrapper>
                 <S.Label $isBold>Inscription Address</S.Label>
                 <S.LinkFieldWrapper
@@ -127,16 +136,16 @@ export const Token: FC = () => {
               </S.FieldWrapper>
               <S.FieldFlex>
                 <S.FieldFlexItem>
-                  <S.FieldFlexItemLabel $isBold>Limit/Mint</S.FieldFlexItemLabel>
+                  <S.FieldFlexItemLabel $isBold>
+                    Limit/Mint
+                  </S.FieldFlexItemLabel>
                   <S.FieldFlexItemLabel>
                     {tokenData.mint_limit}
                   </S.FieldFlexItemLabel>
                 </S.FieldFlexItem>
                 <S.FieldFlexItem>
                   <S.FieldFlexItemLabel $isBold>Decimal</S.FieldFlexItemLabel>
-                  <S.FieldFlexItemLabel>
-                    9
-                  </S.FieldFlexItemLabel>
+                  <S.FieldFlexItemLabel>9</S.FieldFlexItemLabel>
                 </S.FieldFlexItem>
                 <S.FieldFlexItem>
                   <S.FieldFlexItemLabel $isBold>Holders</S.FieldFlexItemLabel>
@@ -149,7 +158,7 @@ export const Token: FC = () => {
           </Accordion>
           {tokenData.mintable && (
             <Button
-              className='btn'
+              className="btn"
               onClick={() =>
                 navigate({
                   pathname: AppRoutes.Inscribe,
@@ -166,12 +175,12 @@ export const Token: FC = () => {
           )}
           {!tokenData.mintable && (
             <Button
-              className='btn'
+              className="btn"
               onClick={() =>
                 navigate({
                   pathname: AppRoutes.Marketplace,
                   search: createSearchParams({
-                    from: 'token'
+                    from: 'token',
                   }).toString(),
                 })
               }
@@ -180,27 +189,29 @@ export const Token: FC = () => {
             </Button>
           )}
           <S.PromoContainer>
-            <Promo title='See what’s new in your wallet!'
-              variant='purple' subtitle='Explore wallet' />
-            <Promo title='See what’s new in your wallet!'
-              variant='yellow' subtitle='Explore wallet' />
+            <Promo
+              subtitle="Explore wallet"
+              title="See what’s new in your wallet!"
+              variant="purple"
+            />
+            <Promo
+              subtitle="Explore wallet"
+              title="See what’s new in your wallet!"
+              variant="yellow"
+            />
           </S.PromoContainer>
-
         </S.Container>
-        <S.TableWrapper >
+        <S.TableWrapper>
           <S.TableTitle>Holdings</S.TableTitle>
         </S.TableWrapper>
         <HoldersTable
           supplied={tokenData.supply}
           totalSupply={tokenData.total_supply}
         />
-        {
-          isTradePopupOpened && (
-            <TransferPopup onClose={toggleTradePopup} tick={tokenData.tick} />
-          )
-        }
-
-      </S.Wrapper >
+        {isTradePopupOpened && (
+          <TransferPopup onClose={toggleTradePopup} tick={tokenData.tick} />
+        )}
+      </S.Wrapper>
     )
   }
 
