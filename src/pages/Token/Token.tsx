@@ -14,7 +14,6 @@ import { formatNumberWithSeparators } from 'utils/formNumberWithSeparators'
 import { HoldersTable, TransferPopup } from './components'
 
 import * as S from './style'
-
 export const Token: FC = () => {
   const { id: tick } = useParams()
 
