@@ -86,7 +86,7 @@ export const Token: FC = () => {
                 <Button
                   onClick={() =>
                     navigate({
-                      pathname: AppRoutes.Inscribe,
+                      pathname: AppRoutes.Mint,
                       search: createSearchParams({
                         type: 'mint',
                         tick: tokenData.tick,
