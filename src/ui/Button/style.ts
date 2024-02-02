@@ -7,8 +7,6 @@ export const Wrapper = styled.button<{
 }>`
   border: none;
   outline: none;
-  border-radius: 12px;
-  padding: 7px 24px;
   font-weight: 700;
   font-size: 16px;
   line-height: 22px;
@@ -19,6 +17,11 @@ export const Wrapper = styled.button<{
   align-items: center;
   justify-content: center;
   gap: 10px;
+  height: 50px;
+  border-radius: 6px;
+  padding: 16px 30px;
+  font-weight: 600;
+  font-size: 16px;
 
   ${({ theme, variant }) => {
     switch (variant) {
