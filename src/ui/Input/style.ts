@@ -56,10 +56,6 @@ export const InputContainer = styled.div<{
   padding: 0 18px;
   gap: 8px;
   border-radius: 6px;
-
-  path {
-    stroke: ${({ theme }) => theme.color.greenSuccess};
-  }
 `
 
 export const InputWrapper = styled.div`
