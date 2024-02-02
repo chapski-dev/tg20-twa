@@ -19,14 +19,14 @@ import { AppRoutes } from 'constants/app'
 import { BackButton } from 'features/BackButton'
 import { MainButton } from 'features/MainButton'
 import { ActionsStatusContext } from 'providers/ActionsStatusProvider'
+import { Button } from 'ui/Button/Button'
 import { Container } from 'ui/Container/Container'
+import { Promo } from 'ui/Promo'
 import { InscribeForm, ConfirmPopup } from './components'
 import { type InitialValues } from './components/InscribeForm/types'
 import * as S from './style'
 import { ActionStatusData } from './types'
 import { getValidationSchema } from './validationSchema'
-import { Promo } from 'ui/Promo'
-import { Button } from 'ui/Button/Button'
 
 type TCurrentConfirmData = {
   messages: SendTransactionRequest['messages']
@@ -72,8 +72,6 @@ export const Deploy: FC = () => {
     }
   }, [intervalFreeze])
 
-
-
   const userWalletAddress = useTonAddress()
 
   const [tonConnectUI] = useTonConnectUI()
@@ -88,10 +86,9 @@ export const Deploy: FC = () => {
       premintAmount: '0',
       interval: '15',
       penalty: '15',
-      file: ''
+      file: '',
     }
   }
-
 
   const handleFormikSubmit = useCallback<
     FormikConfig<InitialValues>['onSubmit']
@@ -197,18 +194,12 @@ export const Deploy: FC = () => {
           },
         ]
 
-        localStorage.setItem(
-          'action_status',
-          JSON.stringify(actionStatusData)
-        )
+        localStorage.setItem('action_status', JSON.stringify(actionStatusData))
         updateRenderActionStatusData!(actionStatusData)
 
         checkContractDeployStatus!()
 
-
-        alert(
-          `Your Deploy application is successfully processed, waiting!`
-        )
+        alert(`Your Deploy application is successfully processed, waiting!`)
 
         if (currentConfirmData.interval) {
           setIntervalFreeze(currentConfirmData.interval)
@@ -264,13 +255,17 @@ export const Deploy: FC = () => {
                 <InscribeForm />
                 {!currentConfirmData && (
                   <Button
-                    isLoading={isInscribing}
+                    className="button"
                     isDisabled={intervalFreeze !== null && intervalFreeze > 0}
+                    isLoading={isInscribing}
                     onClick={
                       !userWalletAddress
                         ? () => tonConnectUI.openModal()
                         : handleSubmit
-                    } className='button'>{currentMainButtonName}</Button>
+                    }
+                  >
+                    {currentMainButtonName}
+                  </Button>
                 )}
                 {currentConfirmData !== null && (
                   <ConfirmPopup
@@ -302,7 +297,12 @@ export const Deploy: FC = () => {
         </S.Container>
       </S.Wrapper>
       <S.PromoWrapper>
-        <Promo className='promo' title="See what's new in your wallet" subtitle='Explore Wallet' variant='purple' />
+        <Promo
+          className="promo"
+          subtitle="Explore Wallet"
+          title="See what's new in your wallet"
+          variant="purple"
+        />
       </S.PromoWrapper>
     </>
   )

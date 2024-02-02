@@ -1,6 +1,7 @@
 import { useRoutes } from 'react-router-dom'
 import { AppRoutes } from 'constants/app'
 import { Layout } from 'features/Layout/Layout'
+import { Deploy } from './Deploy/Deploy'
 import { Home2 } from './Home2/Home2'
 import { Inscribe } from './Inscribe/Inscribe'
 import { Inscriptions } from './Inscriptions/Inscriptions'
@@ -9,7 +10,6 @@ import { Mint } from './Mint/Mint'
 import { MyWallet } from './MyWallet/MyWallet'
 import { Swap } from './Swap/Swap'
 import { Token } from './Token/Token'
-import { Deploy } from './Deploy/Deploy'
 
 export const PagesConfig = () => {
   return useRoutes([
@@ -47,7 +47,7 @@ export const PagesConfig = () => {
         },
         {
           element: <Deploy />,
-          path: AppRoutes.Deploy
+          path: AppRoutes.Deploy,
         },
         {
           element: <MyWallet />,
