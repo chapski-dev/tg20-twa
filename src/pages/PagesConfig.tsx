@@ -5,6 +5,7 @@ import { Home2 } from './Home2/Home2'
 import { Inscribe } from './Inscribe/Inscribe'
 import { Inscriptions } from './Inscriptions/Inscriptions'
 import { Marketplace } from './Marketplace/Marketplace'
+import { Mint } from './Mint/Mint'
 import { MyWallet } from './MyWallet/MyWallet'
 import { Swap } from './Swap/Swap'
 import { Token } from './Token/Token'
@@ -23,6 +24,10 @@ export const PagesConfig = () => {
         {
           element: <Inscriptions />,
           path: AppRoutes.Inscriptions,
+        },
+        {
+          element: <Mint />,
+          path: AppRoutes.Mint,
         },
         {
           element: <Inscribe />,

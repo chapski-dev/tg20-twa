@@ -161,7 +161,7 @@ export const Token: FC = () => {
               className="btn"
               onClick={() =>
                 navigate({
-                  pathname: AppRoutes.Inscribe,
+                  pathname: AppRoutes.Mint,
                   search: createSearchParams({
                     type: 'mint',
                     tick: tokenData.tick,
