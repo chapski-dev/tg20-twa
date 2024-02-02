@@ -8,6 +8,7 @@ import { Marketplace } from './Marketplace/Marketplace'
 import { MyWallet } from './MyWallet/MyWallet'
 import { Swap } from './Swap/Swap'
 import { Token } from './Token/Token'
+import { Deploy } from './Deploy/Deploy'
 
 export const PagesConfig = () => {
   return useRoutes([
@@ -38,6 +39,10 @@ export const PagesConfig = () => {
         {
           element: <Swap />,
           path: AppRoutes.Swap,
+        },
+        {
+          element: <Deploy />,
+          path: AppRoutes.Deploy
         },
         {
           element: <MyWallet />,

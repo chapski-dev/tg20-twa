@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { SvgGramIcon, SvgLogos, SvgVerified } from 'ui/icons'
+import { SvgGramIcon, SvgLogo2, SvgVerified } from 'ui/icons'
 
 export const Wrapper = styled.div`
   display: flex;
@@ -33,7 +33,7 @@ export const ImageWrapper = styled.div`
   border-radius: 50%;
 `
 
-export const TokenImage = styled(SvgLogos)`
+export const TokenImage = styled(SvgLogo2)`
   max-width: 50px;
   width: 24px;
   max-height: 24px;

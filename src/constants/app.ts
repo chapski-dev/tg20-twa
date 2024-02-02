@@ -8,5 +8,5 @@ export const AppRoutes = {
   MyWallet: '/my-wallet',
   Inscriptions: '/inscriptions',
   Swap: '/swap',
-
+  Deploy: '/deploy',
 } as const

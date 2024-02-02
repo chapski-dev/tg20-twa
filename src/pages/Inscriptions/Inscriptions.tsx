@@ -69,7 +69,7 @@ export const Inscriptions: FC = () => {
         <S.DeployTokenBlock
           onClick={() =>
             navigate({
-              pathname: AppRoutes.Inscribe,
+              pathname: AppRoutes.Deploy,
               search: createSearchParams({
                 from: 'home',
                 type: 'deploy',
