@@ -1,6 +1,6 @@
 import { FormInput } from 'features/FormFields/FormInput/FormInput'
+import { ImageInput } from 'features/FormFields/ImageInput/ImageInput'
 import * as S from './style'
-import { ImageInput } from 'features/FormFields/ImageInput/ImageInput';
 
 export const InscribeForm = () => {
   return (
@@ -8,9 +8,9 @@ export const InscribeForm = () => {
       <S.FieldsWrapper>
         <FormInput
           label="Tick "
-          sublabel='(only 4 characters allowed)'
           name="tick"
           placeholder="Characters like “abcd”"
+          sublabel="(only 4 characters allowed)"
         />
         <FormInput
           label="Set Total Supply"
@@ -18,8 +18,7 @@ export const InscribeForm = () => {
           placeholder="210 000 000 000"
         />
         <FormInput label="Set Limit/Mint" name="limit" placeholder="0" />
-        <ImageInput label='Upload token logo' name='file' />
-
+        <ImageInput label="Upload token logo" name="file" />
       </S.FieldsWrapper>
     </S.Wrapper>
   )

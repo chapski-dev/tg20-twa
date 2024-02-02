@@ -80,7 +80,5 @@ export const Close = styled(SvgClose)`
   display: flex;
   justify-content: center;
   align-items: center;
-  path {
-    fill: ${({ theme }) => theme.color.text};
-  }
+  fill: ${({ theme }) => theme.color.hint};
 `

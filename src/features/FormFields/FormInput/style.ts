@@ -15,6 +15,9 @@ export const Input = styled(UIInput)`
   input {
     background-color: ${({ theme }) => theme.color.bgSecondary};
   }
+  path {
+    stroke: ${({ theme }) => theme.color.greenSuccess};
+  }
 `
 
 export const ErrorMessage = styled.span`
