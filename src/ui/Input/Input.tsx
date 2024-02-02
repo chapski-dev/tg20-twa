@@ -7,6 +7,7 @@ import {
   useState,
 } from 'react'
 import * as S from './style'
+import { SvgTickCircle } from 'ui/icons';
 
 //TODO: props refactoring
 
@@ -109,6 +110,9 @@ export const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
           {...otherInputProps}
         />
         {actionElement}
+        {value && !error && (
+          <SvgTickCircle />
+        )}
       </S.InputContainer>
       {error && <S.ErrorMessageBlock>{errorMessage}</S.ErrorMessageBlock>}
     </S.InputWrapper>

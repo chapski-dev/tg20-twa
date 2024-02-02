@@ -23,8 +23,8 @@ export const TitleDeploy = styled.div`
   line-height: 94%;
   margin-bottom: 24px;
   letter-spacing: -0.02em;
-  color: ${({ theme }) => theme.color.text}
-  text-align: center;
+  color: ${({ theme }) => theme.color.text};
+  text-align: left;
 `
 export const Container = styled.div`
   border-radius: 10px;
