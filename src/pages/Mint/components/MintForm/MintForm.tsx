@@ -5,6 +5,7 @@ import { useQuery } from 'react-query'
 import { useSearchParams } from 'react-router-dom'
 import { getTokenInfo } from 'api'
 import { type CurrentConfirmData } from 'pages/Mint/Mint'
+import { Button } from 'ui/Button/Button'
 import { RepeatBlock } from './components'
 import * as S from './MintForm.style'
 import { type InitialValues } from './types'
@@ -12,9 +13,10 @@ import { type InitialValues } from './types'
 type MintFormProps = {
   intervalFreeze: number | null;
   currentConfirmData: CurrentConfirmData | null;
+  isInscribing: boolean;
 }
 
-export const MintForm: FC<MintFormProps> = ({ intervalFreeze, currentConfirmData }) => {
+export const MintForm: FC<MintFormProps> = ({ intervalFreeze, currentConfirmData, isInscribing }) => {
   const userWalletAddress = useTonAddress()
   const [tonConnectUI] = useTonConnectUI()
   const [searchParams] = useSearchParams()
@@ -99,9 +101,10 @@ export const MintForm: FC<MintFormProps> = ({ intervalFreeze, currentConfirmData
           onChange={(count) => setFieldValue('repeat', count.toString())}
         />
         {!currentConfirmData && (
-          <S.Button
+          <Button
             children={currentMainButtonName}
             isDisabled={intervalFreeze !== null && intervalFreeze > 0}
+            isLoading={isInscribing}
             onClick={
               !userWalletAddress
                 ? () => tonConnectUI.openModal()

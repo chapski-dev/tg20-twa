@@ -349,17 +349,6 @@ export const Mint: FC = () => {
     //  updateRenderActionStatusData,
     userWalletAddress])
 
-  // const currentMainButtonName = useMemo(() => {
-  //   switch (true) {
-  //     case !userWalletAddress:
-  //       return "Connect Wallet"
-  //     case intervalFreeze !== null && intervalFreeze > 0:
-  //       return `Repeat mint after ${intervalFreeze} seconds...`
-  //     default:
-  //       return "Mint"
-  //   }
-  // }, [intervalFreeze, userWalletAddress])
-
   return (
     <S.Wrapper>
       <BackButton
@@ -386,19 +375,8 @@ export const Mint: FC = () => {
             <MintForm
               currentConfirmData={currentConfirmData}
               intervalFreeze={intervalFreeze}
+              isInscribing={isInscribing}
             />
-            {/* {!currentConfirmData && (
-                <MainButton
-                  disabled={intervalFreeze !== null && intervalFreeze > 0}
-                  onClick={
-                    !userWalletAddress
-                      ? () => tonConnectUI.openModal()
-                      : handleSubmit
-                  }
-                  progress={isInscribing}
-                  text={currentMainButtonName}
-                />
-              )} */}
             {currentConfirmData !== null && (
               <ConfirmPopup
                 fee={currentConfirmData.fee}
