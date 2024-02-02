@@ -52,10 +52,10 @@ export const Modal: FCWithChildren<ModalProps> = (props) => {
   return ReactDOM.createPortal(
     <S.WrapModal ref={outsideRef} onClick={handleWrapperClick}>
       <S.CardWrapper className={className}>
-        <S.Header>
-          <S.Title>{title}</S.Title>
+        <div>
+          <S.Title children={title} />
           <S.Close onClick={onClose} />
-        </S.Header>
+        </div>
         {children}
       </S.CardWrapper>
     </S.WrapModal>,

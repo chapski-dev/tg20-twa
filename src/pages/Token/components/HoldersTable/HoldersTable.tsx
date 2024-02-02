@@ -45,44 +45,46 @@ export const HoldersTable: FC<HoldersTableProps> = (props) => {
   return (
     <S.Wrapper>
       <S.Table>
-        <thead>
-          <S.TableRow $isHeadRow>
-            <S.TableHeadLabel>Rank</S.TableHeadLabel>
-            <S.TableHeadLabel>Address</S.TableHeadLabel>
-            <S.TableHeadLabel>%</S.TableHeadLabel>
-            <S.TableHeadLabel>Value</S.TableHeadLabel>
-          </S.TableRow>
-        </thead>
+        <S.RowHeader>
+          <S.HeadLabel>Rank</S.HeadLabel>
+          <S.HeadLabel>Address</S.HeadLabel>
+          <S.HeadLabel>%</S.HeadLabel>
+          <S.HeadLabel>Token Value</S.HeadLabel>
+        </S.RowHeader>
         {isHoldersLoading && <S.Loader />}
         {isHoldersLoaded && (
-          <tbody>
-            {holdersList.results.map(({ balance, holder }, idx) => {
-              const holderBalancePercent = ((balance / supplied) * 100).toFixed(
-                2
-              )
+          <div>
+            {
+              holdersList.results.map(({ balance, holder }, idx) => {
+                const holderBalancePercent = ((balance / supplied) * 100).toFixed(
+                  2
+                )
 
-              const currentIndex = (currentPage - 1) * ITEMS_ON_PAGE + idx + 1
+                const currentIndex = (currentPage - 1) * ITEMS_ON_PAGE + idx + 1
 
-              return (
-                <S.TableRow key={idx}>
-                  <S.TableData>{currentIndex}</S.TableData>
-                  <S.TableData>{shortenAddress(holder)}</S.TableData>
-                  <S.TableData>{holderBalancePercent}</S.TableData>
-                  <S.TableData>{balance}</S.TableData>
-                </S.TableRow>
-              )
-            })}
-          </tbody>
+                return (
+                  <S.TableRow key={idx}>
+                    <S.TableData>{currentIndex}</S.TableData>
+                    <S.TableData>{shortenAddress(holder)}</S.TableData>
+                    <S.TableData>{holderBalancePercent}</S.TableData>
+                    <S.TableData>{balance}</S.TableData>
+                  </S.TableRow>
+                )
+              })
+            }
+          </div>
         )}
       </S.Table>
 
-      {isHoldersLoaded && holdersList.totalPages > 1 && (
-        <Pagination
-          currentPage={currentPage}
-          onChange={handleChangePage}
-          totalPages={holdersList.totalPages - 1}
-        />
-      )}
-    </S.Wrapper>
+      {
+        isHoldersLoaded && holdersList.totalPages > 1 && (
+          <Pagination
+            currentPage={currentPage}
+            onChange={handleChangePage}
+            totalPages={holdersList.totalPages - 1}
+          />
+        )
+      }
+    </S.Wrapper >
   )
 }

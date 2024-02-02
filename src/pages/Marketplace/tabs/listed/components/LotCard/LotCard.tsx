@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react'
+import { useTelegram } from 'hooks/useTelegram/useTelegram'
 import { SvgDollarIcon, SvgToncoinIcon } from 'ui/icons'
 import { formatNumberWithSeparators } from 'utils/formNumberWithSeparators'
 import * as S from './style'
@@ -15,11 +16,11 @@ type LotCardProps = {
   onBuyClick: (pricesData: PricesData) => void
   lotPrice: number
   lotTotal: number
-  tonPrice: number
 }
 
 export const LotCard: React.FC<LotCardProps> = (props) => {
-  const { amount, onBuyClick, lotPrice, lotTotal, tonPrice } = props
+  const { amount, onBuyClick, lotPrice, lotTotal } = props
+  const { tonPrice } = useTelegram()
 
   const prices = useMemo(() => {
     const priceInTON = lotPrice / Math.pow(10, 9)
@@ -28,8 +29,8 @@ export const LotCard: React.FC<LotCardProps> = (props) => {
     return {
       priceInTON,
       totalInTON,
-      priceInUSD: priceInTON * tonPrice,
-      totalInUSD: totalInTON * tonPrice,
+      priceInUSD: priceInTON * (tonPrice || 0),
+      totalInUSD: totalInTON * (tonPrice || 0),
     }
   }, [lotPrice, lotTotal, tonPrice])
 

@@ -14,11 +14,12 @@ export const Pagination: FC<PaginationProps> = (props) => {
     <S.Paginate
       forcePage={currentPage - 1}
       marginPagesDisplayed={1}
-      nextLabel=""
+      nextLabel="Next"
       onPageChange={({ selected }) => onChange(selected)}
       pageCount={totalPages}
       pageRangeDisplayed={1}
-      previousLabel=""
+      previousLabel="Prev"
     />
+
   )
 }
