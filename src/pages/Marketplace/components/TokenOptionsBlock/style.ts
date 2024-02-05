@@ -1,23 +1,15 @@
 import styled from 'styled-components'
+import { Button as ButtonReference } from 'ui/Button/Button'
+import { Accordion as AccordionReference } from 'ui/Accordion/Accordion'
+
 import { DynamicTickLogo as UIDynamicTickLogo } from 'ui/DynamicTickLogo/DynamicTickLogo'
 import { Loader as UILoader } from 'ui/Loader/Loader'
+import { Input } from 'ui/Input/Input'
 
 export const Wrapper = styled.div`
   border-radius: 10px;
   display: flex;
   flex-direction: column;
-
-  .accordion {
-    margin-bottom: 16px;
-  }
-
-  .search {
-    background: ${({ theme }) => theme.color.bg};
-
-    input {
-      background: ${({ theme }) => theme.color.bg};
-    }
-  }
 `
 export const Flex = styled.div`
   display: flex;
@@ -64,17 +56,26 @@ export const TokenSelectContentWrapper = styled.div`
   gap: 16px;
   align-items: center;
   margin: 0 0 16px 0;
+`
 
-  .btn {
-    gap: 10px;
-    width: 100%;
-    height: 42px;
-    max-width: 170px;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 140%; /* 22.4px */
-    letter-spacing: -0.16px;
+export const Button = styled(ButtonReference)`
+  gap: 10px;
+  width: 100%;
+  height: 42px;
+  max-width: 170px;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 140%; /* 22.4px */
+  letter-spacing: -0.16px;
+`
+
+export const StyledInput = styled(Input)`
+  background: ${({ theme }) => theme.color.bg};
+  margin-top: 16px;
+
+  input {
+    background: ${({ theme }) => theme.color.bg};
   }
 `
 

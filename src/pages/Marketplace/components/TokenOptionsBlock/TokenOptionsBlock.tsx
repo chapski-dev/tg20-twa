@@ -1,7 +1,7 @@
 import { FC, useCallback, useState } from 'react'
 import { fromNano } from '@ton/core'
 import { useQuery } from 'react-query'
-import { getMarketplaceTokenStats, getTokenInfo } from 'api'
+import { getCurrentMaketplaceTicks, getMarketplaceTokenStats, getTokenInfo } from 'api'
 import { MarketplaceTokenStats } from 'api/types'
 import { useTelegram } from 'hooks/useTelegram/useTelegram'
 import { SvgFilterIcon, SvgGramIcon, SvgLoop, SvgToncoinIcon } from 'ui/icons'
@@ -12,47 +12,7 @@ import { Select } from 'ui/Select/Select'
 import { Button } from 'ui/Button/Button'
 import { Accordion } from 'ui'
 import { Input } from 'ui/Input/Input'
-import { debounce } from 'utils/debounce'
-
-
-const LISTED_TOKENS = [
-  {
-    value: 'gram',
-    label: 'gram'
-  },
-  {
-    value: 'tono',
-    label: 'tono'
-  },
-  {
-    value: 'leet',
-    label: 'leet'
-  },
-  {
-    value: 'rare',
-    label: 'rare'
-  },
-  {
-    value: 'nano',
-    label: 'nano'
-  },
-  {
-    value: 'pepe',
-    label: 'pepe'
-  },
-  {
-    value: 'lmao',
-    label: 'lmao'
-  },
-  {
-    value: 'fomo',
-    label: 'fomo'
-  },
-  {
-    value: 'tele',
-    label: 'tele'
-  }
-]
+import { useDebounce } from 'hooks/useDebounce/useDebounce'
 
 const sortOptions = [
   {
@@ -101,14 +61,25 @@ type TokenOptionsBlockProps = {
 export const TokenOptionsBlock: FC<TokenOptionsBlockProps> = (props) => {
   const { onTokenChange, onSortSelectChange, onListing, listingText, tick } = props
 
-  const [input, setInput] = useState('');
-  const changeInput = debounce(() => console.log(1))
+  const [searchedValue, setSearchedValue] = useState<string>("")
+
+  const debauncedSearchValue = useDebounce(searchedValue)
 
   const onChangeInput = (evt: React.ChangeEvent<HTMLInputElement>) => {
-    setInput(evt.target.value);
-    changeInput();
+    setSearchedValue(evt.target.value);
+    console.log(debauncedSearchValue)
   }
   const { tonPrice } = useTelegram()
+
+  const {
+    data: marketPlaceTicks,
+    isLoading: isMarketplaceTicksLoading,
+    isSuccess: isMarketplaceTicksLoaded,
+  } = useQuery(['currentMarketplaceTicks'], () => getCurrentMaketplaceTicks(), {
+    select: (data: string[]) => {
+      return data.map((item: string) => ({ value: item, label: item }))
+    }
+  })
 
   const { data: currentTickData, isLoading: isCurrentTickDataLoading } =
     useQuery(['currentStatsTokenTickDatad', tick], () => getTokenInfo(tick), {
@@ -176,8 +147,8 @@ export const TokenOptionsBlock: FC<TokenOptionsBlockProps> = (props) => {
   return (
     <S.Wrapper>
       <S.TokenSelectContentWrapper>
-        <Select onChange={(event) => onTokenChange(event.value)} options={LISTED_TOKENS} />
-        <Button className='btn' onClick={onListing}>{listingText}</Button>
+        {isMarketplaceTicksLoaded && <Select onChange={(event) => onTokenChange(event.value)} options={marketPlaceTicks} />}
+        <S.Button onClick={onListing}>{listingText}</S.Button>
       </S.TokenSelectContentWrapper>
 
       {
@@ -185,15 +156,20 @@ export const TokenOptionsBlock: FC<TokenOptionsBlockProps> = (props) => {
           <S.Loader />
         ) : (
 
-          <Accordion className='accordion' height='210px' title='Inscription Details'>
+          <Accordion height='210px' title='Inscription Details'>
             <S.InfoWrapper>
               {marketplaceGramStats?.map(({ label, value, description }, idx) => (
                 <S.InfoBlockWrapper>
                   <S.Label $isAccent>{label}</S.Label>
                   <S.BalanceBlock>
-                    {idx !== marketplaceGramStats?.length - 1 && <SvgToncoinIcon />}
-                    {idx !== marketplaceGramStats?.length - 1 && Number(value)}
-                    {idx == marketplaceGramStats?.length - 1 && <S.Link target="_blank" href={`https://tonviewer.com/${value}`}>{value}</S.Link>}
+                    {idx !== marketplaceGramStats?.length - 1 ?
+                      <>
+                        <SvgToncoinIcon />
+                        {Number(value)}
+                      </>
+                      :
+                      <S.Link target="_blank" href={`https://tonviewer.com/${value}`}>{value}</S.Link>
+                    }
                   </S.BalanceBlock>
                   <S.Label>{description}</S.Label>
                 </S.InfoBlockWrapper>
@@ -203,13 +179,12 @@ export const TokenOptionsBlock: FC<TokenOptionsBlockProps> = (props) => {
           </Accordion>
         )
       }
-      <Input
+      <S.StyledInput
         isSuccess={false}
-        className="search"
         icon={<SvgLoop />}
         placeholder='Search an order'
         onChange={onChangeInput}
-        value={input}
+        value={searchedValue}
       />
 
       <S.Flex>

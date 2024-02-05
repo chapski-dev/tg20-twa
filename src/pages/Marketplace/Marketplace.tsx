@@ -87,18 +87,10 @@ export const Marketplace: FC = () => {
     }
   )
 
-  const {
-    data: maketplaceTicks,
-    isLoading: isMaketplaceTicksLoading,
-    isSuccess: isMarketplaceTicksLoaded,
-  } = useQuery(['currentMarketplaceTicks'], () => getCurrentMaketplaceTicks())
-
-  console.log(maketplaceTicks)
-
   const handleBuyClick = useCallback(
     (lotInfo: LotInfo) => {
       if (!address) {
-        tonConnectUI.openModal().then(() => { })
+        tonConnectUI.openModal()
         return
       }
       setIsBuyModalOpen(true)
@@ -109,7 +101,7 @@ export const Marketplace: FC = () => {
 
   const handleConfirmLotClick = useCallback(() => {
     if (!address) {
-      tonConnectUI.openModal().then(() => { })
+      tonConnectUI.openModal()
       return
     }
     setIsConfirmLotModalOpen(true)
@@ -270,6 +262,13 @@ export const Marketplace: FC = () => {
     [activeTab]
   )
 
+  const listOrder = useCallback(() => {
+    isBuyModalOpen
+      ? () => handleBuyConfirmation()
+      : isTransactionModalOpen
+        ? () => setIsTransactionModalOpen(false)
+        : handleConfirmLotClick()
+  }, [isBuyModalOpen, isTransactionModalOpen])
   return (
     <S.Wrapper>
       <BackButton onClick={() => navigate(-1)} />
@@ -306,13 +305,7 @@ export const Marketplace: FC = () => {
         </S.TabsWrapper>
         <TokenOptionsBlock
           listingText={isBuyModalOpen ? 'Buy' : isTransactionModalOpen ? 'Close' : 'List order'}
-          onListing={() => {
-            isBuyModalOpen
-              ? () => handleBuyConfirmation()
-              : isTransactionModalOpen
-                ? () => setIsTransactionModalOpen(false)
-                : handleConfirmLotClick()
-          }}
+          onListing={listOrder}
           onSortSelectChange={handleSortSelectChange}
           onTokenChange={setTick}
           sortSelectValue={`${sort}_${direction}`}
