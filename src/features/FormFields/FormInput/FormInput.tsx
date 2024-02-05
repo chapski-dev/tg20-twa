@@ -10,10 +10,11 @@ type FormInputProps = {
   placeholder?: string
   editorProps?: Omit<InputProps, 'name' | 'onChange' | 'value' | 'placeholder'>
   label?: string
+  sublabel?: string
 }
 
 export const FormInput: FC<FormInputProps> = (props) => {
-  const { name, className, editorProps, error, placeholder, label } = props
+  const { name, className, editorProps, error, placeholder, label, sublabel } = props
 
   const [field, meta] = useField(name)
 
@@ -22,6 +23,7 @@ export const FormInput: FC<FormInputProps> = (props) => {
       <S.Input
         className={className}
         label={label}
+        sublabel={sublabel}
         {...field}
         {...editorProps}
         error={error || meta.error !== undefined}

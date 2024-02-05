@@ -14,7 +14,6 @@ import { formatNumberWithSeparators } from 'utils/formNumberWithSeparators'
 import { HoldersTable, TransferPopup } from './components'
 
 import * as S from './style'
-
 export const Token: FC = () => {
   const { id: tick } = useParams()
 
@@ -161,7 +160,7 @@ export const Token: FC = () => {
               className="btn"
               onClick={() =>
                 navigate({
-                  pathname: AppRoutes.Inscribe,
+                  pathname: AppRoutes.Mint,
                   search: createSearchParams({
                     type: 'mint',
                     tick: tokenData.tick,

@@ -6,12 +6,13 @@ import {
   forwardRef,
   useState,
 } from 'react'
+import { SvgTickCircle } from 'ui/icons'
 import * as S from './style'
 
 //TODO: props refactoring
 
 export type InputProps = InputHTMLAttributes<HTMLInputElement> & {
-  wrapperClassName?: string;
+  wrapperClassName?: string
   className?: string
   disabled?: boolean
   onChange: (evt: ChangeEvent<HTMLInputElement>) => void
@@ -26,6 +27,7 @@ export type InputProps = InputHTMLAttributes<HTMLInputElement> & {
   actionElement?: ReactNode
   label?: string
   icon?: ReactNode
+  sublabel?: string
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
@@ -34,6 +36,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
     className,
     disabled,
     onChange,
+    sublabel,
     value,
     error,
     placeholder,
@@ -82,8 +85,9 @@ export const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   return (
     <S.InputWrapper className={wrapperClassName}>
       {label && (
-        <S.Label error={error} isFocused={isFocused}>
+        <S.Label error={error}>
           {label}
+          {sublabel && <S.Sublabel error={error}>{sublabel}</S.Sublabel>}
         </S.Label>
       )}
       <S.InputContainer
@@ -106,6 +110,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
           {...otherInputProps}
         />
         {actionElement}
+        {value && !error && <SvgTickCircle />}
       </S.InputContainer>
       {error && <S.ErrorMessageBlock>{errorMessage}</S.ErrorMessageBlock>}
     </S.InputWrapper>

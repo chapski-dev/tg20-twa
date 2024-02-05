@@ -7,6 +7,7 @@ export const AppRoutes = {
   Token: '/token/:id',
   MyWallet: '/my-wallet',
   Inscriptions: '/inscriptions',
+  Mint: '/mint',
   Swap: '/swap',
-
+  Deploy: '/deploy',
 } as const

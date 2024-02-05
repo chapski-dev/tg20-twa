@@ -5,4 +5,5 @@ export type Theme = { variant: ThemeVariants }
 export type PromoProps = {
   title: string
   subtitle: string
+  className?: string
 } & Theme

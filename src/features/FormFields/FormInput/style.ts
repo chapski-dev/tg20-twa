@@ -10,10 +10,13 @@ export const Wrapper = styled.div`
 
 export const Input = styled(UIInput)`
   width: 100%;
-  background-color: ${({ theme }) => theme.color.bg};
+  background-color: ${({ theme }) => theme.color.bgSecondary};
 
   input {
-    background-color: ${({ theme }) => theme.color.bg};
+    background-color: ${({ theme }) => theme.color.bgSecondary};
+  }
+  path {
+    stroke: ${({ theme }) => theme.color.greenSuccess};
   }
 `
 

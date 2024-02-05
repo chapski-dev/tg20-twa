@@ -1,15 +1,17 @@
 import styled, { DefaultTheme } from 'styled-components'
 
-const getLabelColor = (
-  theme: DefaultTheme,
-  error?: boolean,
-  focused?: boolean
-) => {
+const getLabelColor = (theme: DefaultTheme, error?: boolean) => {
   switch (true) {
     case error:
       return theme.color.redAlert
-    case focused:
+    default:
       return theme.color.text
+  }
+}
+const getSubLabelColor = (theme: DefaultTheme, error?: boolean) => {
+  switch (true) {
+    case error:
+      return theme.color.redAlert
     default:
       return theme.color.hint
   }
@@ -51,23 +53,31 @@ export const InputContainer = styled.div<{
   background-color: ${({ theme }) => theme.color.bgSecondary};
   border: ${({ error, theme, isFocused }) =>
     error ? `1px solid ${theme.color.redAlert}` : 'none'};
-  padding: 0 12px;
+  padding: 0 18px;
   gap: 8px;
   border-radius: 6px;
 `
 
 export const InputWrapper = styled.div`
   display: flex;
+  gap: 7px;
   flex-direction: column;
 `
 
-export const Label = styled.span<{ error?: boolean; isFocused?: boolean }>`
+export const Sublabel = styled.span<{ error?: boolean }>`
   font-size: 12px;
   font-style: normal;
   font-weight: 400;
+  line-height: 14px;
+  color: ${({ theme, error }) => getSubLabelColor(theme, error)};
+`
+
+export const Label = styled.span<{ error?: boolean }>`
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
   line-height: 16px;
-  color: ${({ theme, error, isFocused }) =>
-    getLabelColor(theme, error, isFocused)};
+  color: ${({ theme, error }) => getLabelColor(theme, error)};
 `
 
 export const ErrorMessageBlock = styled.div`
