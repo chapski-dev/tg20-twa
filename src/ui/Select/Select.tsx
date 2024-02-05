@@ -8,7 +8,7 @@ type Option = {
 type SelectProps = {
     onChange: (element: Option) => void,
     options: Array<Option>
-    value: Option
+    value?: Option
 }
 export const Select = (props: SelectProps) => {
     const { options, onChange, value } = props;

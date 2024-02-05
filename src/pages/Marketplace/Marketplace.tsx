@@ -98,7 +98,7 @@ export const Marketplace: FC = () => {
   const handleBuyClick = useCallback(
     (lotInfo: LotInfo) => {
       if (!address) {
-        tonConnectUI.openModal().then(() => {})
+        tonConnectUI.openModal().then(() => { })
         return
       }
       setIsBuyModalOpen(true)
@@ -109,7 +109,7 @@ export const Marketplace: FC = () => {
 
   const handleConfirmLotClick = useCallback(() => {
     if (!address) {
-      tonConnectUI.openModal().then(() => {})
+      tonConnectUI.openModal().then(() => { })
       return
     }
     setIsConfirmLotModalOpen(true)
@@ -118,7 +118,7 @@ export const Marketplace: FC = () => {
   const handleCancelOrderClick = useCallback(
     (lotInfo: LotInfo) => {
       if (!address) {
-        tonConnectUI.openModal().then(() => {})
+        tonConnectUI.openModal().then(() => { })
         return
       }
       setIsOrderCancellationModalOpen(true)
@@ -304,8 +304,15 @@ export const Marketplace: FC = () => {
             />
           ))}
         </S.TabsWrapper>
-
         <TokenOptionsBlock
+          listingText={isBuyModalOpen ? 'Buy' : isTransactionModalOpen ? 'Close' : 'List order'}
+          onListing={() => {
+            isBuyModalOpen
+              ? () => handleBuyConfirmation()
+              : isTransactionModalOpen
+                ? () => setIsTransactionModalOpen(false)
+                : handleConfirmLotClick()
+          }}
           onSortSelectChange={handleSortSelectChange}
           onTokenChange={setTick}
           sortSelectValue={`${sort}_${direction}`}
@@ -395,10 +402,10 @@ export const Marketplace: FC = () => {
             //   ? () => handleListing().then(() => {})
             //   :
             isBuyModalOpen
-              ? () => handleBuyConfirmation().then(() => {})
+              ? () => handleBuyConfirmation().then(() => { })
               : isTransactionModalOpen
-              ? () => setIsTransactionModalOpen(false)
-              : handleConfirmLotClick
+                ? () => setIsTransactionModalOpen(false)
+                : handleConfirmLotClick
           }
           text={
             // isConfirmLotModalOpen
@@ -416,7 +423,7 @@ export const Marketplace: FC = () => {
               }
               onClick={
                 isOrderCancellationModalOpen
-                  ? () => handleCancelLot().then(() => {})
+                  ? () => handleCancelLot().then(() => { })
                   : () => setIsTransactionModalOpen(false)
               }
               text={isOrderCancellationModalOpen ? 'Cancel listing' : 'Close'}

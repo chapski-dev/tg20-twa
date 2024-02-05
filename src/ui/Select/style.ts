@@ -18,7 +18,7 @@ export const StyledSelect = styled(Select)`
     height: 42px;
     font-weight: 400;
     font-size: 16px;
-    background: ${({ theme }) => theme.color.bgSecondary};
+    background: ${({ theme }) => theme.color.bg};
     border-radius: 6px;
     line-height: 140%;
     letter-spacing: -0.01em;

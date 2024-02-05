@@ -6,7 +6,51 @@ export const Wrapper = styled.div`
   border-radius: 10px;
   display: flex;
   flex-direction: column;
-  background-color: ${({ theme }) => theme.color.bg};
+
+  .accordion {
+    margin-bottom: 16px;
+  }
+
+  .search {
+    background: ${({ theme }) => theme.color.bg};
+
+    input {
+      background: ${({ theme }) => theme.color.bg};
+    }
+  }
+`
+export const Flex = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16px;
+`
+export const Block = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+`
+export const BlockTitle = styled.div`
+  font-size: 12px;
+  color: ${({ theme }) => theme.color.text};
+  font-style: normal;
+  font-weight: 400;
+  line-height: 140%; /* 16.8px */
+  letter-spacing: -0.12px;
+
+  span {
+    text-transform: uppercase;
+  }
+`
+
+export const BlockDescription = styled.div`
+  font-size: 12px;
+  color: ${({ theme }) => theme.color.hint};
+  font-style: normal;
+  font-weight: 500;
+  line-height: 140%; /* 16.8px */
+  letter-spacing: -0.12px;
+  text-transform: uppercase;
 `
 
 export const TopSelectsBlock = styled.div`
@@ -17,16 +61,20 @@ export const TopSelectsBlock = styled.div`
 
 export const TokenSelectContentWrapper = styled.div`
   display: flex;
-  gap: 8px;
+  gap: 16px;
   align-items: center;
-  background-color: ${({ theme }) => theme.color.bg};
-  border-radius: 10px 0 0 0;
-  padding-left: 10px;
-  width: 60%;
+  margin: 0 0 16px 0;
 
-  svg {
-    width: 20px;
-    height: 20px;
+  .btn {
+    gap: 10px;
+    width: 100%;
+    height: 42px;
+    max-width: 170px;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%; /* 22.4px */
+    letter-spacing: -0.16px;
   }
 `
 
@@ -120,24 +168,37 @@ export const Line = styled.div`
 export const InfoWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 8px;
   width: 100%;
-  padding: 12px;
 `
 
+export const Link = styled.a`
+  color: ${({ theme }) => theme.color.link};
+  font-size: 10px;
+  font-style: normal;
+  text-decoration: none;
+  word-break: break-all;
+  text-wrap: wrap;
+  font-weight: 400;
+  line-height: 120%; /* 12px */
+  letter-spacing: -0.1px;
+`
 export const InfoBlockWrapper = styled.div`
   width: 48%;
   display: flex;
   flex-direction: column;
+  border-radius: 6px;
+  background: ${({ theme }) => theme.color.bg};
+  padding: 4px 12px;
   gap: 4px;
 `
 
 export const Label = styled.span<{ $isAccent?: boolean }>`
-  font-size: 12px;
+  font-size: 10px;
   font-style: normal;
-  font-weight: 400;
+  font-weight: 500;
   line-height: 140%;
-  letter-spacing: -0.12px;
+  letter-spacing: -0.1px;
   color: ${({ theme, $isAccent }) =>
     $isAccent ? theme.color.text : theme.color.hint};
 `
