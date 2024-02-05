@@ -55,7 +55,7 @@ export const Modal: FCWithChildren<ModalProps> = (props) => {
     <S.WrapModal ref={outsideRef} onClick={handleWrapperClick}>
       <S.CardWrapper className={className}>
         <S.Flex>
-          <S.Image src={image} alt='image' />
+          {image && <S.Image alt='image' src={image} />}
           <S.Title children={title} />
           <S.Description children={description} />
           <S.Close onClick={onClose} />

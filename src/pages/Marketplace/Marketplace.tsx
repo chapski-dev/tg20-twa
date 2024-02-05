@@ -4,7 +4,7 @@ import { useTonAddress, useTonConnectUI } from '@tonconnect/ui-react'
 import { useQuery } from 'react-query'
 import { useNavigate } from 'react-router-dom'
 import { useTheme } from 'styled-components'
-import { getCurrentMaketplaceTicks, getTokenWalletBalance } from 'api'
+import { getTokenWalletBalance } from 'api'
 import { LotSort, LotSortDirection } from 'api/types'
 import { BackButton } from 'features/BackButton'
 import { MainButton } from 'features/MainButton'
@@ -34,32 +34,31 @@ export type LotInfo = {
   closedAt: number | null
 }
 
-// const LISTED_TOKENS = [
-//   'gram',
-//   'nano',
-//   'leet',
-//   'pepe',
-//   'tele',
-//   'rare',
-//   'lmao',
-//   'fomo',
-// ]
+type Tabs = {
+  name: string;
+  value: MarketplaceTabsValueEnum;
+  component: React.JSX.Element;
+}[]
+
+enum MarketplaceTabsValueEnum {
+  LISTED = 'LISTED',
+  MY_ORDERS = 'MY_ORDERS',
+  ACTIVITIES = 'ACTIVITIES',
+}
+
 
 export const Marketplace: FC = () => {
-  const [activeTab, setActiveTab] = useState(0)
+  const [activeTab, setActiveTab] = useState<MarketplaceTabsValueEnum>(MarketplaceTabsValueEnum.LISTED);
 
   const navigate = useNavigate()
-  const theme = useTheme()
   const address = useTonAddress()
 
   const [tonConnectUI] = useTonConnectUI()
 
   const [isConfirmLotModalOpen, setIsConfirmLotModalOpen] = useState(false)
   const [isBuyModalOpen, setIsBuyModalOpen] = useState(false)
-  const [isOrderCancellationModalOpen, setIsOrderCancellationModalOpen] =
-    useState(false)
-  const [isActivityDetailsModalOpen, setIsActivityDetailsModalOpen] =
-    useState(false)
+  const [isOrderCancellationModalOpen, setIsOrderCancellationModalOpen] = useState(false)
+  const [isActivityDetailsModalOpen, setIsActivityDetailsModalOpen] = useState(false)
 
   const [isTransactionModalOpen, setIsTransactionModalOpen] = useState(false)
   const [isTransactionSuccessful, setIsTransactionSuccessful] = useState(false)
@@ -74,8 +73,7 @@ export const Marketplace: FC = () => {
   const [lastDirection, setLastDirection] = useState<LotSortDirection>('desc')
 
   const [lastActivitySort, setLastActivitySort] = useState<LotSort>('closed_at')
-  const [lastActivityDirection, setLastActivityDirection] =
-    useState<LotSortDirection>('desc')
+  const [lastActivityDirection, setLastActivityDirection] = useState<LotSortDirection>('desc')
 
   const { currentWalletBalance } = useTelegram()
 
@@ -87,53 +85,44 @@ export const Marketplace: FC = () => {
     }
   )
 
-  const {
-    data: maketplaceTicks,
-    isLoading: isMaketplaceTicksLoading,
-    isSuccess: isMarketplaceTicksLoaded,
-  } = useQuery(['currentMarketplaceTicks'], () => getCurrentMaketplaceTicks())
-
-  console.log(maketplaceTicks)
-
   const handleBuyClick = useCallback(
     (lotInfo: LotInfo) => {
       if (!address) {
-        tonConnectUI.openModal().then(() => {})
+        tonConnectUI.openModal()
         return
       }
       setIsBuyModalOpen(true)
       setLotInfo(lotInfo)
-    },
-    [address, tonConnectUI, setIsBuyModalOpen, setLotInfo]
-  )
+    },[address, tonConnectUI]);
 
   const handleConfirmLotClick = useCallback(() => {
+    if (isTransactionModalOpen) {
+      setIsTransactionModalOpen(false)
+      return;
+    };
+
     if (!address) {
-      tonConnectUI.openModal().then(() => {})
+      tonConnectUI.openModal()
       return
     }
     setIsConfirmLotModalOpen(true)
-  }, [address, setIsConfirmLotModalOpen, tonConnectUI])
+  }, [address, isTransactionModalOpen, tonConnectUI])
 
   const handleCancelOrderClick = useCallback(
     (lotInfo: LotInfo) => {
       if (!address) {
-        tonConnectUI.openModal().then(() => {})
+        tonConnectUI.openModal()
         return
       }
       setIsOrderCancellationModalOpen(true)
       setLotInfo(lotInfo)
-    },
-    [address, setIsOrderCancellationModalOpen, setLotInfo, tonConnectUI]
-  )
+    },[address, tonConnectUI]);
 
   const handleActivityDetailsClick = useCallback(
     (lotInfo: LotInfo) => {
       setIsActivityDetailsModalOpen(true)
       setLotInfo(lotInfo)
-    },
-    [setIsActivityDetailsModalOpen, setLotInfo]
-  )
+    }, [])
 
   const handleBuyConfirmation = useCallback(async () => {
     setIsBuyModalOpen(false)
@@ -168,8 +157,12 @@ export const Marketplace: FC = () => {
   }, [lotInfo, tonConnectUI])
 
   const handleCancelLot = useCallback(async () => {
-    setIsOrderCancellationModalOpen(false)
+    if (!isOrderCancellationModalOpen) {
+      setIsTransactionModalOpen(false);
+      return;
+    };
 
+    setIsOrderCancellationModalOpen(false)
     const cancelLotBody = beginCell()
       .storeUint(0, 32)
       .storeStringTail('cancel')
@@ -197,12 +190,13 @@ export const Marketplace: FC = () => {
     }
 
     setIsTransactionModalOpen(true)
-  }, [lotInfo, tonConnectUI])
+  }, [isOrderCancellationModalOpen, lotInfo, tonConnectUI])
 
-  const tabs = useMemo(
+  const tabs: Tabs = useMemo(
     () => [
       {
         name: 'Listed',
+        value: MarketplaceTabsValueEnum.LISTED,
         component: (
           <ListedLotsTab
             direction={direction}
@@ -215,6 +209,7 @@ export const Marketplace: FC = () => {
       },
       {
         name: 'My Orders',
+        value: MarketplaceTabsValueEnum.MY_ORDERS,
         component: (
           <MyOrdersTab
             address={address!}
@@ -227,6 +222,7 @@ export const Marketplace: FC = () => {
       },
       {
         name: 'Activities',
+        value: MarketplaceTabsValueEnum.ACTIVITIES,
         component: (
           <ActivityTab
             direction={direction}
@@ -259,16 +255,14 @@ export const Marketplace: FC = () => {
       setSort(newSort)
       setDirection(newDirection)
 
-      if (activeTab === 2) {
+      if (activeTab === MarketplaceTabsValueEnum.LISTED) {
         setLastActivitySort(newSort)
         setLastActivityDirection(newDirection)
       } else {
         setLastSort(newSort)
         setLastDirection(newDirection)
       }
-    },
-    [activeTab]
-  )
+    },[activeTab])
 
   return (
     <S.Wrapper>
@@ -279,15 +273,15 @@ export const Marketplace: FC = () => {
           {tabs.map((tab, index) => (
             <Tab
               key={index}
-              isActive={activeTab === index}
+              isActive={activeTab === tab.value}
               name={tab.name}
               onClick={() => {
-                setActiveTab(index)
+                setActiveTab(tab.value)
 
                 // we sort by closed_at desc by default on activities tab
                 // so we need to save last sort and direction for listed and my orders tabs
                 // and last activity sort and direction for activities tab
-                if (index === 2) {
+                if (tab.value === MarketplaceTabsValueEnum.MY_ORDERS) {
                   setLastSort(sort)
                   setLastDirection(direction)
                   setSort(lastActivitySort)
@@ -296,7 +290,7 @@ export const Marketplace: FC = () => {
                   setLastActivityDirection(lastActivityDirection)
                 }
 
-                if (index !== 2) {
+                if (tab.value !== MarketplaceTabsValueEnum.MY_ORDERS) {
                   setSort(lastSort)
                   setDirection(lastDirection)
                 }
@@ -311,33 +305,15 @@ export const Marketplace: FC = () => {
           sortSelectValue={`${sort}_${direction}`}
           tick={tick}
         />
-
-        {/* {address && activeTab === 0 && (
-          <S.CheckboxWrapper>
-            <S.Checkbox
-              checked={onlyAvailableLots}
-              id="visibility"
-              onChange={() => setOnlyAvailableLots(!onlyAvailableLots)}
-              type="checkbox"
-            />
-            <S.CheckboxLabel htmlFor="visibility">
-              Show only lots I can buy
-            </S.CheckboxLabel>
-          </S.CheckboxWrapper>
-        )} */}
       </S.FiltersContainer>
 
-      <S.TabContentWrapper>{tabs[activeTab].component}</S.TabContentWrapper>
+      <S.TabContentWrapper>{tabs?.find((el) => el?.value === activeTab)?.component}</S.TabContentWrapper>
 
       {isConfirmLotModalOpen && (
         <ConfirmLotPopup
           onClose={() => setIsConfirmLotModalOpen(false)}
           tick={tick}
-          tokenBalance={
-            currentWalletTickerData?.balance
-              ? currentWalletTickerData.balance
-              : 0
-          }
+          tokenBalance={currentWalletTickerData?.balance || 0}
           updateIsSuccessfulTransactionStatus={setIsTransactionSuccessful}
           updateSuccessfulPopupDisplayMode={setIsTransactionModalOpen}
         />
@@ -346,9 +322,8 @@ export const Marketplace: FC = () => {
       {isBuyModalOpen && (
         <BuyLotPopup
           fromAmount={lotInfo!.amount * lotInfo!.price}
-          onClose={() => {
-            setIsBuyModalOpen(false)
-          }}
+          handleBuyConfirmation={handleBuyConfirmation}
+          onClose={() => setIsBuyModalOpen(false)}
           priceTon={lotInfo!.price}
           priceUsd={lotInfo!.priceInUSD}
           ticker={tick}
@@ -387,52 +362,68 @@ export const Marketplace: FC = () => {
           success={isTransactionSuccessful}
         />
       )}
-
-      {activeTab === 0 && !isConfirmLotModalOpen ? (
-        <MainButton
-          onClick={
-            // isConfirmLotModalOpen
-            //   ? () => handleListing().then(() => {})
-            //   :
-            isBuyModalOpen
-              ? () => handleBuyConfirmation().then(() => {})
-              : isTransactionModalOpen
-              ? () => setIsTransactionModalOpen(false)
-              : handleConfirmLotClick
-          }
-          text={
-            // isConfirmLotModalOpen
-            //   ? 'Confirm'
-            // :
-            isBuyModalOpen ? 'Buy' : isTransactionModalOpen ? 'Close' : 'List'
-          }
-        />
-      ) : activeTab === 1 ? (
-        <>
-          {(isOrderCancellationModalOpen || isTransactionModalOpen) && (
-            <MainButton
-              color={
-                isOrderCancellationModalOpen ? theme.color.redAlert : undefined
-              }
-              onClick={
-                isOrderCancellationModalOpen
-                  ? () => handleCancelLot().then(() => {})
-                  : () => setIsTransactionModalOpen(false)
-              }
-              text={isOrderCancellationModalOpen ? 'Cancel listing' : 'Close'}
-            />
-          )}
-        </>
-      ) : activeTab === 2 ? (
-        <>
-          {isActivityDetailsModalOpen && (
-            <MainButton
-              onClick={() => setIsActivityDetailsModalOpen(false)}
-              text={'Close'}
-            />
-          )}
-        </>
-      ) : null}
+      <RenderMainButton
+        activeTab={activeTab}
+        handleCancelLot={handleCancelLot}
+        handleConfirmLotClick={handleConfirmLotClick}
+        isActivityDetailsModalOpen={isActivityDetailsModalOpen}
+        isBuyModalOpen={isBuyModalOpen}
+        isConfirmLotModalOpen={isConfirmLotModalOpen}
+        isOrderCancellationModalOpen={isOrderCancellationModalOpen}
+        isTransactionModalOpen={isTransactionModalOpen}
+        setIsActivityDetailsModalOpen={setIsActivityDetailsModalOpen}
+      />
     </S.Wrapper>
   )
+}
+
+type RenderMainButtonProps = {
+  activeTab: MarketplaceTabsValueEnum,
+  isConfirmLotModalOpen: boolean,
+  isBuyModalOpen: boolean,
+  isTransactionModalOpen: boolean,
+  isOrderCancellationModalOpen: boolean,
+  isActivityDetailsModalOpen: boolean,
+  handleConfirmLotClick: () => void,
+  handleCancelLot: () => void,
+  setIsActivityDetailsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+const RenderMainButton: FC<RenderMainButtonProps> = ({
+  activeTab,
+  isConfirmLotModalOpen,
+  isBuyModalOpen,
+  isTransactionModalOpen,
+  isOrderCancellationModalOpen,
+  isActivityDetailsModalOpen,
+  handleConfirmLotClick,
+  handleCancelLot,
+  setIsActivityDetailsModalOpen
+}) => {
+  const theme = useTheme()
+
+  switch (true) {
+    case activeTab === MarketplaceTabsValueEnum.LISTED && !isConfirmLotModalOpen && !isBuyModalOpen:
+      return (
+        <MainButton
+          onClick={handleConfirmLotClick}
+          text={isTransactionModalOpen ? 'Close' : 'List'}
+        />
+      )
+    case activeTab === MarketplaceTabsValueEnum.MY_ORDERS && isOrderCancellationModalOpen ||
+      activeTab === MarketplaceTabsValueEnum.MY_ORDERS && isTransactionModalOpen:
+      return (
+        <MainButton
+          color={isOrderCancellationModalOpen ? theme.color.redAlert : undefined}
+          onClick={handleCancelLot}
+          text={isOrderCancellationModalOpen ? 'Cancel listing' : 'Close'}
+        />
+      )
+    case activeTab === MarketplaceTabsValueEnum.ACTIVITIES && isActivityDetailsModalOpen:
+      return (
+        <MainButton
+          onClick={() => setIsActivityDetailsModalOpen(false)}
+          text="Close"
+        />
+      )
+  }
 }
