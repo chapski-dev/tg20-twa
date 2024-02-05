@@ -59,10 +59,13 @@ export const ListedLotsTab: FC<ListedLotsTabProps> = (props) => {
   } = useInfiniteQuery(['listed-lots', tick, sort, direction], getListedLots, {
     getNextPageParam: (lastPage, pages) => {
       const { total } = lastPage
-      const currentTotalItems = pages.reduce((acc, page) => acc + page.items.length, 0)
+      const currentTotalItems = pages.reduce(
+        (acc, page) => acc + page.items.length,
+        0
+      )
 
-      const isCurrentLessTotal = currentTotalItems < total;
-      
+      const isCurrentLessTotal = currentTotalItems < total
+
       return isCurrentLessTotal ? currentTotalItems / ITEMS_ON_PAGE : undefined
     },
   })
@@ -106,6 +109,7 @@ export const ListedLotsTab: FC<ListedLotsTabProps> = (props) => {
             <LotCard
               key={index}
               amount={lot.amount}
+              lotNumberCard={1268782}
               lotPrice={lot.price}
               lotTotal={lot.total}
               onBuyClick={(pricesData) => {

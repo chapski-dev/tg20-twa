@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 import { useTelegram } from 'hooks/useTelegram/useTelegram'
-import { SvgDollarIcon, SvgToncoinIcon } from 'ui/icons'
+import { SvgToncoinIcon } from 'ui/icons'
 import { formatNumberWithSeparators } from 'utils/formNumberWithSeparators'
 import * as S from './style'
 
@@ -16,10 +16,11 @@ type LotCardProps = {
   onBuyClick: (pricesData: PricesData) => void
   lotPrice: number
   lotTotal: number
+  lotNumberCard: number
 }
 
 export const LotCard: React.FC<LotCardProps> = (props) => {
-  const { amount, onBuyClick, lotPrice, lotTotal } = props
+  const { amount, onBuyClick, lotPrice, lotTotal, lotNumberCard } = props
   const { tonPrice } = useTelegram()
 
   const prices = useMemo(() => {
@@ -40,11 +41,31 @@ export const LotCard: React.FC<LotCardProps> = (props) => {
         <S.ContentWrapper>
           <S.LotInfoWrapper>
             <S.LotPriceWrapper>
-              <S.AmountText>{formatNumberWithSeparators(amount)}</S.AmountText>
-              <S.PriceText>
-                {prices.priceInTON} TON / {prices.priceInUSD.toFixed(10)} USD
-              </S.PriceText>
+              <S.AmountText>
+                <SvgToncoinIcon height={20} width={20} />
+                {formatNumberWithSeparators(amount)} GRAM
+              </S.AmountText>
+              <S.NumberApplication>#{lotNumberCard}</S.NumberApplication>
             </S.LotPriceWrapper>
+          </S.LotInfoWrapper>
+          <S.TotalTextWrapper>
+            <S.TotalText>
+              <S.TotalTextTitle>Total Price</S.TotalTextTitle>
+              <S.TotalInCurrencyTon>
+                {prices.totalInTON.toFixed(3)} TON
+                <SvgToncoinIcon height={15} width={15} />
+              </S.TotalInCurrencyTon>
+              <S.TotalInCurrencyDollar>
+                ~ ${prices.totalInUSD.toFixed(3)}
+              </S.TotalInCurrencyDollar>
+            </S.TotalText>
+            <S.PriceText>
+              <S.TitlePriceText>SalePrice/Token</S.TitlePriceText>
+              <S.Price>
+                <span>{prices.priceInTON} TON</span>
+                <br /> <span>~{prices.priceInUSD.toFixed(10)} USD</span>
+              </S.Price>
+            </S.PriceText>
             <S.BuyButton
               onClick={() =>
                 onBuyClick({
@@ -57,17 +78,7 @@ export const LotCard: React.FC<LotCardProps> = (props) => {
             >
               Buy
             </S.BuyButton>
-          </S.LotInfoWrapper>
-          <S.TotalText>
-            <S.TotalInCurrencyText>
-              <SvgToncoinIcon height={20} width={20} />
-              {prices.totalInTON.toFixed(3)}
-            </S.TotalInCurrencyText>
-            <S.TotalInCurrencyText>
-              <SvgDollarIcon />
-              {prices.totalInUSD.toFixed(3)}
-            </S.TotalInCurrencyText>
-          </S.TotalText>
+          </S.TotalTextWrapper>
         </S.ContentWrapper>
       </S.Wrapper>
     </>
