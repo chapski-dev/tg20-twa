@@ -93,7 +93,7 @@ export const Marketplace: FC = () => {
       }
       setIsBuyModalOpen(true)
       setLotInfo(lotInfo)
-    },[address, tonConnectUI]);
+    }, [address, tonConnectUI]);
 
   const handleConfirmLotClick = useCallback(() => {
     if (isTransactionModalOpen) {
@@ -116,7 +116,7 @@ export const Marketplace: FC = () => {
       }
       setIsOrderCancellationModalOpen(true)
       setLotInfo(lotInfo)
-    },[address, tonConnectUI]);
+    }, [address, tonConnectUI]);
 
   const handleActivityDetailsClick = useCallback(
     (lotInfo: LotInfo) => {
@@ -262,7 +262,7 @@ export const Marketplace: FC = () => {
         setLastSort(newSort)
         setLastDirection(newDirection)
       }
-    },[activeTab])
+    }, [activeTab])
 
   return (
     <S.Wrapper>
@@ -425,5 +425,7 @@ const RenderMainButton: FC<RenderMainButtonProps> = ({
           text="Close"
         />
       )
+    default:
+      return null;
   }
 }
