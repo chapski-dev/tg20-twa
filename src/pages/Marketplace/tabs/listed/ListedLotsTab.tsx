@@ -109,7 +109,7 @@ export const ListedLotsTab: FC<ListedLotsTabProps> = (props) => {
             <LotCard
               key={index}
               amount={lot.amount}
-              lotNumberCard={lot.id}
+              lotId={lot.id}
               lotPrice={lot.price}
               lotTotal={lot.total}
               onBuyClick={(pricesData) => {

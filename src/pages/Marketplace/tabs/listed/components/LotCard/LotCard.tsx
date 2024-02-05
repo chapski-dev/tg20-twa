@@ -16,11 +16,11 @@ type LotCardProps = {
   onBuyClick: (pricesData: PricesData) => void
   lotPrice: number
   lotTotal: number
-  lotNumberCard: number
+  lotId: number
 }
 
 export const LotCard: React.FC<LotCardProps> = (props) => {
-  const { amount, onBuyClick, lotPrice, lotTotal, lotNumberCard } = props
+  const { amount, onBuyClick, lotPrice, lotTotal, lotId } = props
   const { tonPrice } = useTelegram()
 
   const prices = useMemo(() => {
@@ -45,7 +45,7 @@ export const LotCard: React.FC<LotCardProps> = (props) => {
                 <SvgToncoinIcon height={20} width={20} />
                 {formatNumberWithSeparators(amount)} GRAM
               </S.AmountText>
-              <S.NumberApplication>#{lotNumberCard}</S.NumberApplication>
+              <S.NumberApplication>#{lotId}</S.NumberApplication>
             </S.LotPriceWrapper>
           </S.LotInfoWrapper>
           <S.TotalTextWrapper>
