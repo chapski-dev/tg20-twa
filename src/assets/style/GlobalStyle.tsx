@@ -1,4 +1,5 @@
 import { createGlobalStyle } from 'styled-components'
+import 'react-toastify/dist/ReactToastify.css';
 
 export const GlobalStyle = createGlobalStyle`
   * {
@@ -42,5 +43,33 @@ export const GlobalStyle = createGlobalStyle`
     &::-webkit-scrollbar {
       display: none;
     }
+  }
+
+  .Toastify__toast {
+    border-radius: 12px;
+  }
+  .Toastify__toast-theme--colored.Toastify__toast--success {
+    border: 1px solid ${({ theme }) => theme.color.greenSuccess};
+    background-color: #f6fff9;
+    color: #000;
+  }
+  .Toastify__toast-theme--colored.Toastify__toast--error {
+    border: 1px solid ${({ theme }) => theme.color.redAlert};
+    background-color: #fff5f3;
+    color: #000;
+  }
+  .Toastify__toast-icon {
+    width: 24px;
+    align-self: flex-start;
+    margin-inline-end: 16px;
+  }
+  .Toastify__close-button {
+    color: ${({ theme }) => theme.color.hint};
+    opacity: 1;
+    margin-top: 4px;
+  }
+  .Toastify__close-button > svg {
+    width: 20px;
+    height: 20px;
   }
 `
