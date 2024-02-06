@@ -1,6 +1,8 @@
 import React, { FC } from 'react'
-import { SvgArrowDownIcon } from 'ui/icons'
+import { Button } from 'ui/Button/Button'
+import { SvgToncoinIcon } from 'ui/icons'
 import { Modal } from 'ui/Modal/Modal'
+import { formatNumberWithSeparators } from 'utils/formNumberWithSeparators'
 import * as S from './style'
 
 type BuyLotProps = {
@@ -11,8 +13,8 @@ type BuyLotProps = {
   priceTon: number
   priceUsd: number
   total: number
+  handleBuyConfirmation: () => Promise<void>;
 }
-
 export const BuyLotPopup: FC<BuyLotProps> = ({
   onClose,
   fromAmount,
@@ -21,6 +23,7 @@ export const BuyLotPopup: FC<BuyLotProps> = ({
   priceTon,
   priceUsd,
   total,
+  handleBuyConfirmation,
 }) => {
   const PROTOCOL_FEE = 0.02
   const GAS_FEE = 0.25
@@ -40,58 +43,46 @@ export const BuyLotPopup: FC<BuyLotProps> = ({
       <S.Wrapper>
         <S.FieldsWrapper>
           <S.FieldWrapper>
-            <S.ValueLabel>
-              {fromAmount.toFixed(9).replace(/\.?0+$/, '')}
-            </S.ValueLabel>
-            <S.TokenLabel>TON</S.TokenLabel>
+            <S.ValueLabel children={fromAmount.toFixed(9).replace(/\.?0+$/, '')} />
+            <S.TokenWrapper>
+              <SvgToncoinIcon height={24} width={23} />
+              <S.TokenLabel children="TON" />
+            </S.TokenWrapper>
           </S.FieldWrapper>
-
-          <S.Line />
-
+          <i>for</i>
           <S.FieldWrapper>
-            <S.ValueLabel>{toAmount}</S.ValueLabel>
-            <S.TokenLabel>{ticker}</S.TokenLabel>
+            <S.ValueLabel children={formatNumberWithSeparators(toAmount)} />
+            <S.TokenLabel children={ticker} />
           </S.FieldWrapper>
-
-          <S.ArrowDown>
-            <SvgArrowDownIcon />
-          </S.ArrowDown>
         </S.FieldsWrapper>
 
-        <S.PositionsWrapper>
+        <S.PositionsContainer>
           <S.PositionWrapper>
-            <S.PositionText>Price</S.PositionText>
-            <S.PositionValue>
-              {priceTon.toFixed(9).replace(/\.?0+$/, '')} TON /{' '}
-              {priceUsd.toFixed(9).replace(/\.?0+$/, '')} USD
-            </S.PositionValue>
+            <S.PositionText children="Price" />
+            <S.PositionValue children={`${priceTon.toFixed(9).replace(/\.?0+$/, '')} TON / 
+              ${priceUsd.toFixed(9).replace(/\.?0+$/, '')} USD`} />
           </S.PositionWrapper>
 
           <S.PositionWrapper>
-            <S.PositionText>Gas fee</S.PositionText>
-            <S.PositionValue>
-              {+GAS_FEE.toFixed(6)} TON / {+gasFeeUsd.toFixed(4)} USD
-            </S.PositionValue>
+            <S.PositionText children="Gas fee" />
+            <S.PositionValue children={`${+GAS_FEE.toFixed(6)} TON / ${+gasFeeUsd.toFixed(4)} USD`} />
           </S.PositionWrapper>
 
           <S.PositionWrapper>
             <S.PositionText>
-              Service fee <S.PositionTextLabel>1.99%</S.PositionTextLabel>
+              Service fee <S.PositionTextLabel children="1.99%" />
             </S.PositionText>
-            <S.PositionValue>
-              {fee.toFixed(9).replace(/\.?0+$/, '')} TON /{' '}
-              {feeUsd.toFixed(9).replace(/\.?0+$/, '')} USD
-            </S.PositionValue>
+            <S.PositionValue children={`${fee.toFixed(9).replace(/\.?0+$/, '')} TON / 
+              ${feeUsd.toFixed(9).replace(/\.?0+$/, '')} USD`} />
           </S.PositionWrapper>
 
           <S.PositionWrapper>
-            <S.PositionText>Total</S.PositionText>
-            <S.PositionValue>
-              {totalWithFee.toFixed(9).replace(/\.?0+$/, '')} TON /{' '}
-              {totalWithFeeUsd.toFixed(9).replace(/\.?0+$/, '')} USD
-            </S.PositionValue>
+            <S.PositionText children="Total" />
+            <S.PositionValue children={`${totalWithFee.toFixed(9).replace(/\.?0+$/, '')} TON / 
+              ${totalWithFeeUsd.toFixed(9).replace(/\.?0+$/, '')} USD`} />
           </S.PositionWrapper>
-        </S.PositionsWrapper>
+        </S.PositionsContainer>
+        <Button children="Buy Now" onClick={handleBuyConfirmation} />
       </S.Wrapper>
     </Modal>
   )

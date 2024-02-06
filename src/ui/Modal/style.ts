@@ -32,7 +32,7 @@ export const CardWrapper = styled.div`
   width: 100%;
   gap: 30px;
   border-radius: 20px 20px 0px 0px;
-  padding: 60px 30px 24px;
+  padding: 60px 16px 24px;
   display: flex;
   flex-direction: column;
   background-color: ${({ theme }) => theme.color.bg};
@@ -80,5 +80,7 @@ export const Close = styled(SvgClose)`
   display: flex;
   justify-content: center;
   align-items: center;
-  fill: ${({ theme }) => theme.color.hint};
+  path {
+    fill: ${({ theme }) => theme.color.text};
+  }
 `
