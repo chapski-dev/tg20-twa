@@ -44,6 +44,7 @@ export const LotCardsWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
+  padding: 0 15px;
   width: 100%;
 `
 

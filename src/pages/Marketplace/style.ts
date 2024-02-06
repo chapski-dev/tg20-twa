@@ -64,7 +64,6 @@ export const TabsWrapper = styled.div`
 export const TabContentWrapper = styled.div`
   display: flex;
   width: 100%;
-  padding: 0px 15px;
 `
 
 export const CheckboxWrapper = styled.div`

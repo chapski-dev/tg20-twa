@@ -10,7 +10,7 @@ import { BackButton } from 'features/BackButton'
 import { MainButton } from 'features/MainButton'
 import { useTelegram } from 'hooks/useTelegram/useTelegram'
 import { TransactionStatusModal } from 'ui/TransactionStatusModal/TransactionStatusModal'
-import { TokenOptionsBlock } from './components'
+import { OrderOptionsBlock, TokenOptionsBlock } from './components'
 import { ActivityDetailsPopup } from './components/ActivityDetailsPopup/ActivityDetailsPopup'
 import { BuyLotPopup } from './components/BuyLotPopup/BuyLotPopup'
 import { CancelLotPopup } from './components/CancelLotPopup/CancelLotPopup'
@@ -38,6 +38,7 @@ type Tabs = {
   name: string;
   value: MarketplaceTabsValueEnum;
   component: React.JSX.Element;
+  header: React.JSX.Element;
 }[]
 
 enum MarketplaceTabsValueEnum {
@@ -54,6 +55,7 @@ export const Marketplace: FC = () => {
   const address = useTonAddress()
 
   const [tonConnectUI] = useTonConnectUI()
+  const [isChecked, setIsChecked] = useState<'ton' | 'usd'>('usd')
 
   const [isConfirmLotModalOpen, setIsConfirmLotModalOpen] = useState(false)
   const [isBuyModalOpen, setIsBuyModalOpen] = useState(false)
@@ -192,59 +194,6 @@ export const Marketplace: FC = () => {
     setIsTransactionModalOpen(true)
   }, [isOrderCancellationModalOpen, lotInfo, tonConnectUI])
 
-  const tabs: Tabs = useMemo(
-    () => [
-      {
-        name: 'Listed',
-        value: MarketplaceTabsValueEnum.LISTED,
-        component: (
-          <ListedLotsTab
-            direction={direction}
-            onBuyClick={handleBuyClick}
-            sort={sort}
-            tick={tick}
-            userBalance={currentWalletBalance}
-          />
-        ),
-      },
-      {
-        name: 'My Orders',
-        value: MarketplaceTabsValueEnum.MY_ORDERS,
-        component: (
-          <MyOrdersTab
-            address={address!}
-            direction={direction}
-            onCancelClick={handleCancelOrderClick}
-            sort={sort}
-            tick={tick}
-          />
-        ),
-      },
-      {
-        name: 'Activities',
-        value: MarketplaceTabsValueEnum.ACTIVITIES,
-        component: (
-          <ActivityTab
-            direction={direction}
-            onDetailsClick={handleActivityDetailsClick}
-            sort={sort}
-            tick={tick}
-          />
-        ),
-      },
-    ],
-    [
-      address,
-      currentWalletBalance,
-      direction,
-      handleActivityDetailsClick,
-      handleBuyClick,
-      handleCancelOrderClick,
-      sort,
-      tick,
-    ]
-  )
-
   const handleSortSelectChange = useCallback(
     (sortValue: string) => {
       const newSort = sortValue
@@ -274,6 +223,90 @@ export const Marketplace: FC = () => {
         return handleConfirmLotClick()
     }
   }, [isBuyModalOpen, isTransactionModalOpen])
+
+  const tabs: Tabs = useMemo(
+    () => [
+      {
+        name: 'Listed',
+        value: MarketplaceTabsValueEnum.LISTED,
+        header: (
+          <TokenOptionsBlock
+            listingText={isBuyModalOpen ? 'Buy' : isTransactionModalOpen ? 'Close' : 'List order'}
+            onListing={listOrder}
+            onSortSelectChange={handleSortSelectChange}
+            onTokenChange={setTick}
+            sortSelectValue={`${sort}_${direction}`}
+            tick={tick}
+          />
+        ),
+        component: (
+          <ListedLotsTab
+            direction={direction}
+            onBuyClick={handleBuyClick}
+            sort={sort}
+            tick={tick}
+            userBalance={currentWalletBalance}
+          />
+        ),
+      },
+      {
+        name: 'My Orders',
+        value: MarketplaceTabsValueEnum.MY_ORDERS,
+        header: (
+          <OrderOptionsBlock
+            setChecked={val => setIsChecked(val)}
+            checked={isChecked}
+            listingText={isBuyModalOpen ? 'Buy' : isTransactionModalOpen ? 'Close' : 'List order'}
+            onListing={listOrder}
+          />
+        ),
+        component: (
+          <MyOrdersTab
+            value={isChecked}
+            address={address!}
+            direction={direction}
+            onCancelClick={handleCancelOrderClick}
+            sort={sort}
+            tick={tick}
+          />
+        ),
+      },
+      {
+        name: 'Activities',
+        value: MarketplaceTabsValueEnum.ACTIVITIES,
+        header: (
+          <TokenOptionsBlock
+            listingText={isBuyModalOpen ? 'Buy' : isTransactionModalOpen ? 'Close' : 'List order'}
+            onListing={listOrder}
+            onSortSelectChange={handleSortSelectChange}
+            onTokenChange={setTick}
+            sortSelectValue={`${sort}_${direction}`}
+            tick={tick}
+          />
+        ),
+        component: (
+          <ActivityTab
+            direction={direction}
+            onDetailsClick={handleActivityDetailsClick}
+            sort={sort}
+            tick={tick}
+          />
+        ),
+      },
+    ],
+    [
+      address,
+      currentWalletBalance,
+      direction,
+      handleActivityDetailsClick,
+      handleBuyClick,
+      handleCancelOrderClick,
+      sort,
+      isChecked,
+      tick,
+    ]
+  )
+
   return (
     <S.Wrapper>
       <BackButton onClick={() => navigate(-1)} />
@@ -308,14 +341,8 @@ export const Marketplace: FC = () => {
             />
           ))}
         </S.TabsWrapper>
-        <TokenOptionsBlock
-          listingText={isBuyModalOpen ? 'Buy' : isTransactionModalOpen ? 'Close' : 'List order'}
-          onListing={listOrder}
-          onSortSelectChange={handleSortSelectChange}
-          onTokenChange={setTick}
-          sortSelectValue={`${sort}_${direction}`}
-          tick={tick}
-        />
+        {tabs?.find((el) => el?.value === activeTab)?.header}
+
       </S.FiltersContainer>
 
       <S.TabContentWrapper>{tabs?.find((el) => el?.value === activeTab)?.component}</S.TabContentWrapper>

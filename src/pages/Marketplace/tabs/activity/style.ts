@@ -7,7 +7,7 @@ export const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 10px;
-  padding: 0;
+  padding: 0px 15px;
 `
 
 export const ActivityTable = styled.table`
