@@ -263,11 +263,14 @@ export const Marketplace: FC = () => {
   )
 
   const listOrder = useCallback(() => {
-    isBuyModalOpen
-      ? () => handleBuyConfirmation()
-      : isTransactionModalOpen
-        ? () => setIsTransactionModalOpen(false)
-        : handleConfirmLotClick()
+    switch (true) {
+      case isBuyModalOpen:
+        return handleBuyConfirmation()
+      case isTransactionModalOpen:
+        return setIsTransactionModalOpen(false)
+      default:
+        return handleConfirmLotClick()
+    }
   }, [isBuyModalOpen, isTransactionModalOpen])
   return (
     <S.Wrapper>
