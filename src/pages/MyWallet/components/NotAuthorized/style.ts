@@ -1,10 +1,10 @@
 import styled from 'styled-components'
 import { Button } from 'ui/Button/Button'
-import linia from './linia.png'
+import line from './bgline.png'
 
 export const Wrapper = styled.div`
   padding: 8px;
-  background: url(${linia}) no-repeat;
+  background: url(${line}) no-repeat;
   background-position: 50% 50%;
   display: flex;
   width: 100%;

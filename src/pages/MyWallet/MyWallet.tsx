@@ -27,8 +27,6 @@ const tabs: Tab[] = [
 ]
 
 export const MyWallet: FC = () => {
-  const Address = useTonAddress()
-
   const [currentTab, setCurrentTab] = useState(tabs[0])
 
   const userWalletAddress = useTonAddress()
@@ -55,7 +53,7 @@ export const MyWallet: FC = () => {
     )
   }
 
-  if (!Address) {
+  if (!userWalletAddress) {
     return <NotAuthorized />
   }
 
@@ -82,20 +80,6 @@ export const MyWallet: FC = () => {
             {currentWalletContent}
           </S.BlockWrapper>
         </S.Wrapper>
-        <MainButton
-          onClick={() => {
-            // navigate(AppRoutes.Inscribe)
-            navigate({
-              pathname: AppRoutes.Inscribe,
-              search: createSearchParams({
-                type: 'mint',
-                tick: 'gram',
-                from: 'token',
-              }).toString(),
-            })
-          }}
-          text="Inscribe"
-        />
       </Container>
     </>
   )

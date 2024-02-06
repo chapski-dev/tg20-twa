@@ -2,19 +2,28 @@ import { FC } from 'react'
 import { useTonAddress, useTonConnectUI } from '@tonconnect/ui-react'
 import { Container } from 'ui/Container/Container'
 import { SvgBigestLogo, SvgCheck } from 'ui/icons'
-import linia from './linia.png'
-import { NOT_AUTORIZED_MOCK } from './mock'
 import * as S from './style'
 
+const NOT_AUTORIZED_MOCK = [
+  {
+    id: 1,
+    info: 'Access Inscriptions',
+  },
+  {
+    id: 2,
+    info: 'Trade & Swap',
+  },
+  {
+    id: 3,
+    info: 'Secure Transactions',
+  },
+]
 export const NotAuthorized: FC = () => {
-  const Address = useTonAddress()
-
   const [tonConnectUI] = useTonConnectUI()
 
   const handleConnectWalletBtnClick = () => {
     tonConnectUI.openModal()
   }
-  console.log('Address', Address)
 
   return (
     <S.Wrapper>
