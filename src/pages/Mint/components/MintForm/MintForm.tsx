@@ -11,17 +11,22 @@ import * as S from './MintForm.style'
 import { type InitialValues } from './types'
 
 type MintFormProps = {
-  intervalFreeze: number | null;
-  currentConfirmData: CurrentConfirmData | null;
-  isInscribing: boolean;
+  intervalFreeze: number | null
+  currentConfirmData: CurrentConfirmData | null
+  isInscribing: boolean
 }
 
-export const MintForm: FC<MintFormProps> = ({ intervalFreeze, currentConfirmData, isInscribing }) => {
+export const MintForm: FC<MintFormProps> = ({
+  intervalFreeze,
+  currentConfirmData,
+  isInscribing,
+}) => {
   const userWalletAddress = useTonAddress()
   const [tonConnectUI] = useTonConnectUI()
   const [searchParams] = useSearchParams()
 
-  const { values, setFieldValue, handleSubmit } = useFormikContext<InitialValues>()
+  const { values, setFieldValue, handleSubmit } =
+    useFormikContext<InitialValues>()
 
   const [currentMintAmount, setCurrentMintAmount] = useState('')
 
@@ -59,14 +64,13 @@ export const MintForm: FC<MintFormProps> = ({ intervalFreeze, currentConfirmData
   const currentMainButtonName = useMemo(() => {
     switch (true) {
       case !userWalletAddress:
-        return "Connect Wallet"
+        return 'Connect Wallet'
       case intervalFreeze !== null && intervalFreeze > 0:
         return `Repeat mint after ${intervalFreeze} seconds...`
       default:
-        return "Mint"
+        return 'Mint'
     }
   }, [intervalFreeze, userWalletAddress])
-
 
   return (
     <S.Wrapper>
@@ -106,9 +110,7 @@ export const MintForm: FC<MintFormProps> = ({ intervalFreeze, currentConfirmData
             isDisabled={intervalFreeze !== null && intervalFreeze > 0}
             isLoading={isInscribing}
             onClick={
-              !userWalletAddress
-                ? () => tonConnectUI.openModal()
-                : handleSubmit
+              !userWalletAddress ? () => tonConnectUI.openModal() : handleSubmit
             }
           />
         )}
