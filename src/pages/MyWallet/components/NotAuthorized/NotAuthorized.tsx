@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import { useTonConnectUI } from '@tonconnect/ui-react'
 
-import { SvgBigest, SvgCheck } from 'ui/icons'
+import { SvgBigestLogo, SvgCheck } from 'ui/icons'
 import * as S from './style'
 
 const NOT_AUTORIZED_MOCK = [
@@ -25,11 +25,10 @@ export const NotAuthorized: FC = () => {
     tonConnectUI.openModal()
   }
 
-  console.log('')
   return (
     <S.Wrapper>
       <S.LogoWrapper>
-        <SvgBigest />
+        <SvgBigestLogo />
       </S.LogoWrapper>
       <S.Title>
         Your digital wallet,
