@@ -11,6 +11,7 @@ type ActivityTabProps = {
   sort: LotSort;
   direction: LotSortDirection;
   onDetailsClick: (lot: LotInfo) => void;
+  priceFilter: 'TON' | 'USD';
 };
 
 const ITEMS_ON_PAGE = 10;
@@ -20,6 +21,7 @@ export const ActivityTab: FC<ActivityTabProps> = ({
   sort,
   direction,
   onDetailsClick,
+  priceFilter,
 }) => {
   const { data: tonPrice } = useQuery(['currentTonPrice'], () => getTonPrice());
 
@@ -80,12 +82,15 @@ export const ActivityTab: FC<ActivityTabProps> = ({
               const price = lot.price / Math.pow(10, 9);
               const totalInUsd = total * tonPrice;
               const priceInUsd = price * tonPrice;
+              const priceToken = priceFilter === 'USD' ? `${priceInUsd.toFixed(9).replace(/\.?0+$/, '')} USD` : `${price.toFixed(9).replace(/\.?0+$/, '')} TON`;
+              
+              const totalPrice = priceFilter === 'USD' ? `${totalInUsd.toFixed(9).replace(/\.?0+$/, '')} USD` : `${total.toFixed(9).replace(/\.?0+$/, '')} TON`;
 
               return (
                 <S.ActivityRow key={index} even={index % 2 === 0}>
-                  <S.ActivityCell children={`${total.toFixed(1).replace(/\.?0+$/, '')}`} />
-                  <S.ActivityCell children={`${price.toFixed(9).replace(/\.?0+$/, '')} TON`} />
-                  <S.ActivityCell children={`${lot.amount} TON`} />
+                  <S.ActivityCell children={lot.amount} />
+                  <S.ActivityCell children={priceToken} />
+                  <S.ActivityCell children={totalPrice} />
                   <S.ActivityCell>
                     <S.ActivityActionButton
                       children="View Detail"

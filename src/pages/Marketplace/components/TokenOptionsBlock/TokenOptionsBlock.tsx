@@ -21,10 +21,12 @@ type TokenOptionsBlockProps = {
   tick: string;
   onListing: () => void;
   activeTab: MarketplaceTabsValueEnum;
+  priceFilter: 'TON' | 'USD';
+  onShowPriceIn: () => void;
 };
 
 export const TokenOptionsBlock: FC<TokenOptionsBlockProps> = (props) => {
-  const { onTokenChange, onSortSelectChange, onListing, tick, activeTab } = props;
+  const { onTokenChange, onSortSelectChange, onListing, tick, activeTab, priceFilter, onShowPriceIn } = props;
 
   const {
     data: marketPlaceTicks,
@@ -38,9 +40,23 @@ export const TokenOptionsBlock: FC<TokenOptionsBlockProps> = (props) => {
       case MarketplaceTabsValueEnum.LISTED:
         return <Listings onSortSelectChange={onSortSelectChange} tick={tick} />;
       case MarketplaceTabsValueEnum.ACTIVITIES:
-        return <Activities onSortSelectChange={onSortSelectChange} tick={tick} />;
+        return (
+          <Activities
+            onShowPriceIn={onShowPriceIn}
+            onSortSelectChange={onSortSelectChange}
+            priceFilter={priceFilter}
+            tick={tick}
+          />
+        );
       case MarketplaceTabsValueEnum.MY_ORDERS:
-        return <MyOrdres onSortSelectChange={onSortSelectChange} tick={tick} />;
+        return (
+          <MyOrdres 
+            onShowPriceIn={onShowPriceIn}
+            onSortSelectChange={onSortSelectChange}
+            priceFilter={priceFilter}
+            tick={tick}
+          />
+        );
           
       default:
         return null;
@@ -206,12 +222,12 @@ const Listings: FC<ListingsProps> = (props) => {
 type MyOrdresProps = {
   tick: string;
   onSortSelectChange: (sortValue: string) => void;
+  priceFilter: 'TON' | 'USD';
+  onShowPriceIn: () => void;
 };
 
 const MyOrdres: FC<MyOrdresProps> = (props) => {
-  const { tick, onSortSelectChange } = props;
-  const [priceFilter, setpriceFilter] = useState('TON');
-  const onShowPriceIn = () => setpriceFilter((prevSt) => prevSt === 'TON' ? 'USD' : 'TON');
+  const { tick, onSortSelectChange, priceFilter, onShowPriceIn } = props;
 
   return (
     <S.ActivitiesWrapper>
@@ -231,12 +247,12 @@ const MyOrdres: FC<MyOrdresProps> = (props) => {
 type ActivitiesProps = {
   tick: string;
   onSortSelectChange: (sortValue: string) => void;
+  priceFilter: 'TON' | 'USD';
+  onShowPriceIn: () => void;
 };
 
 const Activities: FC<ActivitiesProps> = (props) => {
-  const { tick, onSortSelectChange } = props;
-  const [priceFilter, setpriceFilter] = useState('TON');
-  const onShowPriceIn = () => setpriceFilter((prevSt) => prevSt === 'TON' ? 'USD' : 'TON');
+  const { tick, onSortSelectChange, priceFilter, onShowPriceIn } = props;
 
   return (
     <S.ActivitiesWrapper>

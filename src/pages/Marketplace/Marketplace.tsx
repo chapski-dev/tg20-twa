@@ -71,6 +71,10 @@ export const Marketplace: FC = () => {
   const [lastActivitySort, setLastActivitySort] = useState<LotSort>('closed_at');
   const [lastActivityDirection, setLastActivityDirection] = useState<LotSortDirection>('desc');
 
+  const [priceFilter, setPriceFilter] = useState<'TON' | 'USD'>('TON');
+
+  const onShowPriceIn = () => setPriceFilter((prevSt) => prevSt === 'TON' ? 'USD' : 'TON');
+
   const { currentWalletBalance } = useTelegram();
 
   const { data: currentWalletTickerData } = useQuery(
@@ -221,6 +225,7 @@ export const Marketplace: FC = () => {
           <ActivityTab
             direction={direction}
             onDetailsClick={handleActivityDetailsClick}
+            priceFilter={priceFilter}
             sort={sort}
             tick={tick}
           />
@@ -229,16 +234,15 @@ export const Marketplace: FC = () => {
         value: MarketplaceTabsValueEnum.ACTIVITIES,
       },
     ],
-    [
-      address,
+    [address,
       currentWalletBalance,
       direction,
       handleActivityDetailsClick,
       handleBuyClick,
       handleCancelOrderClick,
+      priceFilter,
       sort,
-      tick,
-    ],
+      tick],
   );
 
   const handleSortSelectChange = useCallback(
@@ -292,13 +296,15 @@ export const Marketplace: FC = () => {
         <TokenOptionsBlock
           activeTab={activeTab}
           onListing={handleConfirmLotClick}
+          onShowPriceIn={onShowPriceIn}
           onSortSelectChange={handleSortSelectChange}
           onTokenChange={setTick}
+          priceFilter={priceFilter}
           sortSelectValue={`${sort}_${direction}`}
           tick={tick}
         />
       </S.ActionsContainer>
-      
+
       <S.TabContentWrapper>
         {tabs[activeTab].component}
       </S.TabContentWrapper>
