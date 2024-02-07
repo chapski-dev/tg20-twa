@@ -1,21 +1,22 @@
-import styled, { DefaultTheme } from 'styled-components'
+import styled, { DefaultTheme } from 'styled-components';
 
 const getLabelColor = (theme: DefaultTheme, error?: boolean) => {
   switch (true) {
     case error:
-      return theme.color.redAlert
+      return theme.color.redAlert;
     default:
-      return theme.color.text
+      return theme.color.text;
   }
-}
+};
+
 const getSubLabelColor = (theme: DefaultTheme, error?: boolean) => {
   switch (true) {
     case error:
-      return theme.color.redAlert
+      return theme.color.redAlert;
     default:
-      return theme.color.hint
+      return theme.color.hint;
   }
-}
+};
 
 export const Input = styled.input<{ disabled?: boolean }>`
   color: ${({ theme }) => theme.color.text};
@@ -42,27 +43,27 @@ export const Input = styled.input<{ disabled?: boolean }>`
     -webkit-transition-deмlay: 9999s;
     -webkit-text-fill-color: ${({ theme }) => theme.color.hint};
   }
-`
+`;
 
 export const InputContainer = styled.div<{
-  error?: boolean
-  isFocused?: boolean
+  error?: boolean;
+  focused?: boolean;
 }>`
   display: flex;
   align-items: center;
   background-color: ${({ theme }) => theme.color.bgSecondary};
-  border: ${({ error, theme, isFocused }) =>
+  border: ${({ error, theme, focused }) =>
     error ? `1px solid ${theme.color.redAlert}` : 'none'};
   padding: 0 18px;
   gap: 8px;
   border-radius: 6px;
-`
+`;
 
 export const InputWrapper = styled.div`
   display: flex;
   gap: 7px;
   flex-direction: column;
-`
+`;
 
 export const Sublabel = styled.span<{ error?: boolean }>`
   font-size: 12px;
@@ -70,7 +71,7 @@ export const Sublabel = styled.span<{ error?: boolean }>`
   font-weight: 400;
   line-height: 14px;
   color: ${({ theme, error }) => getSubLabelColor(theme, error)};
-`
+`;
 
 export const Label = styled.span<{ error?: boolean }>`
   font-size: 14px;
@@ -78,7 +79,7 @@ export const Label = styled.span<{ error?: boolean }>`
   font-weight: 400;
   line-height: 16px;
   color: ${({ theme, error }) => getLabelColor(theme, error)};
-`
+`;
 
 export const ErrorMessageBlock = styled.div`
   display: flex;
@@ -90,4 +91,4 @@ export const ErrorMessageBlock = styled.div`
   font-weight: 500;
   line-height: 16px;
   margin-top: 4px;
-`
+`;

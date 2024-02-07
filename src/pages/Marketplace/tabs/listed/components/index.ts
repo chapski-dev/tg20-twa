@@ -1,1 +1,1 @@
-export { LotCard } from './LotCard/LotCard'
+export { LotCard } from './LotCard/LotCard';

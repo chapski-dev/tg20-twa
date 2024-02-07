@@ -1,34 +1,84 @@
-import styled from 'styled-components'
-import { DynamicTickLogo as UIDynamicTickLogo } from 'ui/DynamicTickLogo/DynamicTickLogo'
-import { Loader as UILoader } from 'ui/Loader/Loader'
+import styled from 'styled-components';
+import { Button as ButtonReference } from 'ui/Button/Button';
+
+import { DynamicTickLogo as UIDynamicTickLogo } from 'ui/DynamicTickLogo/DynamicTickLogo';
+import { Input } from 'ui/Input/Input';
+import { Loader as UILoader } from 'ui/Loader/Loader';
 
 export const Wrapper = styled.div`
-  border-radius: 10px;
+    display: flex;
+  flex-direction: column;
+  gap: 16px;
+`;
+
+export const Flex = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16px;
+
+  .select-container {
+    margin-left: auto;
+  }
+`;
+
+export const Block = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: ${({ theme }) => theme.color.bg};
-`
+  gap: 2px;
+`;
+
+export const BlockTitle = styled.div`
+  font-size: 12px;
+  color: ${({ theme }) => theme.color.text};
+  font-style: normal;
+  font-weight: 400;
+  line-height: 140%; /* 16.8px */
+  letter-spacing: -0.12px;
+
+  span {
+    text-transform: uppercase;
+  }
+`;
+
+export const BlockDescription = styled.div`
+  font-size: 12px;
+  color: ${({ theme }) => theme.color.hint};
+  font-style: normal;
+  font-weight: 500;
+  line-height: 140%; /* 16.8px */
+  letter-spacing: -0.12px;
+  text-transform: uppercase;
+`;
 
 export const TopSelectsBlock = styled.div`
   display: flex;
   align-items: center;
   border-radius: 10px 10px 0 0;
-`
+`;
 
 export const TokenSelectContentWrapper = styled.div`
   display: flex;
-  gap: 8px;
+  gap: 16px;
   align-items: center;
-  background-color: ${({ theme }) => theme.color.bg};
-  border-radius: 10px 0 0 0;
-  padding-left: 10px;
-  width: 60%;
+`;
 
-  svg {
-    width: 20px;
-    height: 20px;
-  }
-`
+export const Button = styled(ButtonReference)`
+  gap: 10px;
+  width: 100%;
+  height: 42px;
+  max-width: 170px;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 140%; /* 22.4px */
+  letter-spacing: -0.16px;
+  margin-left: auto;
+`;
+
+export const StyledInput = styled(Input)`
+  margin-top: 16px;
+`;
 
 export const TokenSelectWrapper = styled.div`
   position: relative;
@@ -46,7 +96,7 @@ export const TokenSelectWrapper = styled.div`
     top: 45%;
     z-index: 1;
   }
-`
+`;
 
 export const TokenSelect = styled.select`
   position: relative;
@@ -68,7 +118,7 @@ export const TokenSelect = styled.select`
     background-color: ${({ theme }) => theme.color.bg};
     color: ${({ theme }) => theme.color.text};
   }
-`
+`;
 
 export const SortSelectorWrapper = styled.div`
   padding: 10px;
@@ -83,13 +133,13 @@ export const SortSelectorWrapper = styled.div`
   & svg path {
     stroke: ${({ theme }) => theme.color.text};
   }
-`
+`;
 
 export const VerticalLine = styled.div`
   width: 1px;
   height: 40px;
   background-color: ${({ theme }) => theme.color.bgSecondary};
-`
+`;
 
 export const SortSelector = styled.select`
   position: absolute;
@@ -109,38 +159,51 @@ export const SortSelector = styled.select`
   -webkit-appearance: none;
   cursor: pointer;
   border-radius: 10px;
-`
+`;
 
 export const Line = styled.div`
   width: 100%;
   height: 1px;
   background-color: ${({ theme }) => theme.color.bgSecondary};
-`
+`;
 
 export const InfoWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 8px;
   width: 100%;
-  padding: 12px;
-`
+`;
 
+export const Link = styled.a`
+  color: ${({ theme }) => theme.color.link};
+  font-size: 10px;
+  font-style: normal;
+  text-decoration: none;
+  word-break: break-all;
+  word-wrap: wrap;
+  font-weight: 400;
+  line-height: 120%; /* 12px */
+  letter-spacing: -0.1px;
+`;
 export const InfoBlockWrapper = styled.div`
   width: 48%;
   display: flex;
   flex-direction: column;
+  border-radius: 6px;
+  background: ${({ theme }) => theme.color.bg};
+  padding: 4px 12px;
   gap: 4px;
-`
+`;
 
 export const Label = styled.span<{ $isAccent?: boolean }>`
-  font-size: 12px;
+  font-size: 10px;
   font-style: normal;
-  font-weight: 400;
+  font-weight: 500;
   line-height: 140%;
-  letter-spacing: -0.12px;
+  letter-spacing: -0.1px;
   color: ${({ theme, $isAccent }) =>
     $isAccent ? theme.color.text : theme.color.hint};
-`
+`;
 
 export const BalanceBlock = styled.div`
   display: flex;
@@ -157,26 +220,26 @@ export const BalanceBlock = styled.div`
     width: 16px;
     height: 16px;
   }
-`
+`;
 
 export const ProgressBar = styled.div`
   width: 120px;
   height: 6px;
   border-radius: 39px;
   background-color: ${({ theme }) => theme.color.bgSecondary};
-`
+`;
 
 export const ProgressLine = styled.div<{ $widthPercent: number }>`
   width: ${({ $widthPercent }) => $widthPercent}%;
   background-color: ${({ theme }) => theme.color.btn};
   height: 6px;
   border-radius: 39px;
-`
+`;
 
 export const Loader = styled(UILoader)`
   width: 100%;
   height: 216px;
-`
+`;
 
 export const DynamicTickLogo = styled(UIDynamicTickLogo)`
   min-height: 18px;
@@ -184,4 +247,9 @@ export const DynamicTickLogo = styled(UIDynamicTickLogo)`
   width: 18px;
   height: 18px;
   font-size: 7px;
-`
+`;
+
+export const ActivitiesWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;

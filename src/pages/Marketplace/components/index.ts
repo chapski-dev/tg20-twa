@@ -1,1 +1,1 @@
-export { TokenOptionsBlock } from './TokenOptionsBlock/TokenOptionsBlock'
+export { TokenOptionsBlock } from './TokenOptionsBlock/TokenOptionsBlock';
