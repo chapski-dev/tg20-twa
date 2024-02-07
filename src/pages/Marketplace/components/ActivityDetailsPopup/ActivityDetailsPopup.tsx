@@ -56,6 +56,7 @@ export const ActivityDetailsPopup: FC<ActivityDetailsPopupProps> = ({
         <S.PositionsContainer>
           <S.PositionInfoRow>
             <S.PositionText children="Network fee" />
+            {/* // TODO - разобраться с комиссиями */}
             <S.PositionValue children="0.012 TON ($0.0036)" />
           </S.PositionInfoRow>
 

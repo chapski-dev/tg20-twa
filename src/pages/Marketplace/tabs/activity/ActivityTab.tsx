@@ -4,6 +4,7 @@ import { getTonPrice, getPaginatedActivities } from 'api';
 import { LotSort, LotSortDirection } from 'api/types';
 import { LotInfo } from 'pages/Marketplace/Marketplace';
 import { Pagination } from 'ui/Pagination/Pagination';
+import { formaterToFixed9 } from 'utils';
 import * as S from './style';
 
 type ActivityTabProps = {
@@ -16,13 +17,14 @@ type ActivityTabProps = {
 
 const ITEMS_ON_PAGE = 10;
 
-export const ActivityTab: FC<ActivityTabProps> = ({
-  tick,
-  sort,
-  direction,
-  onDetailsClick,
-  priceFilter,
-}) => {
+export const ActivityTab: FC<ActivityTabProps> = (props) => {
+  const {
+    tick,
+    sort,
+    direction,
+    onDetailsClick,
+    priceFilter,
+  } = props;
   const { data: tonPrice } = useQuery(['currentTonPrice'], () => getTonPrice());
 
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -80,11 +82,11 @@ export const ActivityTab: FC<ActivityTabProps> = ({
             activitiesList.items.map((lot, index) => {
               const total = lot.total / Math.pow(10, 9);
               const price = lot.price / Math.pow(10, 9);
-              const totalInUsd = total * tonPrice;
-              const priceInUsd = price * tonPrice;
-              const priceToken = priceFilter === 'USD' ? `${priceInUsd.toFixed(9).replace(/\.?0+$/, '')} USD` : `${price.toFixed(9).replace(/\.?0+$/, '')} TON`;
+              const totalInUSD = total * tonPrice;
+              const priceInUSD = price * tonPrice;
+              const priceToken = priceFilter === 'USD' ? `${formaterToFixed9(priceInUSD)} USD` : `${formaterToFixed9(price)} TON`;
               
-              const totalPrice = priceFilter === 'USD' ? `${totalInUsd.toFixed(9).replace(/\.?0+$/, '')} USD` : `${total.toFixed(9).replace(/\.?0+$/, '')} TON`;
+              const totalPrice = priceFilter === 'USD' ? `${formaterToFixed9(totalInUSD)} USD` : `${formaterToFixed9(total)} TON`;
 
               return (
                 <S.ActivityRow key={index} even={index % 2 === 0}>
@@ -96,16 +98,13 @@ export const ActivityTab: FC<ActivityTabProps> = ({
                       children="View Detail"
                       onClick={() => {
                         onDetailsClick({
-                          address: lot.address,
-                          amount: lot.amount,
-                          buyer: lot.buyer,
+                          ...lot,
                           closedAt: lot.closed_at,
                           createdAt: lot.created_at,
-                          price: price,
-                          priceInUSD: priceInUsd,
-                          seller: lot.seller,
-                          total: total,
-                          totalInUSD: totalInUsd,
+                          price,
+                          priceInUSD,
+                          total,
+                          totalInUSD,
                         });
                       }}
                     />

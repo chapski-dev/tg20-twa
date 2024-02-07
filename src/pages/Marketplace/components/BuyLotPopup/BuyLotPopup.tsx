@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import { Button } from 'ui/Button/Button';
 import { SvgToncoinIcon } from 'ui/icons';
 import { Modal } from 'ui/Modal/Modal';
+import { formaterToFixed9 } from 'utils';
 import { formatNumberWithSeparators } from 'utils/formNumberWithSeparators';
 import * as S from './style';
 
@@ -15,16 +16,17 @@ type BuyLotProps = {
   total: number;
   handleBuyConfirmation: () => Promise<void>;
 };
-export const BuyLotPopup: FC<BuyLotProps> = ({
-  onClose,
-  fromAmount,
-  toAmount,
-  ticker,
-  priceTon,
-  priceUsd,
-  total,
-  handleBuyConfirmation,
-}) => {
+export const BuyLotPopup: FC<BuyLotProps> = (props) => {
+  const {
+    onClose,
+    fromAmount,
+    toAmount,
+    ticker,
+    priceTon,
+    priceUsd,
+    total,
+    handleBuyConfirmation,
+  } = props;
   const PROTOCOL_FEE = 0.02;
   const GAS_FEE = 0.25;
 
@@ -43,7 +45,7 @@ export const BuyLotPopup: FC<BuyLotProps> = ({
       <S.Wrapper>
         <S.FieldsWrapper>
           <S.FieldWrapper>
-            <S.ValueLabel children={fromAmount.toFixed(9).replace(/\.?0+$/, '')} />
+            <S.ValueLabel children={formaterToFixed9(fromAmount)} />
             <S.TokenWrapper>
               <SvgToncoinIcon height={24} width={23} />
               <S.TokenLabel children="TON" />
@@ -60,8 +62,7 @@ export const BuyLotPopup: FC<BuyLotProps> = ({
           <S.PositionWrapper>
             <S.PositionText children="Price" />
             <S.PositionValue
-              children={`${priceTon.toFixed(9).replace(/\.?0+$/, '')} TON / 
-              ${priceUsd.toFixed(9).replace(/\.?0+$/, '')} USD`}
+              children={`${formaterToFixed9(priceTon)} TON / ${formaterToFixed9(priceUsd)} USD`}
             />
           </S.PositionWrapper>
 
@@ -75,16 +76,14 @@ export const BuyLotPopup: FC<BuyLotProps> = ({
               Service fee <S.PositionTextLabel children="1.99%" />
             </S.PositionText>
             <S.PositionValue
-              children={`${fee.toFixed(9).replace(/\.?0+$/, '')} TON / 
-              ${feeUsd.toFixed(9).replace(/\.?0+$/, '')} USD`}
+              children={`${formaterToFixed9(fee)} TON / ${formaterToFixed9(feeUsd)} USD`}
             />
           </S.PositionWrapper>
 
           <S.PositionWrapper>
             <S.PositionText children="Total" />
             <S.PositionValue
-              children={`${totalWithFee.toFixed(9).replace(/\.?0+$/, '')} TON / 
-              ${totalWithFeeUsd.toFixed(9).replace(/\.?0+$/, '')} USD`}
+              children={`${formaterToFixed9(totalWithFee)} TON / ${formaterToFixed9(totalWithFeeUsd)} USD`}
             />
           </S.PositionWrapper>
         </S.PositionsContainer>
