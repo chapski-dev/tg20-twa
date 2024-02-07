@@ -1,5 +1,5 @@
 import { FC, useMemo, useState } from 'react'
-import { useTonAddress } from '@tonconnect/ui-react'
+import { useTonAddress, useTonConnectUI } from '@tonconnect/ui-react'
 import { useNavigate } from 'react-router-dom'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/css'
@@ -7,27 +7,23 @@ import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import 'swiper/css/scrollbar'
 import { BackButton } from 'features/BackButton'
+import { MainButton } from 'features/MainButton'
 import { useClipboard } from 'hooks/useClipboard/useClipboard'
 import { useTelegram } from 'hooks/useTelegram/useTelegram'
 import { Container } from 'ui/Container/Container'
 import {
-  SvgArrowRightSlide,
   SvgArrowSwap,
-  SvgAssetsIcon,
   SvgIconWalletTg,
-  SvgLiSearch,
   SvgLogout,
   SvgRecieveSquare,
   SvgSearch,
   SvgSendSquare,
-  SvgSlideTitle,
-  SvgTransfersIcon,
-  SvgVectorsWallet,
 } from 'ui/icons'
+
+import { Promo } from 'ui/Promo'
 import { type Tab } from 'ui/TabsFilled/TabsFilled'
-import { shortenAddress } from 'utils/shortenAddress'
-import creditCards from './assets/credit-cards.png'
-import { MyAssets, MyTransfers, BalancesBlock } from './components'
+
+import { MyAssets, MyTransfers } from './components'
 import { PROCENT_MOCK } from './mock'
 import * as S from './style'
 
@@ -35,12 +31,10 @@ const tabs: Tab[] = [
   {
     label: 'Assets',
     value: 'assets',
-    icon: <SvgAssetsIcon />,
   },
   {
     label: 'Transfers',
     value: 'transfers',
-    icon: <SvgTransfersIcon />,
   },
 ]
 
@@ -55,6 +49,8 @@ export const MyWallet: FC = () => {
 
   const clipboard = useClipboard()
 
+  const [tonConnectUI] = useTonConnectUI()
+
   const currentWalletContent = useMemo(() => {
     if (currentTab.value === 'assets') {
       return <MyAssets />
@@ -63,16 +59,6 @@ export const MyWallet: FC = () => {
     return <MyTransfers />
   }, [currentTab.value])
 
-  const handleWalletAddressClick = () => {
-    if (!userWalletAddress) {
-      return
-    }
-
-    clipboard(userWalletAddress, () =>
-      alert('Your wallet address successfully copied!')
-    )
-  }
-
   return (
     <S.Wrapper>
       <BackButton onClick={() => navigate(-1)} />
@@ -80,17 +66,9 @@ export const MyWallet: FC = () => {
         <S.TopBlock>
           <S.Search>
             <S.SearchInput
-              name="search"
+              icon={<SvgSearch />}
+              onChange={() => {}}
               placeholder="Search tokens"
-              // style={{
-              //   backgroundImage:
-              //     "url('../../pages/MyWallet/assets/li_search.png')",
-              //   backgroundPosition: 'left 5px',
-              //   backgroundSize: '20px 20px',
-              //   backgroundRepeat: 'no-repeat',
-              //   paddingLeft: '8px',
-              // }}
-              type="text"
             />
           </S.Search>
           <S.LogOut
@@ -111,7 +89,6 @@ export const MyWallet: FC = () => {
           </S.SvgRightDown>
         </S.BalanceBlock>
       </S.TopWrapperBlock>
-
       <S.WalletFunctions>
         <S.SendBlockWrapper onClick={() => alert('Send button')}>
           <S.SendButton>
@@ -133,7 +110,6 @@ export const MyWallet: FC = () => {
         </S.SwapBlockWrapper>
       </S.WalletFunctions>
       <S.Line />
-      {/* <BalancesBlock /> */}
 
       <S.CarouselContainer>
         <Swiper
@@ -141,157 +117,53 @@ export const MyWallet: FC = () => {
             console.log('slider change')
           }}
           slidesPerView={2}
-          spaceBetween={150}
+          spaceBetween={170}
         >
           <SwiperSlide>
-            <S.SwiperCard>
-              <S.SvgTitle>
-                <SvgSlideTitle />
-              </S.SvgTitle>
-              <S.ContentCard>
-                <S.TitleCard>Add Crypto from Binance or Coinbase</S.TitleCard>
-                <S.TextLink
-                  onClick={() => {
-                    alert('Deposit now')
-                  }}
-                >
-                  Deposit now
-                  <SvgArrowRightSlide />
-                </S.TextLink>
-              </S.ContentCard>
-              <S.Close
-                onClick={() => {
-                  alert('Close the card')
-                }}
-              >
-                X
-              </S.Close>
-            </S.SwiperCard>
+            <Promo
+              subtitle="Deposit now"
+              title="Add Crypto from Binance or Coinbase"
+              variant="yellow"
+            />
           </SwiperSlide>
           <SwiperSlide>
-            <S.SwiperCardSecound>
-              <S.SvgTitleSecound>
-                <img alt="credit-cards-png" src={creditCards} width={90} />
-              </S.SvgTitleSecound>
-              <S.ContentCardSecound>
-                <S.TitleCardSecound>
-                  See what’s new in your wallet!
-                </S.TitleCardSecound>
-                <S.TextLinkSecound
-                  onClick={() => {
-                    alert('Explore wallet')
-                  }}
-                >
-                  Explore wallet
-                  <SvgArrowRightSlide />
-                </S.TextLinkSecound>
-              </S.ContentCardSecound>
-              <S.Close
-                onClick={() => {
-                  alert('Close the card')
-                }}
-              >
-                X
-              </S.Close>
-            </S.SwiperCardSecound>
+            <Promo
+              subtitle="Explore wallet"
+              title="See what’s new in your wallet!"
+              variant="purple"
+            />
           </SwiperSlide>
           <SwiperSlide>
-            <S.SwiperCard>
-              <S.SvgTitle>
-                <SvgSlideTitle />
-              </S.SvgTitle>
-              <S.ContentCard>
-                <S.TitleCard>Add Crypto from Binance or Coinbase</S.TitleCard>
-                <S.TextLink
-                  onClick={() => {
-                    alert('Deposit now')
-                  }}
-                >
-                  Deposit now
-                  <SvgArrowRightSlide />
-                </S.TextLink>
-              </S.ContentCard>
-              <S.Close
-                onClick={() => {
-                  alert('Close the card')
-                }}
-              >
-                X
-              </S.Close>
-            </S.SwiperCard>
+            <Promo
+              subtitle="Deposit now"
+              title="Add Crypto from Binance or Coinbase"
+              variant="yellow"
+            />
           </SwiperSlide>
           <SwiperSlide>
-            <S.SwiperCardSecound>
-              <S.SvgTitleSecound>
-                <img alt="credit-cards-png" src={creditCards} width={90} />
-              </S.SvgTitleSecound>
-              <S.ContentCardSecound>
-                <S.TitleCardSecound>
-                  See what’s new in your wallet!
-                </S.TitleCardSecound>
-                <S.TextLinkSecound
-                  onClick={() => {
-                    alert('Explore wallet')
-                  }}
-                >
-                  Explore wallet
-                  <SvgArrowRightSlide />
-                </S.TextLinkSecound>
-              </S.ContentCardSecound>
-              <S.Close
-                onClick={() => {
-                  alert('Close the card')
-                }}
-              >
-                X
-              </S.Close>
-            </S.SwiperCardSecound>
+            <Promo
+              subtitle="Explore wallet"
+              title="See what’s new in your wallet!"
+              variant="purple"
+            />
           </SwiperSlide>
         </Swiper>
       </S.CarouselContainer>
-
       <Container>
         <S.TabsBlock>
           <S.CustomTab
-            onChange={setCurrentTab}
-            selectedTab={currentTab}
-            tabs={tabs}
-          ></S.CustomTab>
-          {currentWalletContent}
-        </S.TabsBlock>
-        {/* <S.BlockWrapper>
-          <BalancesBlock />
-          <S.WalletAddressWrapper onClick={handleWalletAddressClick}>
-            <S.WalletLabel>{shortenAddress(userWalletAddress)}</S.WalletLabel>
-
-            <S.CopyIcon />
-          </S.WalletAddressWrapper>
-        </S.BlockWrapper>
-
-        <S.BlockWrapper>
-          <S.Tabs
+            containerClassName="tabs"
             onChange={setCurrentTab}
             selectedTab={currentTab}
             tabs={tabs}
           />
           {currentWalletContent}
-        </S.BlockWrapper> */}
+        </S.TabsBlock>
       </Container>
+      <MainButton
+        onClick={() => tonConnectUI.openModal()}
+        text="Connect wallet"
+      />
     </S.Wrapper>
   )
 }
-
-/* <MainButton
-      onClick={() => {
-        // navigate(AppRoutes.Inscribe)
-        navigate({
-          pathname: AppRoutes.Inscribe,
-          search: createSearchParams({
-            type: 'mint',
-            tick: 'gram',
-            from: 'token',
-          }).toString(),
-        })
-      }}
-      text="Inscribe"
-      /> */

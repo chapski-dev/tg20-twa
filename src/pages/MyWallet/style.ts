@@ -1,8 +1,7 @@
 import styled from 'styled-components'
-import { SvgCopy } from 'ui/icons'
-import { TabsFilled } from 'ui/TabsFilled/TabsFilled'
-import { theme } from './../../assets/style/theme'
-// import bgVectors from './assets/Vector.png'
+import { Tabs } from 'ui'
+import { Input } from 'ui/Input/Input'
+import Vectors from './assets/vectors.png'
 
 export const Wrapper = styled.div`
   display: flex;
@@ -33,15 +32,31 @@ export const Search = styled.form`
   display: flex;
 `
 
-export const SearchInput = styled.input`
+export const SearchInput = styled(Input)`
   width: 310.68px;
   height: 42px;
   border: none;
   border-radius: 6px;
   color: ${({ theme }) => theme.color.text};
   background-color: ${({ theme }) => theme.color.bg};
-  &::placeholder {
-    color: ${({ theme }) => theme.color.hint};
+  svg {
+    path {
+      fill: ${({ theme }) => theme.color.hint};
+    }
+  }
+  input {
+    &::placeholder {
+      color: ${({ theme }) => theme.color.hint};
+    }
+    background-color: ${({ theme }) => theme.color.bg};
+
+    svg {
+      path {
+        fill {
+          color: ${({ theme }) => theme.color.hint};
+        }
+      }
+    }
   }
 `
 
@@ -64,6 +79,7 @@ export const BalanceBlock = styled.div`
   padding-bottom: 23.4px;
   padding-left: 20px;
   background-color: ${({ theme }) => theme.color.bgSecondary};
+  background-image: url(${Vectors}) no-repeat;
 `
 export const TotlaBalance = styled.div`
   font-weight: 500;
@@ -130,6 +146,9 @@ export const SendBlockWrapper = styled.div`
 `
 
 export const SendButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 52.66px;
   height: 52.66px;
   background-color: ${({ theme }) => theme.color.bgSecondary};
@@ -158,6 +177,9 @@ export const RecieveBlockWrapper = styled.div`
 `
 
 export const RecieveButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 52.66px;
   height: 52.66px;
   background-color: ${({ theme }) => theme.color.bgSecondary};
@@ -186,6 +208,9 @@ export const SwapBlockWrapper = styled.div`
 `
 
 export const SwapButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 52.66px;
   height: 52.66px;
   background-color: ${({ theme }) => theme.color.bgSecondary};
@@ -209,12 +234,7 @@ export const Line = styled.div`
   border: 3px solid ${({ theme }) => theme.color.bgSecondary};
 `
 
-export const CustomTab = styled(TabsFilled)`
-  svg {
-    display: none;
-  }
-  color: red;
-`
+export const CustomTab = styled(Tabs)``
 
 // export const Tabs = styled(UITabs)`
 //   min-width: 100%;
