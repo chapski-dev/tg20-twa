@@ -45,6 +45,7 @@ export type TransferHistoryType = {
 }
 
 export type MarketplaceLot = {
+  id: number
   address: string
   tick: string
   seller: string
