@@ -1,19 +1,19 @@
-import { FC, useCallback, useState } from 'react'
-import { useQuery } from 'react-query'
-import { getTonPrice, getPaginatedActivities } from 'api'
-import { LotSort, LotSortDirection } from 'api/types'
-import { LotInfo } from 'pages/Marketplace/Marketplace'
-import { Pagination } from 'ui/Pagination/Pagination'
-import * as S from './style'
+import { FC, useCallback, useState } from 'react';
+import { useQuery } from 'react-query';
+import { getTonPrice, getPaginatedActivities } from 'api';
+import { LotSort, LotSortDirection } from 'api/types';
+import { LotInfo } from 'pages/Marketplace/Marketplace';
+import { Pagination } from 'ui/Pagination/Pagination';
+import * as S from './style';
 
 type ActivityTabProps = {
-  tick: string
-  sort: LotSort
-  direction: LotSortDirection
-  onDetailsClick: (lot: LotInfo) => void
-}
+  tick: string;
+  sort: LotSort;
+  direction: LotSortDirection;
+  onDetailsClick: (lot: LotInfo) => void;
+};
 
-const ITEMS_ON_PAGE = 10
+const ITEMS_ON_PAGE = 10;
 
 export const ActivityTab: FC<ActivityTabProps> = ({
   tick,
@@ -21,13 +21,13 @@ export const ActivityTab: FC<ActivityTabProps> = ({
   direction,
   onDetailsClick,
 }) => {
-  const { data: tonPrice } = useQuery(['currentTonPrice'], () => getTonPrice())
+  const { data: tonPrice } = useQuery(['currentTonPrice'], () => getTonPrice());
 
-  const [currentPage, setCurrentPage] = useState<number>(1)
+  const [currentPage, setCurrentPage] = useState<number>(1);
 
   const handleChangePage = useCallback((page: number) => {
-    setCurrentPage(page + 1)
-  }, [])
+    setCurrentPage(page + 1);
+  }, []);
 
   const {
     data: activitiesList,
@@ -39,33 +39,36 @@ export const ActivityTab: FC<ActivityTabProps> = ({
     () =>
       getPaginatedActivities(tick, {
         count: ITEMS_ON_PAGE,
+        direction,
         offset: (currentPage - 1) * ITEMS_ON_PAGE,
-        sort: sort,
-        direction: direction,
+        sort,
       }),
     {
       enabled: !!tick,
-    }
-  )
+    },
+  );
 
-  if (isLoading) return <S.EndLoader />
+  if (isLoading) {
+    return <S.EndLoader />;
+  }
 
-  if (isError)
+  if (isError) {
     return (
       <S.Wrapper>
-        <S.ErrorText>Error loading recent activity</S.ErrorText>
+        <S.ErrorText children="Error loading recent activity" />
       </S.Wrapper>
-    )
+    );
+  }
 
   return (
     <S.Wrapper>
       <S.ActivityTable>
         <S.ActivitiesHeader>
           <S.ActivitiesHeaderRow>
-            <S.ActivitiesHeaderCell>Total</S.ActivitiesHeaderCell>
-            <S.ActivitiesHeaderCell>Price</S.ActivitiesHeaderCell>
-            <S.ActivitiesHeaderCell>Amount</S.ActivitiesHeaderCell>
-            <S.ActivitiesHeaderCell></S.ActivitiesHeaderCell>
+            <S.ActivitiesHeaderCell children="Token Value" />
+            <S.ActivitiesHeaderCell children="Price/Token" />
+            <S.ActivitiesHeaderCell children="Total price " />
+            <S.ActivitiesHeaderCell />
           </S.ActivitiesHeaderRow>
         </S.ActivitiesHeader>
 
@@ -73,42 +76,37 @@ export const ActivityTab: FC<ActivityTabProps> = ({
           {isSuccess &&
             activitiesList.items &&
             activitiesList.items.map((lot, index) => {
-              const total = lot.total / Math.pow(10, 9)
-              const price = lot.price / Math.pow(10, 9)
-              const totalInUsd = total * tonPrice
-              const priceInUsd = price * tonPrice
+              const total = lot.total / Math.pow(10, 9);
+              const price = lot.price / Math.pow(10, 9);
+              const totalInUsd = total * tonPrice;
+              const priceInUsd = price * tonPrice;
 
               return (
-                <S.ActivityRow key={index} even={(index % 2 === 0).toString()}>
-                  <S.ActivityCell>
-                    {total.toFixed(9).replace(/\.?0+$/, '')} TON
-                  </S.ActivityCell>
-                  <S.ActivityCell>
-                    {price.toFixed(9).replace(/\.?0+$/, '')} TON
-                  </S.ActivityCell>
-                  <S.ActivityCell>{lot.amount}</S.ActivityCell>
+                <S.ActivityRow key={index} even={index % 2 === 0}>
+                  <S.ActivityCell children={`${total.toFixed(1).replace(/\.?0+$/, '')}`} />
+                  <S.ActivityCell children={`${price.toFixed(9).replace(/\.?0+$/, '')} TON`} />
+                  <S.ActivityCell children={`${lot.amount} TON`} />
                   <S.ActivityCell>
                     <S.ActivityActionButton
+                      children="View Detail"
                       onClick={() => {
                         onDetailsClick({
                           address: lot.address,
                           amount: lot.amount,
+                          buyer: lot.buyer,
+                          closedAt: lot.closed_at,
+                          createdAt: lot.created_at,
                           price: price,
                           priceInUSD: priceInUsd,
+                          seller: lot.seller,
                           total: total,
                           totalInUSD: totalInUsd,
-                          createdAt: lot.created_at,
-                          closedAt: lot.closed_at,
-                          seller: lot.seller,
-                          buyer: lot.buyer,
-                        })
+                        });
                       }}
-                    >
-                      Details
-                    </S.ActivityActionButton>
+                    />
                   </S.ActivityCell>
                 </S.ActivityRow>
-              )
+              );
             })}
         </S.ActivitiesBody>
       </S.ActivityTable>
@@ -120,5 +118,5 @@ export const ActivityTab: FC<ActivityTabProps> = ({
         />
       )}
     </S.Wrapper>
-  )
-}
+  );
+};
