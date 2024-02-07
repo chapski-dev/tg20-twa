@@ -1,15 +1,7 @@
-import styled from 'styled-components'
-import Select from 'react-select'
+import RSelect from 'react-select';
+import styled from 'styled-components';
 
-// export const Select = styled.div`
-//   width: 176px;
-
-//   .select-container {
-//     width: 100%;
-//   }
-// `
-
-export const StyledSelect = styled(Select)`
+export const Select = styled(RSelect)`
   width: 176px;
   .select__input-container {
     color: ${({ theme }) => theme.color.text};
@@ -81,4 +73,4 @@ export const StyledSelect = styled(Select)`
       background: ${({ theme }) => theme.color.bgSecondary};
     }
   }
-`
+`;
