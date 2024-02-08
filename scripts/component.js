@@ -6,9 +6,9 @@ const createTsxFile = (folderName, name) => {
   const tsxContent = `import { FC } from 'react';
 import * as S from './style';
 
-type T${name}Props = {}
+type ${name}Props = {}
 
-export const ${name}:FC<T${name}Props> = () => (
+export const ${name}:FC<${name}Props> = () => (
   <S.Wrapper>
     {/* Your component code here */}
   </S.Wrapper>

@@ -1,6 +1,5 @@
 import { useRoutes } from 'react-router-dom'
 import { AppRoutes } from 'constants/app'
-import { HeaderUserBalance } from 'features/HeaderUserBalance'
 import { Layout } from 'features/Layout/Layout'
 import { Deploy } from './Deploy/Deploy'
 import { Home2 } from './Home2/Home2'
@@ -27,11 +26,7 @@ export const PagesConfig = () => {
           path: AppRoutes.Inscriptions,
         },
         {
-          element:
-            <>
-              <HeaderUserBalance />
-              <Mint />
-            </>,
+          element: <Mint />,
           path: AppRoutes.Mint,
         },
         {
@@ -39,11 +34,7 @@ export const PagesConfig = () => {
           path: AppRoutes.Inscribe,
         },
         {
-          element:
-            <>
-              <HeaderUserBalance />
-              <Marketplace />
-            </>,
+          element: <Marketplace />,
           path: AppRoutes.Marketplace,
         },
         {
@@ -55,11 +46,7 @@ export const PagesConfig = () => {
           path: AppRoutes.Swap,
         },
         {
-          element:
-            <>
-              <HeaderUserBalance />
-              <Deploy />
-            </>,
+          element: <Deploy />,
           path: AppRoutes.Deploy,
         },
         {

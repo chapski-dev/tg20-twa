@@ -4,9 +4,9 @@ import { SvgLogo2, SvgToncoinIcon } from 'ui/icons';
 import { convertNumberToShortFormat } from 'utils/convertNumberToShortFormat';
 import * as S from './style';
 
-type THeaderUserBalanceProps = {}
+type HeaderUserBalanceProps = {}
 
-export const HeaderUserBalance: FC<THeaderUserBalanceProps> = () => {
+export const HeaderUserBalance: FC<HeaderUserBalanceProps> = () => {
   const { currentGramBalance, currentWalletBalance } = useTelegram()
 
   return (
