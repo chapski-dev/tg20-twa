@@ -21,6 +21,7 @@ import {
 } from 'ui/icons'
 
 import { Promo } from 'ui/Promo'
+import { PromoProps } from 'ui/Promo/type'
 import { type Tab } from 'ui/TabsFilled/TabsFilled'
 
 import { MyAssets, MyTransfers } from './components'
@@ -35,6 +36,37 @@ const tabs: Tab[] = [
   {
     label: 'Transfers',
     value: 'transfers',
+  },
+]
+
+type PromoSlidesProps = PromoProps & {
+  id: number
+}
+
+const promoSlides: PromoSlidesProps[] = [
+  {
+    id: 1,
+    title: 'Add Crypto from Binance or Coinbase',
+    subtitle: 'Deposit now',
+    variant: 'yellow',
+  },
+  {
+    id: 2,
+    title: 'See what’s new in your wallet!',
+    subtitle: 'Explore wallet',
+    variant: 'purple',
+  },
+  {
+    id: 3,
+    title: 'Add Crypto from Binance or Coinbase',
+    subtitle: 'Deposit now',
+    variant: 'yellow',
+  },
+  {
+    id: 4,
+    title: 'See what’s new in your wallet!',
+    subtitle: 'Explore wallet',
+    variant: 'purple',
   },
 ]
 
@@ -72,7 +104,9 @@ export const MyWallet: FC = () => {
             />
           </S.Search>
           <S.LogOut
-            onClick={() => alert('Do you want to get out of your wallet?')}
+            onClick={() => {
+              tonConnectUI.disconnect()
+            }}
           >
             <SvgLogout />
           </S.LogOut>
@@ -119,34 +153,16 @@ export const MyWallet: FC = () => {
           slidesPerView={2}
           spaceBetween={170}
         >
-          <SwiperSlide>
-            <Promo
-              subtitle="Deposit now"
-              title="Add Crypto from Binance or Coinbase"
-              variant="yellow"
-            />
-          </SwiperSlide>
-          <SwiperSlide>
-            <Promo
-              subtitle="Explore wallet"
-              title="See what’s new in your wallet!"
-              variant="purple"
-            />
-          </SwiperSlide>
-          <SwiperSlide>
-            <Promo
-              subtitle="Deposit now"
-              title="Add Crypto from Binance or Coinbase"
-              variant="yellow"
-            />
-          </SwiperSlide>
-          <SwiperSlide>
-            <Promo
-              subtitle="Explore wallet"
-              title="See what’s new in your wallet!"
-              variant="purple"
-            />
-          </SwiperSlide>
+          {promoSlides.map((slide, id) => (
+            <SwiperSlide>
+              <Promo
+                key={id}
+                subtitle={slide.subtitle}
+                title={slide.title}
+                variant={slide.variant}
+              />
+            </SwiperSlide>
+          ))}
         </Swiper>
       </S.CarouselContainer>
       <Container>

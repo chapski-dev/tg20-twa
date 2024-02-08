@@ -14,16 +14,11 @@ export const Promo = (props: PromoProps) => {
     setIsVisible(false)
   }
   if (isVisible) {
-    const currentVisible = () => {
-      if (variant === 'yellow') return Coins
-      else {
-        return Credits
-      }
-    }
+    const currentDisplayedImage = variant === 'yellow' ? Coins : Credits
 
     return (
       <S.Container className={className} variant={variant}>
-        <S.Img alt={variant} src={currentVisible()} />
+        <S.Img alt={variant} src={currentDisplayedImage} />
         <S.Wrapper>
           <S.Title>{title}</S.Title>
           <S.SubtitleWrapper variant={variant}>
