@@ -42,7 +42,6 @@ export const Title = styled.div`
   font-style: normal;
   font-weight: 600;
   line-height: 16px;
-  letter-spacing: -0.36px;
 `
 export const Subtitle = styled(Link)<Theme>`
   ${({ variant }) => variant === 'purple' && 'color: #a45fff;'}
@@ -53,7 +52,6 @@ export const Subtitle = styled(Link)<Theme>`
   font-weight: 500;
   text-decoration: none;
   line-height: 13.526px;
-  letter-spacing: -0.36px;
 `
 export const Wrapper = styled.div`
   display: flex;

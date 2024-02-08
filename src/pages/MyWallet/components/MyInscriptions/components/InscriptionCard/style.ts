@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 export const Wrapper = styled.div`
   border-radius: 10px;
-  background-color: ${({ theme }) => theme.color.bgSecondary};
+  background-color: ${({ theme }) => theme.color.bg};
   display: flex;
   align-items: center;
   justify-content: space-between;

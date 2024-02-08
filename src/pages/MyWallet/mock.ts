@@ -30,3 +30,30 @@ export const incscriptionsMock = [
     id: 6,
   },
 ]
+
+export const PROCENT_MOCK = {
+  procent: '3.5',
+}
+
+export const SLIDES_MOCK = [
+  {
+    png: '../MyWallet/assets/slide1.png',
+    description: 'Add Crypto from Binance or Coinbase',
+    textLink: 'Deposit now',
+  },
+  {
+    png: '../MyWallet/assets/slide1.png',
+    description: 'Add Crypto from Binance or Coinbase',
+    textLink: 'Deposit now',
+  },
+  {
+    png: '../MyWallet/assets/slide1.png',
+    description: 'Add Crypto from Binance or Coinbase',
+    textLink: 'Deposit now',
+  },
+  {
+    png: '../MyWallet/assets/slide1.png',
+    description: 'Add Crypto from Binance or Coinbase',
+    textLink: 'Deposit now',
+  },
+]

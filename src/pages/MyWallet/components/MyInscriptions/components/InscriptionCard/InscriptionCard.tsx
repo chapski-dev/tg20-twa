@@ -1,6 +1,6 @@
 import { FC, useMemo } from 'react'
 import { useTelegram } from 'hooks/useTelegram/useTelegram'
-import { SvgGramIcon, SvgToncoinIcon } from 'ui/icons'
+import { SvgArrowLeftAssets, SvgGramIcon, SvgToncoinIcon } from 'ui/icons'
 import * as S from './style'
 
 type InscriptionCardProps = {
@@ -47,6 +47,7 @@ export const InscriptionCard: FC<InscriptionCardProps> = (props) => {
             </S.Label>
           )}
         </S.InfoWrapper>
+        <SvgArrowLeftAssets />
       </S.ContentWrapper>
     </S.Wrapper>
   )
