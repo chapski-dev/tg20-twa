@@ -9,9 +9,9 @@ export const ContentWrapper = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 5px;
   border-radius: 10px;
-  background-color: ${({ theme }) => theme.color.bgSecondary};
+  background-color: ${({ theme }) => theme.color.bg};
 `
 
 export const LotInfoWrapper = styled.div`
@@ -49,8 +49,8 @@ export const NumberApplication = styled.div`
   height: 16px;
   border-radius: 4px;
   padding: 0 5px 0 5px;
-  background-color: ${({ theme }) => theme.color.bg};
-  color: ${({ theme }) => theme.color.text};
+  background-color: ${({ theme }) => theme.color.bgSecondary};
+  color: ${({ theme }) => theme.color.hint};
   font-size: 10px;
   font-weight: 500;
 `
@@ -61,9 +61,9 @@ export const PriceText = styled.div`
   align-items: flex-start;
   font-size: 14px;
   font-style: normal;
-  line-height: 22px;
   margin: 0;
   padding: 0;
+  gap: 4px;
   color: ${({ theme }) => theme.color.hint};
 `
 
@@ -75,10 +75,16 @@ export const TitlePriceText = styled.span`
 export const Price = styled.span`
   font-size: 12px;
   font-weight: 500;
+`
 
-  :not(:last-child) {
-    color: ${({ theme }) => theme.color.text};
-  }
+export const PriceTextTon = styled.div`
+  color: ${({ theme }) => theme.color.text};
+  font-size: 12px;
+`
+
+export const PriceTextUsd = styled.div`
+  color: ${({ theme }) => theme.color.hint};
+  font-size: 12px;
 `
 
 export const TotalTextWrapper = styled.div`
@@ -93,7 +99,7 @@ export const TotalText = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 8px;
+  gap: 1px;
 `
 
 export const TotalTextTitle = styled.span`

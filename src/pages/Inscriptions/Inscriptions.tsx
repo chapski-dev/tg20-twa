@@ -1,22 +1,18 @@
 import { ChangeEvent, FC, useCallback, useState } from 'react'
 import { useQuery } from 'react-query'
 import { createSearchParams, useNavigate } from 'react-router-dom'
-import {
-  getSearchedTokensList,
-  getTopTokensList,
-} from 'api'
+import { getSearchedTokensList, getTopTokensList } from 'api'
 import { AppRoutes } from 'constants/app'
 import { SpecialOffer } from 'features/SpecialOffer'
 import { useDebounce } from 'hooks/useDebounce/useDebounce'
 import { Tabs } from 'ui'
 import { Container } from 'ui/Container/Container'
-import { SvgVerified } from 'ui/icons'
+import { SvgLoop, SvgVerified } from 'ui/icons'
 import { Input } from 'ui/Input/Input'
 
 import { Tab } from 'ui/Tabs/Tabs'
 import { TokenCard } from './components'
 import * as S from './style'
-
 
 export const Inscriptions: FC = () => {
   const [searchedValue, setSearchedValue] = useState<string>('')
@@ -35,8 +31,12 @@ export const Inscriptions: FC = () => {
     data: searchedTokens,
     isLoading: isSearchedTokensLoading,
     isSuccess: isSearchedTokensLoaded,
-  } = useQuery(['searchedTokens', debauncedSearchValue?.toLocaleLowerCase()], () =>
-    getSearchedTokensList({ query: debauncedSearchValue?.toLocaleLowerCase() })
+  } = useQuery(
+    ['searchedTokens', debauncedSearchValue?.toLocaleLowerCase()],
+    () =>
+      getSearchedTokensList({
+        query: debauncedSearchValue?.toLocaleLowerCase(),
+      })
   )
 
   const updateSeachedValue = useCallback(
@@ -48,24 +48,19 @@ export const Inscriptions: FC = () => {
 
   return (
     <S.Wrapper>
-      <Container>
-        <S.ExploreBlock>
-          <S.Title children="Explore the big world of TG20 tokens!" />
-          <S.Description
-            children="With TG20 platform you can easily deploy, mint and transfer tokens based on BRC-20 standards"
-          />
-        </S.ExploreBlock>
-      </Container>
-
-
-      <Container>
+      <S.ExploreBlock>
+        <S.Title children="Explore the big world of TG20 tokens!" />
+        <S.Description children="With TG20 platform you can easily deploy, mint and transfer tokens based on BRC-20 standards" />
+      </S.ExploreBlock>
+      <S.InputWrapper>
         <Input
           onChange={updateSeachedValue}
           placeholder="Search tokens:"
           value={searchedValue}
+          icon={<SvgLoop />}
         />
-      </Container>
-      <Container>
+      </S.InputWrapper>
+      <S.InputWrapper>
         <S.DeployTokenBlock
           onClick={() =>
             navigate({
@@ -83,35 +78,25 @@ export const Inscriptions: FC = () => {
           </S.DeployInfoBlock>
           <S.ArrowIcon />
         </S.DeployTokenBlock>
-      </Container>
-      <Container>
-        <Tabs
-          onChange={setCurrentTab}
-          selectedTab={currentTab}
-          tabs={tabs}
-        />
-      </Container>
-      {isTopTokensLoading ||
-        isSearchedTokensLoading ? (
+      </S.InputWrapper>
+
+      <Tabs onChange={setCurrentTab} selectedTab={currentTab} tabs={tabs} />
+
+      {isTopTokensLoading || isSearchedTokensLoading ? (
         <S.Loader />
       ) : (
-        <Container>
-          <S.TokenCardsWrapper>
-            {!debauncedSearchValue &&
-              isTopTokensLoaded &&
-              topTokens.slice(0, 8).map(
-                (token, i) => (
-                  <TokenCard
-                    key={i}
-                    {...token}
-                  />
-                )
-              )}
+        <S.TokenCardsWrapper>
+          {!debauncedSearchValue &&
+            isTopTokensLoaded &&
+            topTokens
+              .slice(0, 8)
+              .map((token, i) => <TokenCard key={i} {...token} />)}
 
-
-            {Boolean(debauncedSearchValue) &&
-              isSearchedTokensLoaded &&
-              searchedTokens.slice(0, 8).map(
+          {Boolean(debauncedSearchValue) &&
+            isSearchedTokensLoaded &&
+            searchedTokens
+              .slice(0, 8)
+              .map(
                 ({
                   tick,
                   holders,
@@ -132,11 +117,13 @@ export const Inscriptions: FC = () => {
                 )
               )}
 
-            <SpecialOffer />
+          <SpecialOffer />
 
-            {!debauncedSearchValue &&
-              isTopTokensLoaded &&
-              topTokens.slice(8).map(
+          {!debauncedSearchValue &&
+            isTopTokensLoaded &&
+            topTokens
+              .slice(8)
+              .map(
                 ({
                   tick,
                   holders,
@@ -157,9 +144,11 @@ export const Inscriptions: FC = () => {
                 )
               )}
 
-            {Boolean(debauncedSearchValue) &&
-              isSearchedTokensLoaded &&
-              searchedTokens.slice(8).map(
+          {Boolean(debauncedSearchValue) &&
+            isSearchedTokensLoaded &&
+            searchedTokens
+              .slice(8)
+              .map(
                 ({
                   tick,
                   holders,
@@ -179,13 +168,10 @@ export const Inscriptions: FC = () => {
                   />
                 )
               )}
-          </S.TokenCardsWrapper>
-        </Container>
+        </S.TokenCardsWrapper>
       )}
       {isTopTokensLoaded && !topTokens.length && (
-        <S.NotTokensBlock
-          children="Gram20 is launching soon....."
-        />
+        <S.NotTokensBlock children="Gram20 is launching soon....." />
       )}
     </S.Wrapper>
   )
@@ -217,4 +203,4 @@ const tabs: Tab[] = [
     label: 'Deployed',
     value: 'deployed',
   },
-];
+]

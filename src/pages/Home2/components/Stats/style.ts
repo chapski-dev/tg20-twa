@@ -1,40 +1,40 @@
-import styled from "styled-components";
+import styled from 'styled-components'
+import statsBg from './statsBg.png'
 
 export const Stats = styled.div`
-    background: linear-gradient(90deg, #0098ea99 0%, #0066ff99 100%);
-    
-    padding: 20px 16px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-`;
+  background: url(${statsBg});
+  padding: 20px 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+`
 
 export const StatItem = styled.div`
-    background: ${({theme}) => theme.color.bg};
-    border-radius: 6px;
-    padding: 15px 10px 7px 7px;
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    gap: 5px;
-`;
+  background: ${({ theme }) => theme.color.bg};
+  border-radius: 6px;
+  padding: 15px 10px 7px 7px;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 5px;
+`
 
 export const StatTitle = styled.div`
-    font-size: 16px;
-    font-weight: 600;
-    color: ${({theme}) => theme.color.text};
-    line-height: 16px;
-`;
+  font-size: 16px;
+  font-weight: 600;
+  color: ${({ theme }) => theme.color.text};
+  line-height: 16px;
+`
 
 export const StatText = styled.div`
-    font-size: 12px;
-    font-weight: 500;
-    line-height: 16px;
-    color: ${({theme}) => theme.color.text};
-`;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+  color: ${({ theme }) => theme.color.text};
+`
 
 export const Head = styled.div`
-    display: flex;
-    align-items: flex-end;
-`;
+  display: flex;
+  align-items: flex-end;
+`

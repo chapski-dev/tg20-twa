@@ -1,19 +1,19 @@
-import { FC, ReactElement } from 'react';
-import * as S from './style';
+import { FC, ReactElement } from 'react'
+import * as S from './style'
 
 export type Tab = {
-  label: string;
-  value: string | number;
-  icon?: ReactElement;
-};
+  label: string
+  value: string | number
+  icon?: ReactElement
+}
 
 type TabsProps = {
-  tabs: Tab[];
-  selectedTab: Tab;
-  onChange: (tab: Tab) => void;
-  tabClassName?: string;
-  containerClassName?: string;
-};
+  tabs: Tab[]
+  selectedTab: Tab
+  onChange: (tab: Tab) => void
+  tabClassName?: string
+  containerClassName?: string
+}
 
 export const Tabs: FC<TabsProps> = ({
   tabs,
@@ -35,4 +35,4 @@ export const Tabs: FC<TabsProps> = ({
       </S.TabItem>
     ))}
   </S.Wrapper>
-);
+)
