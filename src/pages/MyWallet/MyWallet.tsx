@@ -23,11 +23,9 @@ import {
 import { Promo } from 'ui/Promo'
 import { PromoProps } from 'ui/Promo/type'
 import { type Tab } from 'ui/TabsFilled/TabsFilled'
-import { MyAssets, MyTransfers } from './components'
-import { PROCENT_MOCK } from './mock'
-import { shortenAddress } from 'utils/shortenAddress'
 import { MyAssets, MyTransfers, BalancesBlock } from './components'
 import { NotAuthorized } from './components/NotAuthorized/NotAuthorized'
+import { PROCENT_MOCK } from './mock'
 import * as S from './style'
 
 const tabs: Tab[] = [
@@ -192,10 +190,6 @@ export const MyWallet: FC = () => {
           {currentWalletContent}
         </S.TabsBlock>
       </Container>
-      <MainButton
-        onClick={() => tonConnectUI.openModal()}
-        text="Connect wallet"
-      />
     </S.Wrapper>
   )
 }
