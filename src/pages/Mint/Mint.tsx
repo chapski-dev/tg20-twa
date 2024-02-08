@@ -16,6 +16,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import { getTokenInfo, getTokenWalletBalance } from 'api'
 import { AppRoutes } from 'constants/app'
 import { BackButton } from 'features/BackButton'
+import { HeaderUserBalance } from 'features/HeaderUserBalance'
 import { SpecialOffer } from 'features/SpecialOffer'
 import { Container } from 'ui/Container/Container'
 import { MintForm, ConfirmPopup, MintHistory } from './components'
@@ -350,47 +351,49 @@ export const Mint: FC = () => {
     userWalletAddress])
 
   return (
-    <S.Wrapper>
-      <BackButton
-        onClick={() =>
-          fromSearchParam && fromSearchParam === 'start_param'
-            ? navigate(AppRoutes.Inscriptions)
-            : navigate(-1)
-        }
-      />
-      <Container>
-        <Formik
-          initialValues={{
-            tick: tickSearchParam || '',
-            amount: '',
-            repeat: '1',
-          }}
-          onSubmit={handleFormikSubmit}
-          validateOnBlur={false}
-          validateOnChange={false}
-          validationSchema={getValidationSchema()}
-        >
-          <S.FormWrapper>
-            <S.Title children="Mint token with just a click!" />
-            <MintForm
-              currentConfirmData={currentConfirmData}
-              intervalFreeze={intervalFreeze}
-              isInscribing={isInscribing}
-            />
-            {currentConfirmData !== null && (
-              <ConfirmPopup
-                fee={currentConfirmData.fee}
-                isLoading={isInscribing}
-                onClose={() => setCurrentConfirmData(null)}
-                onConfirm={signConfirmTransaction}
-                userBalance={currentConfirmData.balance}
+    <>
+      <HeaderUserBalance />
+      <S.Wrapper>
+        <BackButton
+          onClick={() =>
+            fromSearchParam && fromSearchParam === 'start_param'
+              ? navigate(AppRoutes.Inscriptions)
+              : navigate(-1)
+          }
+        />
+        <Container>
+          <Formik
+            initialValues={{
+              tick: tickSearchParam || '',
+              amount: '',
+              repeat: '1',
+            }}
+            onSubmit={handleFormikSubmit}
+            validateOnBlur={false}
+            validateOnChange={false}
+            validationSchema={getValidationSchema()}
+          >
+            <S.FormWrapper>
+              <S.Title children="Mint token with just a click!" />
+              <MintForm
+                currentConfirmData={currentConfirmData}
+                intervalFreeze={intervalFreeze}
+                isInscribing={isInscribing}
               />
-            )}
-          </S.FormWrapper>
-        </Formik>
-        <S.StatusBlocks>
-          {/* //TODO: Доработать, заменив контекст инскрайба на необходимый */}
-          {/* {renderActionStatusData &&
+              {currentConfirmData !== null && (
+                <ConfirmPopup
+                  fee={currentConfirmData.fee}
+                  isLoading={isInscribing}
+                  onClose={() => setCurrentConfirmData(null)}
+                  onConfirm={signConfirmTransaction}
+                  userBalance={currentConfirmData.balance}
+                />
+              )}
+            </S.FormWrapper>
+          </Formik>
+          <S.StatusBlocks>
+            {/* //TODO: Доработать, заменив контекст инскрайба на необходимый */}
+            {/* {renderActionStatusData &&
             renderActionStatusData.map(
               ({ tick, status }: ActionStatusData, idx: number) => (
                 <S.StatusBlock key={idx}>
@@ -404,10 +407,11 @@ export const Mint: FC = () => {
                 </S.StatusBlock>
               )
             )} */}
-        </S.StatusBlocks>
-      </Container>
-      <SpecialOffer />
-      <MintHistory />
-    </S.Wrapper>
+          </S.StatusBlocks>
+        </Container>
+        <SpecialOffer />
+        <MintHistory />
+      </S.Wrapper>
+    </>
   )
 }

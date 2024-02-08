@@ -23,9 +23,11 @@ import {
 import { Promo } from 'ui/Promo'
 import { PromoProps } from 'ui/Promo/type'
 import { type Tab } from 'ui/TabsFilled/TabsFilled'
-
 import { MyAssets, MyTransfers } from './components'
 import { PROCENT_MOCK } from './mock'
+import { shortenAddress } from 'utils/shortenAddress'
+import { MyAssets, MyTransfers, BalancesBlock } from './components'
+import { NotAuthorized } from './components/NotAuthorized/NotAuthorized'
 import * as S from './style'
 
 const tabs: Tab[] = [
@@ -90,6 +92,20 @@ export const MyWallet: FC = () => {
 
     return <MyTransfers />
   }, [currentTab.value])
+
+  const handleWalletAddressClick = () => {
+    if (!userWalletAddress) {
+      return
+    }
+
+    clipboard(userWalletAddress, () =>
+      alert('Your wallet address successfully copied!')
+    )
+  }
+
+  if (!userWalletAddress) {
+    return <NotAuthorized />
+  }
 
   return (
     <S.Wrapper>

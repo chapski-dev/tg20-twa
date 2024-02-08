@@ -17,10 +17,9 @@ import { Formik, FormikConfig } from 'formik'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { AppRoutes } from 'constants/app'
 import { BackButton } from 'features/BackButton'
-import { MainButton } from 'features/MainButton'
+import { HeaderUserBalance } from 'features/HeaderUserBalance'
 import { ActionsStatusContext } from 'providers/ActionsStatusProvider'
 import { Button } from 'ui/Button/Button'
-import { Container } from 'ui/Container/Container'
 import { Promo } from 'ui/Promo'
 import { InscribeForm, ConfirmPopup } from './components'
 import { type InitialValues } from './components/InscribeForm/types'
@@ -48,8 +47,6 @@ export const Deploy: FC = () => {
   const {
     renderActionStatusData,
     updateRenderActionStatusData,
-    checkBalanceChange,
-    checkTransferValid,
     checkContractDeployStatus,
   } = useContext(ActionsStatusContext)
 
@@ -210,15 +207,7 @@ export const Deploy: FC = () => {
     } catch (err) {
       setIsInscribing(false)
     }
-  }, [
-    checkBalanceChange,
-    checkContractDeployStatus,
-    checkTransferValid,
-    currentConfirmData,
-    tonConnectUI,
-    updateRenderActionStatusData,
-    userWalletAddress,
-  ])
+  }, [checkContractDeployStatus, currentConfirmData, tonConnectUI, updateRenderActionStatusData])
 
   const currentMainButtonName = useMemo(() => {
     switch (true) {
@@ -233,6 +222,7 @@ export const Deploy: FC = () => {
 
   return (
     <>
+      <HeaderUserBalance />
       <S.Wrapper>
         <BackButton
           onClick={() =>

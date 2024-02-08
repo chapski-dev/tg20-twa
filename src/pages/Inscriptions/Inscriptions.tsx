@@ -1,6 +1,6 @@
 import { ChangeEvent, FC, useCallback, useState } from 'react'
 import { useQuery } from 'react-query'
-import { createSearchParams, generatePath, useNavigate } from 'react-router-dom'
+import { createSearchParams, useNavigate } from 'react-router-dom'
 import {
   getSearchedTokensList,
   getTopTokensList,
@@ -100,22 +100,10 @@ export const Inscriptions: FC = () => {
             {!debauncedSearchValue &&
               isTopTokensLoaded &&
               topTokens.slice(0, 8).map(
-                ({
-                  tick,
-                  holders,
-                  supply,
-                  total_supply,
-                  mintable,
-                  verified,
-                }) => (
+                (token, i) => (
                   <TokenCard
-                    key={tick}
-                    holders={holders}
-                    mintable={mintable}
-                    supply={supply}
-                    tick={tick}
-                    total_supply={total_supply}
-                    verified={verified}
+                    key={i}
+                    {...token}
                   />
                 )
               )}

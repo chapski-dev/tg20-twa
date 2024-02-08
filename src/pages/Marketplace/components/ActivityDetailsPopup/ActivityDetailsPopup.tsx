@@ -1,16 +1,16 @@
-import React, { FC } from 'react'
-import { useTelegram } from 'hooks/useTelegram/useTelegram'
-import { Modal } from 'ui/Modal/Modal'
-import * as S from './style'
+import React, { FC } from 'react';
+import { useTelegram } from 'hooks/useTelegram/useTelegram';
+import { Modal } from 'ui/Modal/Modal';
+import * as S from './style';
 
 type ActivityDetailsPopupProps = {
-  onClose: () => void
-  onConfirm: () => void
-  ticker: string
-  amount: number
-  address: string
-  date: Date
-}
+  onClose: () => void;
+  onConfirm: () => void;
+  ticker: string;
+  amount: number;
+  address: string;
+  date: Date;
+};
 
 export const ActivityDetailsPopup: FC<ActivityDetailsPopupProps> = ({
   onClose,
@@ -19,38 +19,59 @@ export const ActivityDetailsPopup: FC<ActivityDetailsPopupProps> = ({
   address,
   date,
 }) => {
-  const tma = useTelegram()
+  const tma = useTelegram();
 
   return (
-    <Modal onClose={onClose} title="Details">
+    <Modal onClose={onClose} title="Transaction Detail">
       <S.Wrapper>
-        <S.PositionsWrapper>
-          <S.PositionWrapper>
-            <S.PositionText>Address</S.PositionText>
-            <S.PositionValueLink
-              onClick={() => {
-                tma.webApp!.openLink(`https://tonviewer.com/${address}`)
-              }}
-            >
-              {address.slice(0, 4) + '...' + address.slice(-4)}
-            </S.PositionValueLink>
-          </S.PositionWrapper>
+        <S.PositionsContainer>
+          <S.PositionInfoRow>
+            <S.PositionText children="Date" />
+            <S.PositionValue children={`${date.toLocaleDateString()} ${date.toLocaleTimeString()}`} />
+          </S.PositionInfoRow>
 
-          <S.PositionWrapper>
-            <S.PositionText>Amount</S.PositionText>
-            <S.PositionValue>
-              {amount} {ticker} <S.PositionValueLabel>Buy</S.PositionValueLabel>
-            </S.PositionValue>
-          </S.PositionWrapper>
+          <S.PositionInfoRow>
+            <S.PositionText children="Address" />
+            <S.PositionValue
+              children={address.slice(0, 4) + '...' + address.slice(-4)}
+            />
+          </S.PositionInfoRow>
 
-          <S.PositionWrapper>
-            <S.PositionText>Date</S.PositionText>
-            <S.PositionValue>
-              {date.toLocaleDateString()} {date.toLocaleTimeString()}
-            </S.PositionValue>
-          </S.PositionWrapper>
-        </S.PositionsWrapper>
+          <S.PositionInfoRow>
+            <S.PositionText children="Amount" />
+            <S.PositionValue children={`${amount} ${ticker}`} />
+          </S.PositionInfoRow>
+          <S.PositionInfoRow>
+            <S.PositionText children="Type" />
+            <S.PositionValueLabel children="Buy" />
+          </S.PositionInfoRow>
+
+          <S.PositionInfoRow>
+            <S.PositionText children="Total Price" />
+            <S.PositionValue children="50 TON" />
+          </S.PositionInfoRow>
+
+        </S.PositionsContainer>
+
+        <S.PositionsContainer>
+          <S.PositionInfoRow>
+            <S.PositionText children="Network fee" />
+            {/* // TODO - разобраться с комиссиями */}
+            <S.PositionValue children="0.012 TON ($0.0036)" />
+          </S.PositionInfoRow>
+
+        </S.PositionsContainer>
+
+        <S.BlockExplorer
+          onClick={() => {
+            tma.webApp!.openLink(`https://tonviewer.com/${address}`);
+          }}
+        >
+          <S.PositionValueLink
+            children="View on block explorer"
+          />
+        </S.BlockExplorer>
       </S.Wrapper>
     </Modal>
-  )
-}
+  );
+};
