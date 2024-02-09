@@ -1,11 +1,11 @@
-import { useState } from "react";
-import { SpecialOffer } from "features/SpecialOffer";
-import { Tabs } from "ui";
-import { Container } from "ui/Container/Container";
-import { SvgVerified } from "ui/icons";
-import { Tab } from "ui/Tabs/Tabs";
-import { Header, Stats, Tokens } from "./components";
-import * as S from './style';
+import { useState } from 'react'
+import { SpecialOffer } from 'features/SpecialOffer'
+import { Tabs } from 'ui'
+import { Container } from 'ui/Container/Container'
+import { SvgVerified } from 'ui/icons'
+import { Tab } from 'ui/Tabs/Tabs'
+import { Header, Stats, Tokens } from './components'
+import * as S from './style'
 
 export const Home2 = () => {
   const [currentTab, setCurrentTab] = useState(tabs[0])
@@ -24,7 +24,7 @@ export const Home2 = () => {
       </Container>
       <Tokens />
     </S.Home>
-  );
+  )
 }
 
 const tabs: Tab[] = [
@@ -49,4 +49,4 @@ const tabs: Tab[] = [
     label: 'Gainers',
     value: 'gainers',
   },
-];
+]

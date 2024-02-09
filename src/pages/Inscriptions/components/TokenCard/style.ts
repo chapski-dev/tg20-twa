@@ -11,7 +11,7 @@ export const Wrapper = styled.div`
 `
 
 export const ContentWrapper = styled.div`
-  padding: 12px;
+  padding: 10px 6px 10px 10px;
   width: 100%;
   display: flex;
   align-items: center;
@@ -48,7 +48,7 @@ export const InfoWrapper = styled.div`
   display: flex;
   width: 100%;
   flex-direction: column;
-  gap: 6px;
+  gap: 10px;
 `
 
 export const FlexWrpaper = styled.div`
@@ -84,7 +84,7 @@ export const Title = styled.h4`
 export const TitleWrapper = styled.div`
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 2px;
 `
 
 export const RightInfoWrapper = styled.div`
@@ -140,8 +140,8 @@ export const InfoValue = styled(Label)`
   line-height: 16px; /* 133.333% */
 `
 export const Verified = styled(SvgVerified)`
-  width: 16;
-  height: 16;
+  width: 5;
+  height: 5;
 `
 
 export const Header = styled.div`
