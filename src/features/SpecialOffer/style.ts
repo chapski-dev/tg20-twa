@@ -1,20 +1,26 @@
 import styled from 'styled-components'
+import specialBg from './specialBg.png'
 
 export const Container = styled.div`
   width: 100%;
 `
 
 export const Wrapper = styled.div`
-  padding: 9px;
   display: flex;
-  justify-content: space-around;
+
   align-items: center;
-  background: linear-gradient(100deg, #8d84f966 -1.51%, #b7beff66 99.08%);
+  background: url(${specialBg});
   border-radius: 10px;
   width: 100%;
   color: ${({ theme }) => theme.color.text};
   position: relative;
+  gap: 10px;
+  padding: 5px 56px 0px 22px;
 `
+
+export const ImgWrap = styled.div``
+
+export const ContantWrap = styled.div``
 
 export const IconWrapper = styled.div`
   flex: 1;
@@ -31,7 +37,7 @@ export const Info = styled.div`
 `
 
 export const Title = styled.p`
-  font-size: 17px;
+  font-size: 14px;
   font-style: normal;
   font-weight: 600;
   line-height: 17.288px;
@@ -39,7 +45,7 @@ export const Title = styled.p`
 `
 
 export const Description = styled.p`
-  font-size: 10px;
+  font-size: 8px;
   font-style: normal;
   font-weight: 500;
   line-height: 16.3px;
@@ -50,7 +56,7 @@ export const Button = styled.button`
   border: none;
   outline: none;
   border-radius: 5px;
-  padding: 7px 12px;
+  padding: 4px 12px;
   font-size: 10px;
   font-style: normal;
   font-weight: 500;

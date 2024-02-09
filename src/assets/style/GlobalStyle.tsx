@@ -1,11 +1,10 @@
 import { createGlobalStyle } from 'styled-components'
-import 'react-toastify/dist/ReactToastify.css';
+import 'react-toastify/dist/ReactToastify.css'
 
 export const GlobalStyle = createGlobalStyle`
   * {
     box-sizing: border-box;
     font-family: 'Inter', sans-serif;
-
     -ms-overflow-style: none;
     scrollbar-width: none;
     -webkit-tap-highlight-color: transparent;

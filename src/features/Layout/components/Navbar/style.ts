@@ -6,9 +6,9 @@ export const Container = styled.div`
   background: ${({ theme }) => theme.color.bg};
   display: flex;
   justify-content: space-between;
-  border-top-left-radius: 15px;
-  border-top-right-radius: 15px;
-  border-top: .9px solid ${({ theme }) => theme.color.hint};
+  border-top-left-radius: 24px;
+  border-top-right-radius: 24px;
+  border-top: 0.9px solid #ebebeb;
   align-items: center;
   position: fixed;
   bottom: 0;
@@ -23,10 +23,12 @@ export const NavItem = styled.div<{ active: boolean }>`
   cursor: pointer;
   align-items: center;
   flex: 1;
+  font-weight: 600;
   transition: all 0.5s ease;
   div {
     color: ${({ active, theme }) =>
       active ? theme.color.link : theme.color.hint};
+    font-weight: ${({ active }) => (active ? 600 : 500)};
   }
   svg path {
     stroke: ${({ active, theme }) =>
@@ -35,6 +37,7 @@ export const NavItem = styled.div<{ active: boolean }>`
   &:hover {
     div {
       color: ${({ theme }) => theme.color.link};
+      font-weight: 600;
     }
     svg path {
       stroke: ${({ theme }) => theme.color.link};
@@ -44,7 +47,7 @@ export const NavItem = styled.div<{ active: boolean }>`
 
 export const Text = styled.div`
   font-size: 10px;
-  font-weight: 600;
+  font-weight: 500;
   color: ${({ theme }) => theme.color.hint};
   line-height: 16px;
 `
