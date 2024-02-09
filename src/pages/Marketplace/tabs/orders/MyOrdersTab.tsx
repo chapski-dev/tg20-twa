@@ -11,14 +11,14 @@ type MyOrdersTabProps = {
   sort: LotSort
   direction: LotSortDirection
   address: string
-  value: 'ton' | 'usd'
+  priceFilter: "TON" | "USD"
   onCancelClick: (lot: LotInfo) => void
 }
 
 const ITEMS_ON_PAGE = 10
 
 export const MyOrdersTab: FC<MyOrdersTabProps> = (props) => {
-  const { onCancelClick, tick, sort, direction, address, value } = props
+  const { onCancelClick, tick, sort, direction, address, priceFilter } = props
 
   const { data: tonPrice } = useQuery(['currentTonPrice'], () => getTonPrice())
 
@@ -53,7 +53,7 @@ export const MyOrdersTab: FC<MyOrdersTabProps> = (props) => {
   if (isError)
     return (
       <S.Wrapper>
-        <S.ErrorText>Error loading your orders</S.ErrorText>
+        <S.ErrorText children="Error loading your orders" />
       </S.Wrapper>
     )
 
@@ -65,10 +65,9 @@ export const MyOrdersTab: FC<MyOrdersTabProps> = (props) => {
           <S.OrdersTable>
             <S.OrdersHeader>
               <S.OrdersHeaderRow>
-                <S.OrdersHeaderCell>Amount</S.OrdersHeaderCell>
-                <S.OrdersHeaderCell>Sale Price/Token</S.OrdersHeaderCell>
-                <S.OrdersHeaderCell>Total Price</S.OrdersHeaderCell>
-
+                <S.OrdersHeaderCell children="Amount" />
+                <S.OrdersHeaderCell children="Sale Price/Token" />
+                <S.OrdersHeaderCell children="Total Price" />
 
                 <S.OrdersHeaderCell></S.OrdersHeaderCell>
               </S.OrdersHeaderRow>
@@ -86,17 +85,18 @@ export const MyOrdersTab: FC<MyOrdersTabProps> = (props) => {
                     <S.OrderRow key={index} even={(index % 2 !== 0).toString()}>
                       <S.OrderCell>{lot.amount}</S.OrderCell>
                       <S.OrderCell>
-                        {value === 'ton' && `${total.toFixed(9).replace(/\.?0+$/, '')} TON`}
-                        {value === 'usd' && `${totalInUsd.toFixed(9).replace(/\.?0+$/, '')} USD`}
+                        {priceFilter === 'TON' && `${total.toFixed(9).replace(/\.?0+$/, '')} TON`}
+                        {priceFilter === 'USD' && `${totalInUsd.toFixed(9).replace(/\.?0+$/, '')} USD`}
                       </S.OrderCell>
                       <S.OrderCell>
 
-                        {value === 'ton' && `${price.toFixed(9).replace(/\.?0+$/, '')} TON`}
-                        {value === 'usd' && `${priceInUsd.toFixed(9).replace(/\.?0+$/, '')} USD`}
+                        {priceFilter === 'TON' && `${price.toFixed(9).replace(/\.?0+$/, '')} TON`}
+                        {priceFilter === 'USD' && `${priceInUsd.toFixed(9).replace(/\.?0+$/, '')} USD`}
 
                       </S.OrderCell>
                       <S.OrderCell>
                         <S.OrderActionButton
+                          children="Cancel"
                           onClick={() => {
                             onCancelClick({
                               address: lot.address,
@@ -111,9 +111,7 @@ export const MyOrdersTab: FC<MyOrdersTabProps> = (props) => {
                               buyer: lot.buyer,
                             })
                           }}
-                        >
-                          Cancel
-                        </S.OrderActionButton>
+                        />
                       </S.OrderCell>
                     </S.OrderRow>
 
@@ -134,8 +132,8 @@ export const MyOrdersTab: FC<MyOrdersTabProps> = (props) => {
       ) : (
         (
           <S.Block>
-            <S.Subtitle>No orders found!</S.Subtitle>
-            <S.Title>Start trading!</S.Title>
+            <S.Subtitle children="No orders found!" />
+            <S.Title children="Start trading!" />
           </S.Block>
         )
       )}

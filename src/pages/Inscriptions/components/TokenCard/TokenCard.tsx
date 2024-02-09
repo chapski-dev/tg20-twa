@@ -6,8 +6,8 @@ import * as S from './style'
 
 type TokenCardProps = {
   tick: string
-  holders: number
-  mintable: boolean
+  holders: number //? deprecated?
+  mintable: boolean //? deprecated?
   supply: number
   total_supply: number
   verified: boolean

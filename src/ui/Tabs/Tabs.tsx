@@ -3,7 +3,7 @@ import * as S from './style'
 
 export type Tab = {
   label: string
-  value: string
+  value: string | number
   icon?: ReactElement
 }
 
@@ -20,11 +20,12 @@ export const Tabs: FC<TabsProps> = ({
   selectedTab,
   onChange,
   tabClassName,
-  containerClassName
+  containerClassName,
 }) => (
   <S.Wrapper className={containerClassName}>
     {tabs.map((tab) => (
       <S.TabItem
+        key={tab.value}
         $isActive={selectedTab.value === tab.value}
         className={tabClassName}
         onClick={() => onChange(tab)}
@@ -34,4 +35,4 @@ export const Tabs: FC<TabsProps> = ({
       </S.TabItem>
     ))}
   </S.Wrapper>
-);
+)

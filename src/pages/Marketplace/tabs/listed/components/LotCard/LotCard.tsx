@@ -36,51 +36,47 @@ export const LotCard: React.FC<LotCardProps> = (props) => {
   }, [lotPrice, lotTotal, tonPrice])
 
   return (
-    <>
-      <S.Wrapper>
-        <S.ContentWrapper>
-          <S.LotInfoWrapper>
-            <S.LotPriceWrapper>
-              <S.AmountText>
-                <SvgToncoinIcon height={20} width={20} />
-                {formatNumberWithSeparators(amount)} GRAM
-              </S.AmountText>
-              <S.NumberApplication>#{lotId}</S.NumberApplication>
-            </S.LotPriceWrapper>
-          </S.LotInfoWrapper>
-          <S.TotalTextWrapper>
-            <S.TotalText>
-              <S.TotalTextTitle>Total Price</S.TotalTextTitle>
-              <S.TotalInCurrencyTon>
-                {prices.totalInTON.toFixed(3)} TON
-                <SvgToncoinIcon height={15} width={15} />
-              </S.TotalInCurrencyTon>
-              <S.TotalInCurrencyDollar>
-                ~ ${prices.totalInUSD.toFixed(3)}
-              </S.TotalInCurrencyDollar>
-            </S.TotalText>
-            <S.PriceText>
-              <S.TitlePriceText>SalePrice/Token</S.TitlePriceText>
-              <S.Price>
-                <span>{prices.priceInTON} TON</span>
-                <br /> <span>~{prices.priceInUSD.toFixed(10)} USD</span>
-              </S.Price>
-            </S.PriceText>
-            <S.BuyButton
-              onClick={() =>
-                onBuyClick({
-                  price: prices.priceInTON,
-                  priceInUSD: prices.priceInUSD,
-                  total: prices.totalInTON,
-                  totalInUSD: prices.totalInUSD,
-                })
-              }
-            >
-              Buy
-            </S.BuyButton>
-          </S.TotalTextWrapper>
-        </S.ContentWrapper>
-      </S.Wrapper>
-    </>
+    <S.Wrapper>
+      <S.ContentWrapper>
+        <S.LotInfoWrapper>
+          <S.LotPriceWrapper>
+            <S.AmountText>
+              <SvgToncoinIcon height={20} width={20} />
+              {formatNumberWithSeparators(amount)} GRAM
+            </S.AmountText>
+            <S.NumberApplication>#{lotId}</S.NumberApplication>
+          </S.LotPriceWrapper>
+        </S.LotInfoWrapper>
+        <S.TotalTextWrapper>
+          <S.TotalText>
+            <S.TotalTextTitle children="Total Price" />
+            <S.TotalInCurrencyTon>
+              {prices.totalInTON.toFixed(3)} TON
+              <SvgToncoinIcon height={15} width={15} />
+            </S.TotalInCurrencyTon>
+            <S.TotalInCurrencyDollar>
+              ~ ${prices.totalInUSD.toFixed(3)}
+            </S.TotalInCurrencyDollar>
+          </S.TotalText>
+          <S.PriceText>
+            <S.TitlePriceText>SalePrice/Token</S.TitlePriceText>
+            <S.PriceTextTon>{prices.priceInTON} TON</S.PriceTextTon>
+            <S.PriceTextUsd>~{prices.priceInUSD.toFixed(10)}USD</S.PriceTextUsd>
+          </S.PriceText>
+          <S.BuyButton
+            onClick={() =>
+              onBuyClick({
+                price: prices.priceInTON,
+                priceInUSD: prices.priceInUSD,
+                total: prices.totalInTON,
+                totalInUSD: prices.totalInUSD,
+              })
+            }
+          >
+            Buy
+          </S.BuyButton>
+        </S.TotalTextWrapper>
+      </S.ContentWrapper>
+    </S.Wrapper>
   )
 }

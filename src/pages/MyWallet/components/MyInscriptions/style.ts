@@ -85,7 +85,7 @@ export const AddressLabel = styled.span<{ $isBold?: boolean }>`
 export const InscriptionsWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: ${({ theme }) => theme.color.bgSecondary};
+  background-color: ${({ theme }) => theme.color.bg};
   width: 100%;
   border-radius: 10px;
 `
@@ -112,5 +112,5 @@ export const DontHaveInscriptionsBlock = styled.div`
   font-style: normal;
   font-weight: 400;
   color: ${({ theme }) => theme.color.hint};
-  background-color: ${({ theme }) => theme.color.bgSecondary};
+  background-color: ${({ theme }) => theme.color.bg};
 `

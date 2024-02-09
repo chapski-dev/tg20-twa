@@ -43,9 +43,9 @@ export const Title = styled.h2`
 export const LotCardsWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  padding: 0 15px;
+  gap: 12px;
   width: 100%;
+  padding: 0 16px;
 `
 
 export const Loader = styled(UILoader)`

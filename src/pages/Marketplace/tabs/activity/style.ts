@@ -6,31 +6,47 @@ export const Wrapper = styled.div`
   width: 100%;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
-  padding: 0px 15px;
+  gap: 24px;
+  padding: 0;
 `
 
-export const ActivityTable = styled.table`
+export const ActivityTable = styled.div`
   width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
-  border: 1px solid ${({ theme }) => theme.color.bgSecondary};
-  border-radius: 10px;
 `
 
-export const ActivityRow = styled.tr<{ even: string }>`
-  max-height: 33px;
+export const ActivityRow = styled.div<{ even: boolean }>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background-color: ${({ even, theme }) =>
-    even === 'true' ? theme.color.bgSecondary : 'transparent'};
+    even ? theme.color.bg : theme.color.bgSecondary};
+  padding: 0 16px;
+  height: 48px;
 `
 
-export const ActivityCell = styled.td`
-  padding: 8px;
+export const ActivityCell = styled.div`
   font-size: 12px;
   font-style: normal;
   font-weight: 500;
   line-height: 16px;
   color: ${({ theme }) => theme.color.text};
+  flex: 1;
+  word-break: break-word;
+  margin: 0 8px;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  &:last-of-type {
+    flex: none;
+    margin: 0px;
+  }
+  &:first-of-type {
+    margin-left: 0px;
+  }
 `
 
 export const ActivityActionButton = styled.div`
@@ -42,33 +58,32 @@ export const ActivityActionButton = styled.div`
   cursor: pointer;
 `
 
-export const ActivitiesHeader = styled.thead`
+export const ActivitiesHeader = styled.div`
   background-color: ${({ theme }) => theme.color.bg};
 `
 
-export const ActivitiesBody = styled.tbody``
+export const ActivitiesBody = styled.div``
 
-export const ActivitiesHeaderRow = styled.tr``
+export const ActivitiesHeaderRow = styled.div`
+  background-color: ${({ theme }) => theme.color.bgSecondary};
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 16px;
+`
 
-export const ActivitiesHeaderCell = styled.th`
-  padding: 8px;
+export const ActivitiesHeaderCell = styled.div`
   font-size: 12px;
   font-style: normal;
   line-height: 16px;
   color: ${({ theme }) => theme.color.hint};
   text-align: left;
   font-weight: 400;
-
-  &:first-of-type {
-    border-top-left-radius: 10px;
-    -moz-border-top-left-radius: 10px;
-    -webkit-border-top-left-radius: 10px;
-  }
-
+  flex: 1;
   &:last-of-type {
-    border-top-right-radius: 10px;
-    -moz-border-top-right-radius: 10px;
-    -webkit-border-top-right-radius: 10px;
+    flex: none;
+    width: 60px;
   }
 `
 
@@ -82,4 +97,13 @@ export const ErrorText = styled.span`
   font-weight: 600;
   line-height: 24px;
   color: ${({ theme }) => theme.color.text};
+`
+
+export const FiltersContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 10px 15px;
+  background-color: ${({ theme }) => theme.color.bg};
+  gap: 10px;
 `

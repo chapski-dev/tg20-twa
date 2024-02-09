@@ -52,7 +52,7 @@ export const ConfirmPopup: FC<ConfirmPopupProps> = (props) => {
   }, [fee, formType, values.repeat])
 
   const handleBuyTonClick = () => {
-    webApp.disableClosingConfirmation()
+    webApp?.disableClosingConfirmation()
     window.open(BUY_TON_LINK, '_blank')
     onClose()
   }

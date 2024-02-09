@@ -1,22 +1,28 @@
 import styled from 'styled-components'
 import { Button as ButtonReference } from 'ui/Button/Button'
-import { Accordion as AccordionReference } from 'ui/Accordion/Accordion'
 
 import { DynamicTickLogo as UIDynamicTickLogo } from 'ui/DynamicTickLogo/DynamicTickLogo'
-import { Loader as UILoader } from 'ui/Loader/Loader'
 import { Input } from 'ui/Input/Input'
+import { Loader as UILoader } from 'ui/Loader/Loader'
+import { Select } from 'ui/Select/Select'
 
 export const Wrapper = styled.div`
-  border-radius: 10px;
   display: flex;
   flex-direction: column;
+  gap: 16px;
 `
+
 export const Flex = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-top: 16px;
+
+  .select-container {
+    margin-left: auto;
+  }
 `
+
 export const Block = styled.div`
   display: flex;
   flex-direction: column;
@@ -55,7 +61,11 @@ export const TokenSelectContentWrapper = styled.div`
   display: flex;
   gap: 16px;
   align-items: center;
-  margin: 0 0 16px 0;
+`
+
+export const SelectWrap = styled(Select)`
+  color: red;
+  background: ${({ theme }) => theme.color.bg};
 `
 
 export const Button = styled(ButtonReference)`
@@ -68,15 +78,12 @@ export const Button = styled(ButtonReference)`
   font-weight: 500;
   line-height: 140%; /* 22.4px */
   letter-spacing: -0.16px;
+  margin-left: auto;
 `
 
 export const StyledInput = styled(Input)`
-  background: ${({ theme }) => theme.color.bg};
   margin-top: 16px;
-
-  input {
-    background: ${({ theme }) => theme.color.bg};
-  }
+  background: #ebebeb;
 `
 
 export const TokenSelectWrapper = styled.div`
@@ -179,7 +186,7 @@ export const Link = styled.a`
   font-style: normal;
   text-decoration: none;
   word-break: break-all;
-  text-wrap: wrap;
+  word-wrap: wrap;
   font-weight: 400;
   line-height: 120%; /* 12px */
   letter-spacing: -0.1px;
@@ -246,4 +253,9 @@ export const DynamicTickLogo = styled(UIDynamicTickLogo)`
   width: 18px;
   height: 18px;
   font-size: 7px;
+`
+
+export const ActivitiesWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
 `

@@ -55,7 +55,6 @@ export const TokenWrapper = styled.div`
   align-items: center;
 `
 
-
 export const PositionsContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -98,4 +97,8 @@ export const PositionTextLabel = styled.span`
   padding: 1px 4px;
   border-radius: 5px;
   color: ${({ theme }) => theme.color.hint};
+`
+
+export const For = styled.i`
+  color: ${({ theme }) => theme.color.text};
 `
