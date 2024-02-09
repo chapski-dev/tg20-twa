@@ -4,11 +4,13 @@ type Option = {
   value: string;
   label: string;
 };
+
 type SelectProps = {
   onChange: (element: Option) => void;
   options: Array<Option>;
   value: Option;
 };
+
 export const Select = (props: SelectProps) => {
   const { options, onChange, value } = props;
 

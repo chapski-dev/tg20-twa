@@ -6,7 +6,6 @@ import { AppRoutes } from 'constants/app'
 import { SpecialOffer } from 'features/SpecialOffer'
 import { useDebounce } from 'hooks/useDebounce/useDebounce'
 import { Tabs } from 'ui'
-import { Container } from 'ui/Container/Container'
 import { SvgLoop, SvgVerified } from 'ui/icons'
 import { Input } from 'ui/Input/Input'
 
@@ -54,10 +53,10 @@ export const Inscriptions: FC = () => {
       </S.ExploreBlock>
       <S.InputWrapper>
         <Input
+          icon={<SvgLoop />}
           onChange={updateSeachedValue}
           placeholder="Search tokens:"
           value={searchedValue}
-          icon={<SvgLoop />}
         />
       </S.InputWrapper>
       <S.InputWrapper>
