@@ -1,5 +1,5 @@
-import RSelect from 'react-select';
-import styled from 'styled-components';
+import RSelect from 'react-select'
+import styled from 'styled-components'
 
 export const Select = styled(RSelect)`
   width: 176px;
@@ -10,7 +10,7 @@ export const Select = styled(RSelect)`
     height: 42px;
     font-weight: 400;
     font-size: 16px;
-    background: ${({ theme }) => theme.color.bgSecondary};
+    background: #ebebeb;
     border-radius: 6px;
     line-height: 140%;
     letter-spacing: -0.01em;
@@ -20,11 +20,16 @@ export const Select = styled(RSelect)`
     &--is-focused {
       box-shadow: none;
       outline: none;
+      /* color: black; */
+    }
+    svg {
+      color: black;
     }
   }
   .select__control--menu-is-open {
     svg {
       rotate: 180deg;
+      color: black;
     }
   }
   .select__indicator-separator {
@@ -32,7 +37,7 @@ export const Select = styled(RSelect)`
   }
   .select__menu {
     color: ${({ theme }) => theme.color.text};
-    background-color: ${({ theme }) => theme.color.bg};
+    background: #ebebeb;
   }
   .select__value-container {
     padding: 2px 0 2px 10px;
@@ -70,7 +75,7 @@ export const Select = styled(RSelect)`
       color: ${({ theme }) => theme.color.hint};
     }
     &:hover {
-      background: ${({ theme }) => theme.color.bgSecondary};
+      background: #ebebeb;
     }
   }
-`;
+`

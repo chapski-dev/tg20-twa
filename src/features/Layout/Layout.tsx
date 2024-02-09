@@ -1,6 +1,7 @@
 import { FC } from 'react'
 import { Outlet } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
+import { Splash } from 'features/Splash'
 import { SvgError, SvgSuccess } from 'ui/icons'
 import { Navbar } from './components'
 import * as S from './style'
@@ -8,6 +9,7 @@ import * as S from './style'
 export const Layout: FC = () => {
   return (
     <>
+      <Splash />
       <S.Wrapper>
         <S.ContentWrapper>
           <Outlet />
@@ -15,7 +17,7 @@ export const Layout: FC = () => {
         <Navbar />
       </S.Wrapper>
       <ToastContainer
-        autoClose={60 * 1000}
+        autoClose={4000}
         closeOnClick
         hideProgressBar
         icon={({ type }) => {

@@ -214,6 +214,7 @@ export const Marketplace: FC = () => {
             address={address!}
             direction={direction}
             onCancelClick={handleCancelOrderClick}
+            priceFilter={priceFilter}
             sort={sort}
             tick={tick}
           />
@@ -264,6 +265,7 @@ export const Marketplace: FC = () => {
         setLastDirection(newDirection);
       }
     }, [activeTab]);
+
 
   return (
     <>

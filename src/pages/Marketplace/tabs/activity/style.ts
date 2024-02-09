@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import { Loader as UILoader } from 'ui/Loader/Loader';
+import styled from 'styled-components'
+import { Loader as UILoader } from 'ui/Loader/Loader'
 
 export const Wrapper = styled.div`
   display: flex;
@@ -8,11 +8,11 @@ export const Wrapper = styled.div`
   align-items: center;
   gap: 24px;
   padding: 0;
-`;
+`
 
 export const ActivityTable = styled.div`
   width: 100%;
-`;
+`
 
 export const ActivityRow = styled.div<{ even: boolean }>`
   display: flex;
@@ -22,7 +22,7 @@ export const ActivityRow = styled.div<{ even: boolean }>`
     even ? theme.color.bg : theme.color.bgSecondary};
   padding: 0 16px;
   height: 48px;
-`;
+`
 
 export const ActivityCell = styled.div`
   font-size: 12px;
@@ -47,7 +47,7 @@ export const ActivityCell = styled.div`
   &:first-of-type {
     margin-left: 0px;
   }
-`;
+`
 
 export const ActivityActionButton = styled.div`
   display: flex;
@@ -56,13 +56,13 @@ export const ActivityActionButton = styled.div`
   line-height: 16px;
   color: ${({ theme }) => theme.color.btn};
   cursor: pointer;
-`;
+`
 
 export const ActivitiesHeader = styled.div`
   background-color: ${({ theme }) => theme.color.bg};
-`;
+`
 
-export const ActivitiesBody = styled.div``;
+export const ActivitiesBody = styled.div``
 
 export const ActivitiesHeaderRow = styled.div`
   background-color: ${({ theme }) => theme.color.bgSecondary};
@@ -71,7 +71,7 @@ export const ActivitiesHeaderRow = styled.div`
   justify-content: center;
   align-items: center;
   padding: 0 16px;
-`;
+`
 
 export const ActivitiesHeaderCell = styled.div`
   font-size: 12px;
@@ -85,19 +85,19 @@ export const ActivitiesHeaderCell = styled.div`
     flex: none;
     width: 60px;
   }
-`;
+`
 
 export const EndLoader = styled(UILoader)`
   width: 100%;
   height: 50px;
-`;
+`
 
 export const ErrorText = styled.span`
   font-size: 20px;
   font-weight: 600;
   line-height: 24px;
   color: ${({ theme }) => theme.color.text};
-`;
+`
 
 export const FiltersContainer = styled.div`
   display: flex;
@@ -106,4 +106,4 @@ export const FiltersContainer = styled.div`
   padding: 10px 15px;
   background-color: ${({ theme }) => theme.color.bg};
   gap: 10px;
-`;
+`

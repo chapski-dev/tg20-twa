@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from 'styled-components'
 
 export const Wrapper = styled.div`
   display: flex;
@@ -11,7 +11,7 @@ export const Wrapper = styled.div`
   &::-webkit-scrollbar {
     display: none;
   }
-`;
+`
 
 export const TabItem = styled.div<{ $isActive?: boolean }>`
   display: flex;
@@ -31,7 +31,7 @@ export const TabItem = styled.div<{ $isActive?: boolean }>`
     path {
       fill: ${({ theme, $isActive }) => ($isActive ? theme.color.btn : 'none')};
       stroke: ${({ theme, $isActive }) =>
-    $isActive ? theme.color.text : theme.color.hint};
+        $isActive ? theme.color.text : theme.color.hint};
     }
   }
-`;
+`
