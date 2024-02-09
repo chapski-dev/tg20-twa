@@ -15,9 +15,10 @@ export const Wrapper = styled.div`
 export const ExploreBlock = styled.div`
   display: flex;
   gap: 8px;
-  border-radius: 10px;
+
   flex-direction: column;
   border-bottom: 1px solid #f5f5f5;
+
   padding-bottom: 10px;
 `
 
