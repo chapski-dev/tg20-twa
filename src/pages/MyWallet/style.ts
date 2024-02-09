@@ -231,7 +231,7 @@ export const SwapText = styled.span`
 `
 
 export const Line = styled.div`
-  border: 3px solid ${({ theme }) => theme.color.bgSecondary};
+  border: 2px solid ${({ theme }) => theme.color.bgSecondary};
 `
 
 export const CustomTab = styled(Tabs)``

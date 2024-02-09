@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { theme } from './../../../../../../assets/style/theme'
 
 export const Wrapper = styled.div`
   border-radius: 10px;
@@ -19,6 +20,7 @@ export const ContentWrapper = styled.div`
 
 export const InfoWrapper = styled.div`
   display: flex;
+  align-items: center;
   flex-direction: column;
   gap: 2px;
 
