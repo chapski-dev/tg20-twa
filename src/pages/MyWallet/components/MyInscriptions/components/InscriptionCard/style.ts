@@ -1,6 +1,11 @@
 import styled from 'styled-components'
 import { theme } from './../../../../../../assets/style/theme'
 
+export const WrapperGaneral = styled.div`
+  display: flex;
+  flex-direction: column;
+`
+
 export const Wrapper = styled.div`
   border-radius: 10px;
   background-color: ${({ theme }) => theme.color.bg};
@@ -9,18 +14,26 @@ export const Wrapper = styled.div`
   justify-content: space-between;
   padding: 12px;
   gap: 12px;
+  border-bottom: 1px solid ${({ theme }) => theme.color.bg};
 `
 
 export const ContentWrapper = styled.div`
   display: flex;
   align-items: center;
+  width: 100%;
+`
+
+export const ContentInner = styled.div`
+  display: flex;
+  align-items: center;
   justify-content: space-between;
   width: 100%;
+  padding-right: 4px;
 `
 
 export const InfoWrapper = styled.div`
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   flex-direction: column;
   gap: 2px;
 
@@ -29,12 +42,17 @@ export const InfoWrapper = styled.div`
   }
 `
 
+export const Line = styled.div`
+  width: 100%;
+  height: 2px;
+  background-color: ${({ theme }) => theme.color.bgSecondary};
+`
+
 export const Title = styled.h4`
   font-size: 16px;
   font-style: normal;
   font-weight: 500;
   line-height: 140%;
-  letter-spacing: -0.16px;
   margin: 0;
   padding: 0;
   color: ${({ theme }) => theme.color.text};
@@ -45,7 +63,6 @@ export const Label = styled.span`
   font-style: normal;
   font-weight: 400;
   line-height: 140%;
-  letter-spacing: -0.14px;
   color: ${({ theme }) => theme.color.hint};
 `
 

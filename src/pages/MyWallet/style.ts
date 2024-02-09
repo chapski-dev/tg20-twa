@@ -22,7 +22,6 @@ export const TopBlock = styled.div`
   justify-content: center;
   gap: 8px;
   padding-top: 16px;
-  padding-bottom: 10px;
   background-color: ${({ theme }) => theme.color.bgSecondary};
   background-image: url('../../pages/MyWallet/assets/li_search.png');
   background-repeat: no-repeat;
@@ -75,13 +74,19 @@ export const BalanceBlock = styled.div`
   display: flex;
   position: relative;
   flex-direction: column;
+  background-color: ${({ theme }) => theme.color.bgSecondary};
+`
+
+export const BalanceBlockInner = styled.div`
+  background: url(${Vectors});
+  background-size: 100%;
   padding-top: 23.5px;
   padding-bottom: 23.4px;
   padding-left: 20px;
-  background-color: ${({ theme }) => theme.color.bgSecondary};
-  background-image: url(${Vectors}) no-repeat;
 `
+
 export const TotlaBalance = styled.div`
+  padding-bottom: 16px;
   font-weight: 500;
   font-size: 12px;
   color: ${({ theme }) => theme.color.hint};
