@@ -27,28 +27,33 @@ export const InscriptionCard: FC<InscriptionCardProps> = (props) => {
   }, [tick, tonPrice])
 
   return (
-    <S.Wrapper>
-      <S.TokenImageWrapper>
-        {tick === 'ton' ? <SvgToncoinIcon /> : <SvgGramIcon />}
-      </S.TokenImageWrapper>
-      <S.ContentWrapper>
-        <S.InfoWrapper>
-          <S.Title>{tick === 'ton' ? tick.toUpperCase() : tick}</S.Title>
-          {(tick === 'gram' || tick === 'ton') && (
-            <S.Label>${currentUsdPrice && currentUsdPrice}</S.Label>
-          )}
-        </S.InfoWrapper>
-        <S.InfoWrapper>
-          <S.Title>{balance}</S.Title>
+    <S.WrapperGaneral>
+      <S.Wrapper>
+        <S.TokenImageWrapper>
+          {tick === 'ton' ? <SvgToncoinIcon /> : <SvgGramIcon />}
+        </S.TokenImageWrapper>
+        <S.ContentWrapper>
+          <S.ContentInner>
+            <S.InfoWrapper>
+              <S.Title>{tick === 'ton' ? tick.toUpperCase() : tick}</S.Title>
+              {(tick === 'gram' || tick === 'ton') && (
+                <S.Label>${currentUsdPrice && currentUsdPrice}</S.Label>
+              )}
+            </S.InfoWrapper>
+            <S.InfoWrapper>
+              <S.Title>{balance}</S.Title>
 
-          {(tick === 'gram' || tick === 'ton') && (
-            <S.Label>
-              ${currentUsdPrice && (currentUsdPrice * balance).toFixed(2)}
-            </S.Label>
-          )}
-        </S.InfoWrapper>
-        <SvgArrowLeftAssets />
-      </S.ContentWrapper>
-    </S.Wrapper>
+              {(tick === 'gram' || tick === 'ton') && (
+                <S.Label>
+                  ${currentUsdPrice && (currentUsdPrice * balance).toFixed(2)}
+                </S.Label>
+              )}
+            </S.InfoWrapper>
+          </S.ContentInner>
+          <SvgArrowLeftAssets />
+        </S.ContentWrapper>
+      </S.Wrapper>
+      <S.Line />
+    </S.WrapperGaneral>
   )
 }

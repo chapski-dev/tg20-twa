@@ -5,13 +5,13 @@ import { createSearchParams, useNavigate } from 'react-router-dom'
 import { getTokenWalletBalance, getTonPrice } from 'api'
 import { AppRoutes } from 'constants/app'
 import { FCWithChildren } from 'types/app'
+import { WebApp, WebAppUser } from 'types/telegram'
 import { OpenTelegramBlock } from 'ui/OpenTelegramBlock/OpenTelegramBlock'
 import { getBalance } from 'utils/getBalance'
-import { TelegramUser, WebApp } from './types'
 
 export type TelegramContextType = {
   webApp?: WebApp
-  user?: TelegramUser
+  user?: WebAppUser
   currentUserEmail?: string
   waitListStatus?: string | null
   updateCurrentEmail?: (email: string) => void
@@ -29,7 +29,7 @@ export const TelegramProvider: FCWithChildren = (props) => {
   const [webApp, setWebApp] = useState<WebApp | null>(null)
 
   const [isStartParamChecked, setIsStartParamChecked] = useState<boolean>(false)
-
+  
   const userWalletAddress = useTonAddress()
 
   const navigate = useNavigate()
@@ -85,7 +85,7 @@ export const TelegramProvider: FCWithChildren = (props) => {
   )
 
   useEffect(() => {
-    const app = (window as any).Telegram?.WebApp
+    const app = window.Telegram?.WebApp
 
     if (app) {
       app.ready()

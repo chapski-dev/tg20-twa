@@ -28,6 +28,9 @@ export type InputProps = InputHTMLAttributes<HTMLInputElement> & {
   label?: string
   icon?: ReactNode
   sublabel?: string
+
+  isSuccess?: boolean;
+
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
@@ -43,6 +46,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
     name,
     max,
     min,
+    isSuccess = true,
     type,
     actionElement,
     errorMessage,
@@ -106,7 +110,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
           {...otherInputProps}
         />
         {actionElement}
-        {value && !error && <SvgTickCircle />}
+        {isSuccess && value && !error && <SvgTickCircle />}
       </S.InputContainer>
       {error && <S.ErrorMessageBlock>{errorMessage}</S.ErrorMessageBlock>}
     </S.InputWrapper>

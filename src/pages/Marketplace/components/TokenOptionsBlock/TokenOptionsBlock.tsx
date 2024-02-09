@@ -2,9 +2,7 @@ import React, { FC, useCallback, useState } from 'react'
 import { fromNano } from '@ton/core'
 import { useQuery } from 'react-query'
 import {
-  getCurrentMaketplaceTicks,
-  getMarketplaceTokenStats,
-  getTokenInfo,
+  getCurrentMaketplaceTicks, getMarketplaceTokenStats, getTokenInfo,
 } from 'api'
 import { MarketplaceTokenStats } from 'api/types'
 import { useDebounce } from 'hooks/useDebounce/useDebounce'
@@ -218,9 +216,8 @@ const Listings: FC<ListingsProps> = (props) => {
               <span>{currentTickData?.tick}</span> Floor Price
             </S.BlockTitle>
             <S.BlockDescription
-              children={`${marketplaceGramStats?.[2].value || 0} TON ${
-                marketplaceGramStats?.[2].description || ''
-              }`}
+              children={`${marketplaceGramStats?.[2].value || 0} TON ${marketplaceGramStats?.[2].description || ''
+                }`}
             />
           </S.Block>
         )}

@@ -281,7 +281,7 @@ export const TransferPopup: FC<TransferPopupProps> = (props) => {
   )
 
   const handleBuyTonClick = () => {
-    webApp.disableClosingConfirmation()
+    webApp?.disableClosingConfirmation()
     window.open(buyTonLink, '_blank')
     onClose()
   }

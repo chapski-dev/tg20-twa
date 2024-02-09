@@ -29,7 +29,6 @@ export const Block = styled.div`
   flex-direction: column;
   gap: 2px;
 `
-
 export const BlockTitle = styled.div`
   font-size: 12px;
   color: ${({ theme }) => theme.color.text};
