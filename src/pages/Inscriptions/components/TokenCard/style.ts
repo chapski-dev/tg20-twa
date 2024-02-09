@@ -1,5 +1,6 @@
 import styled from 'styled-components'
-import { SvgGramIcon, SvgLogo2, SvgVerified } from 'ui/icons'
+import {  SvgLogo2, SvgVerified } from 'ui/icons'
+import bgImg from './card-bg.png';
 
 export const Wrapper = styled.div`
   display: flex;
@@ -16,7 +17,7 @@ export const ContentWrapper = styled.div`
   align-items: center;
   justify-content: space-between;
   background-color: ${({ theme }) => theme.color.bg};
-  background-image: url(./card-bg.svg);
+  background-image: url(${bgImg});
 
   gap: 12px;
   border: 1px solid ${({ theme }) => theme.color.bgSecondary};
