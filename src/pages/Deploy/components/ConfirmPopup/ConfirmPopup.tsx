@@ -29,7 +29,7 @@ export const ConfirmPopup: FC<ConfirmPopupProps> = (props) => {
   const currentTotalAmount = 0.1;
 
   const handleBuyTonClick = () => {
-    webApp.disableClosingConfirmation();
+    webApp?.disableClosingConfirmation();
     window.open(BUY_TON_LINK, '_blank');
     onClose();
   };

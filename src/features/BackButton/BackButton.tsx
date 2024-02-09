@@ -1,7 +1,6 @@
 import { FC, useEffect } from 'react'
 
-const WebApp =
-  typeof window !== 'undefined' ? (window as any).Telegram?.WebApp : undefined
+const WebApp = !!window ? window.Telegram?.WebApp : undefined
 
 interface BackButtonProps {
   onClick?: VoidFunction
@@ -13,7 +12,7 @@ let isButtonShown = false
 
 export const BackButton: FC<BackButtonProps> = ({
   onClick = () => {
-    if (typeof window !== 'undefined') {
+    if (!!window) {
       window.history.back()
     }
   },
