@@ -3,6 +3,7 @@ import { Button as ButtonReference } from 'ui/Button/Button'
 
 import { DynamicTickLogo as UIDynamicTickLogo } from 'ui/DynamicTickLogo/DynamicTickLogo'
 import { Input } from 'ui/Input/Input'
+import { InputContainer } from 'ui/Input/style'
 import { Loader as UILoader } from 'ui/Loader/Loader'
 import { Select } from 'ui/Select/Select'
 
@@ -84,6 +85,9 @@ export const Button = styled(ButtonReference)`
 export const StyledInput = styled(Input)`
   margin-top: 16px;
   background: #ebebeb;
+  input {
+    background: #ebebeb;
+  }
 `
 
 export const TokenSelectWrapper = styled.div`

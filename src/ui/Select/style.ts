@@ -10,7 +10,7 @@ export const Select = styled(RSelect)`
     height: 42px;
     font-weight: 400;
     font-size: 16px;
-    background: #ebebeb;
+    background: ${({ theme }) => theme.color.bg};
     border-radius: 6px;
     line-height: 140%;
     letter-spacing: -0.01em;

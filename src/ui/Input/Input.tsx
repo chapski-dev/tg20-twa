@@ -5,9 +5,9 @@ import {
   ReactNode,
   forwardRef,
   useState,
-} from 'react';
-import { SvgTickCircle } from 'ui/icons';
-import * as S from './style';
+} from 'react'
+import { SvgTickCircle } from 'ui/icons'
+import * as S from './style'
 
 //TODO: props refactoring
 
@@ -28,7 +28,9 @@ export type InputProps = InputHTMLAttributes<HTMLInputElement> & {
   label?: string
   icon?: ReactNode
   sublabel?: string
+
   isSuccess?: boolean;
+
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
@@ -51,16 +53,16 @@ export const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
     label,
     icon,
     ...otherInputProps
-  } = props;
+  } = props
 
-  const [isFocused, setIsFocused] = useState<boolean>(false);
+  const [isFocused, setIsFocused] = useState<boolean>(false)
 
   const handleChange = (evt: ChangeEvent<HTMLInputElement>) => {
     if (type === 'number') {
       if (max && Number(evt.target.value) > max) {
-        evt.target.value = max.toString();
+        evt.target.value = max.toString()
 
-        return;
+        return
       }
 
       if (
@@ -69,20 +71,20 @@ export const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
         isNaN(Number(evt.target.value)) &&
         evt.target.value !== ''
       ) {
-        evt.target.value = min.toString();
+        evt.target.value = min.toString()
       }
 
       if (isNaN(Number(evt.target.value))) {
-        return;
+        return
       }
     }
 
-    onChange?.(evt);
-  };
+    onChange?.(evt)
+  }
 
   const toggleFocusedMode = () => {
-    setIsFocused((prev) => !prev);
-  };
+    setIsFocused((prev) => !prev)
+  }
 
   return (
     <S.InputWrapper className={wrapperClassName}>
@@ -92,11 +94,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
           {sublabel && <S.Sublabel error={error}>{sublabel}</S.Sublabel>}
         </S.Label>
       )}
-      <S.InputContainer
-        className={className}
-        error={error}
-        focused={isFocused}
-      >
+      <S.InputContainer className={className} error={error} focused={isFocused}>
         {icon}
         <S.Input
           ref={ref}
@@ -116,5 +114,5 @@ export const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
       </S.InputContainer>
       {error && <S.ErrorMessageBlock>{errorMessage}</S.ErrorMessageBlock>}
     </S.InputWrapper>
-  );
-});
+  )
+})
