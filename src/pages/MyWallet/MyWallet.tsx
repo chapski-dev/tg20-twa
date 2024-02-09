@@ -15,7 +15,6 @@ import {
 
 import { type Tab } from 'ui/TabsFilled/TabsFilled'
 import { MyAssets, MyTransfers, PromoSlider } from './components'
-import { MyAssets, MyTransfers } from './components'
 import { NotAuthorized } from './components/NotAuthorized/NotAuthorized'
 import { PROCENT_MOCK } from './mock'
 import * as S from './style'
@@ -62,7 +61,7 @@ export const MyWallet: FC = () => {
           <S.Search>
             <S.SearchInput
               icon={<SvgSearch />}
-              onChange={() => { }}
+              onChange={() => {}}
               placeholder="Search tokens"
             />
           </S.Search>
