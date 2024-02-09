@@ -14,9 +14,9 @@ export const Container = styled.div<Theme>`
   align-items: center;
   gap: 16px;
   ${({ variant }) =>
-    variant === 'purple' && 'background-color: rgba(214, 183, 255, 0.20);'}
+    variant === 'purple' && 'background-color: rgba(214, 183, 255, 0.2);'}
   ${({ variant }) =>
-    variant === 'yellow' && 'background-color: rgba(255, 232, 146, 0.20);'}
+    variant === 'yellow' && 'background-color: rgba(255, 217, 75, 0.18);'}
 
   #exit_1 {
     fill: ${({ theme }) => theme.color.hint};

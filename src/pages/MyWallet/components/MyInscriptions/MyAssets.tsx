@@ -1,12 +1,26 @@
 import { FC } from 'react'
 import { useTonAddress } from '@tonconnect/ui-react'
 import { useQuery } from 'react-query'
-import { useNavigate } from 'react-router-dom'
 import { getWalletTokensBalances } from 'api'
-import { useClipboard } from 'hooks/useClipboard/useClipboard'
 import { useTelegram } from 'hooks/useTelegram/useTelegram'
 import { InscriptionCard } from './components'
 import * as S from './style'
+
+type liMockProps = {
+  tick: string
+  balance: number
+}
+
+const LI_MOCK: liMockProps[] = [
+  {
+    tick: 'ton',
+    balance: 1000,
+  },
+  {
+    tick: 'ton',
+    balance: 1000,
+  },
+]
 
 export const MyAssets: FC = () => {
   const { currentWalletBalance } = useTelegram()
@@ -51,6 +65,9 @@ export const MyAssets: FC = () => {
               {idx !== myInscriptions.length - 1 && <S.Line />}
             </>
           ))}
+        {LI_MOCK.map(({ tick, balance }, idx) => (
+          <InscriptionCard key={idx} balance={balance} tick={tick} />
+        ))}
       </S.InscriptionsWrapper>
     </S.Wrapper>
   )

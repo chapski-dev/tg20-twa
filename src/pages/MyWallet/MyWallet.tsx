@@ -1,13 +1,7 @@
 import { FC, useMemo, useState } from 'react'
 import { useTonAddress, useTonConnectUI } from '@tonconnect/ui-react'
 import { useNavigate } from 'react-router-dom'
-import { Swiper, SwiperSlide } from 'swiper/react'
-import 'swiper/css'
-import 'swiper/css/navigation'
-import 'swiper/css/pagination'
-import 'swiper/css/scrollbar'
 import { BackButton } from 'features/BackButton'
-import { useClipboard } from 'hooks/useClipboard/useClipboard'
 import { useTelegram } from 'hooks/useTelegram/useTelegram'
 import { Container } from 'ui/Container/Container'
 import {
@@ -19,9 +13,8 @@ import {
   SvgSendSquare,
 } from 'ui/icons'
 
-import { Promo } from 'ui/Promo'
-import { PromoProps } from 'ui/Promo/type'
 import { type Tab } from 'ui/TabsFilled/TabsFilled'
+import { MyAssets, MyTransfers, PromoSlider } from './components'
 import { MyAssets, MyTransfers } from './components'
 import { NotAuthorized } from './components/NotAuthorized/NotAuthorized'
 import { PROCENT_MOCK } from './mock'
@@ -38,37 +31,6 @@ const tabs: Tab[] = [
   },
 ]
 
-type PromoSlidesProps = PromoProps & {
-  id: number
-}
-
-const promoSlides: PromoSlidesProps[] = [
-  {
-    id: 1,
-    title: 'Add Crypto from Binance or Coinbase',
-    subtitle: 'Deposit now',
-    variant: 'yellow',
-  },
-  {
-    id: 2,
-    title: 'See what’s new in your wallet!',
-    subtitle: 'Explore wallet',
-    variant: 'purple',
-  },
-  {
-    id: 3,
-    title: 'Add Crypto from Binance or Coinbase',
-    subtitle: 'Deposit now',
-    variant: 'yellow',
-  },
-  {
-    id: 4,
-    title: 'See what’s new in your wallet!',
-    subtitle: 'Explore wallet',
-    variant: 'purple',
-  },
-]
-
 export const MyWallet: FC = () => {
   const [currentTab, setCurrentTab] = useState(tabs[0])
 
@@ -77,8 +39,6 @@ export const MyWallet: FC = () => {
   const { currentWalletBalance } = useTelegram()
 
   const navigate = useNavigate()
-
-  const clipboard = useClipboard()
 
   const [tonConnectUI] = useTonConnectUI()
 
@@ -89,16 +49,6 @@ export const MyWallet: FC = () => {
 
     return <MyTransfers />
   }, [currentTab.value])
-
-  const handleWalletAddressClick = () => {
-    if (!userWalletAddress) {
-      return
-    }
-
-    clipboard(userWalletAddress, () =>
-      alert('Your wallet address successfully copied!')
-    )
-  }
 
   if (!userWalletAddress) {
     return <NotAuthorized />
@@ -125,15 +75,17 @@ export const MyWallet: FC = () => {
           </S.LogOut>
         </S.TopBlock>
         <S.BalanceBlock>
-          <S.TotlaBalance>Total Balance</S.TotlaBalance>
-          <S.Balance>${currentWalletBalance}</S.Balance>
-          <S.InfoChange>
-            <S.Time>24h change</S.Time>
-            <S.Procent>{PROCENT_MOCK.procent}%</S.Procent>
-          </S.InfoChange>
-          <S.SvgRightDown>
-            <SvgIconWalletTg />
-          </S.SvgRightDown>
+          <S.BalanceBlockInner>
+            <S.TotlaBalance>Total Balance</S.TotlaBalance>
+            <S.Balance>${currentWalletBalance}</S.Balance>
+            <S.InfoChange>
+              <S.Time>24h change</S.Time>
+              <S.Procent>{PROCENT_MOCK.procent}%</S.Procent>
+            </S.InfoChange>
+            <S.SvgRightDown>
+              <SvgIconWalletTg />
+            </S.SvgRightDown>
+          </S.BalanceBlockInner>
         </S.BalanceBlock>
       </S.TopWrapperBlock>
       <S.WalletFunctions>
@@ -159,25 +111,9 @@ export const MyWallet: FC = () => {
       <S.Line />
 
       <S.CarouselContainer>
-        <Swiper
-          onSlideChange={() => {
-            console.log('slider change')
-          }}
-          slidesPerView={2}
-          spaceBetween={170}
-        >
-          {promoSlides.map((slide, id) => (
-            <SwiperSlide>
-              <Promo
-                key={id}
-                subtitle={slide.subtitle}
-                title={slide.title}
-                variant={slide.variant}
-              />
-            </SwiperSlide>
-          ))}
-        </Swiper>
+        <PromoSlider />
       </S.CarouselContainer>
+
       <Container>
         <S.TabsBlock>
           <S.CustomTab
