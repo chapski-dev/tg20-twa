@@ -6,4 +6,5 @@ export type PromoProps = {
   title: string
   subtitle: string
   className?: string
+  onClose?: () => void
 } & Theme
