@@ -1,10 +1,9 @@
 import styled from 'styled-components'
 import { Button as ButtonReference } from 'ui/Button/Button'
-import { Accordion as AccordionReference } from 'ui/Accordion/Accordion'
 
 import { DynamicTickLogo as UIDynamicTickLogo } from 'ui/DynamicTickLogo/DynamicTickLogo'
-import { Loader as UILoader } from 'ui/Loader/Loader'
 import { Input } from 'ui/Input/Input'
+import { Loader as UILoader } from 'ui/Loader/Loader'
 
 export const Wrapper = styled.div`
   border-radius: 10px;
