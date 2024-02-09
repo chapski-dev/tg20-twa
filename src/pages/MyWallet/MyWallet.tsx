@@ -7,7 +7,6 @@ import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import 'swiper/css/scrollbar'
 import { BackButton } from 'features/BackButton'
-import { MainButton } from 'features/MainButton'
 import { useClipboard } from 'hooks/useClipboard/useClipboard'
 import { useTelegram } from 'hooks/useTelegram/useTelegram'
 import { Container } from 'ui/Container/Container'
@@ -23,7 +22,7 @@ import {
 import { Promo } from 'ui/Promo'
 import { PromoProps } from 'ui/Promo/type'
 import { type Tab } from 'ui/TabsFilled/TabsFilled'
-import { MyAssets, MyTransfers, BalancesBlock } from './components'
+import { MyAssets, MyTransfers } from './components'
 import { NotAuthorized } from './components/NotAuthorized/NotAuthorized'
 import { PROCENT_MOCK } from './mock'
 import * as S from './style'
@@ -75,7 +74,7 @@ export const MyWallet: FC = () => {
 
   const userWalletAddress = useTonAddress()
 
-  const { currentGramBalance, currentWalletBalance, tonPrice } = useTelegram()
+  const { currentWalletBalance } = useTelegram()
 
   const navigate = useNavigate()
 
@@ -113,7 +112,7 @@ export const MyWallet: FC = () => {
           <S.Search>
             <S.SearchInput
               icon={<SvgSearch />}
-              onChange={() => {}}
+              onChange={() => { }}
               placeholder="Search tokens"
             />
           </S.Search>

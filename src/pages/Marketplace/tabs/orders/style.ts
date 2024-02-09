@@ -6,7 +6,6 @@ export const Wrapper = styled.div`
   width: 100%;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
   padding: 0;
 `
 
@@ -14,18 +13,45 @@ export const OrdersTable = styled.table`
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
-  border: 1px solid ${({ theme }) => theme.color.bgSecondary};
-  border-radius: 10px;
 `
 
 export const OrderRow = styled.tr<{ even: string }>`
-  max-height: 33px;
+  max-height: 50px;
   background-color: ${({ even, theme }) =>
     even === 'true' ? theme.color.bgSecondary : 'transparent'};
 `
 
+export const Block = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 5px;
+  margin: 130px auto 0 auto;
+  width: 100%;
+  background-color: ${({ theme }) => theme.color.bg};
+`
+export const Subtitle = styled.div`
+  color: ${({ theme }) => theme.color.hint};
+  text-align: center;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -0.42px;
+`
+export const Title = styled.div`
+  text-align: center;
+  font-size: 24px;
+  color: ${({ theme }) => theme.color.hint};
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: -0.72px;
+`
+
 export const OrderCell = styled.td`
-  padding: 8px;
+  padding: 16px;
   font-size: 12px;
   font-style: normal;
   font-weight: 500;
@@ -38,12 +64,12 @@ export const OrderActionButton = styled.div`
   font-size: 12px;
   font-style: normal;
   line-height: 16px;
-  color: ${({ theme }) => theme.color.btn};
+  color: ${({ theme }) => theme.color.redAlert};
   cursor: pointer;
 `
 
 export const OrdersHeader = styled.thead`
-  background-color: ${({ theme }) => theme.color.bg};
+  background-color: ${({ theme }) => theme.color.bgSecondary};
 `
 
 export const OrdersBody = styled.tbody``
@@ -51,25 +77,13 @@ export const OrdersBody = styled.tbody``
 export const OrdersHeaderRow = styled.tr``
 
 export const OrdersHeaderCell = styled.th`
-  padding: 8px;
+  padding: 12px;
   font-size: 12px;
   font-style: normal;
   line-height: 16px;
   color: ${({ theme }) => theme.color.hint};
   text-align: left;
-  font-weight: 400;
-
-  &:first-of-type {
-    border-top-left-radius: 10px;
-    -moz-border-top-left-radius: 10px;
-    -webkit-border-top-left-radius: 10px;
-  }
-
-  &:last-of-type {
-    border-top-right-radius: 10px;
-    -moz-border-top-right-radius: 10px;
-    -webkit-border-top-right-radius: 10px;
-  }
+  font-weight: 500;
 `
 
 export const EndLoader = styled(UILoader)`
