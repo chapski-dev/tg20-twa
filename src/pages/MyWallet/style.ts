@@ -6,6 +6,7 @@ import Vectors from './assets/vectors.png'
 export const Wrapper = styled.div`
   display: flex;
   min-width: 100%;
+  max-width: 100%;
   flex-direction: column;
   align-self: center;
   padding: 0px;
