@@ -1,11 +1,12 @@
 import { FC, useCallback, useState } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
+import { Promo } from 'ui/Promo'
+import { PromoProps } from 'ui/Promo/type'
+
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import 'swiper/css/scrollbar'
-import { Promo } from 'ui/Promo'
-import { PromoProps } from 'ui/Promo/type'
 import * as S from './style'
 
 type PromoSlide = PromoProps & {
@@ -49,6 +50,7 @@ export const PromoSlider: FC = () => {
 
   return (
     <Swiper
+      grabCursor
       onSlideChange={() => {
         console.log('slider change')
       }}
