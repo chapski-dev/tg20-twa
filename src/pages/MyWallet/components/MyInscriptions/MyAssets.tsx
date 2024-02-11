@@ -42,8 +42,6 @@ export const MyAssets: FC = () => {
 
   const userWalletAddress = useTonAddress()
 
-  const navigate = useNavigate()
-
   const {
     data: myInscriptions,
     isLoading: isMyInscriptionsLoading,
@@ -61,7 +59,7 @@ export const MyAssets: FC = () => {
   }
 
   return (
-    <S.Wrapper onClick={() => navigate(`${AppRoutes.TranferHistory}/text`)}>
+    <S.Wrapper>
       <S.InscriptionsWrapper>
         {/* {isMyInscriptionsLoaded && !myInscriptions.length && (
           <S.DontHaveInscriptionsBlock>

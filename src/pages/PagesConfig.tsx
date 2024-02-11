@@ -60,7 +60,7 @@ export const PagesConfig = () => {
         },
         {
           element: <TransferHistory />,
-          path: AppRoutes.TranferHistory,
+          path: AppRoutes.TransferHistory,
         },
       ],
     },

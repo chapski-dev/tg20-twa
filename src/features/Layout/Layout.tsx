@@ -4,6 +4,7 @@ import { ToastContainer } from 'react-toastify'
 import { Splash } from 'features/Splash'
 import { SvgError, SvgSuccess } from 'ui/icons'
 import { Navbar } from './components'
+
 import * as S from './style'
 
 export const Layout: FC = () => {
@@ -21,16 +22,16 @@ export const Layout: FC = () => {
         closeOnClick
         hideProgressBar
         icon={({ type }) => {
-          if (type === "success") return <SvgSuccess />;
-          if (type === "error") return <SvgError />;
-          else return null;
+          if (type === 'success') return <SvgSuccess />
+          if (type === 'error') return <SvgError />
+          else return null
         }}
         newestOnTop
         pauseOnFocusLoss
         pauseOnHover
         position="top-center"
         rtl={false}
-        theme='colored'
+        theme="colored"
       />
     </>
   )
