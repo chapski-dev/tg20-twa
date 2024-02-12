@@ -5,9 +5,8 @@ import { getTransfersHistory } from 'api'
 import { TransferCard } from './components'
 import * as S from './style'
 
-export const MyTransfers: FC = () => {
+export const MyTransactions: FC = () => {
   const userWalletAddress = useTonAddress()
-
   const {
     data: transfersHistory,
     isLoading: isTransferHistoryLoading,
@@ -28,14 +27,12 @@ export const MyTransfers: FC = () => {
             key={idx}
             amount={transfer.delta}
             date={transfer.time}
-            tick={transfer.tick}
             walletAddress={transfer.peer}
           />
         ))}
-
       {isTransferHistoryLoaded && !transfersHistory.length && (
         <S.DontHaveTransfersBlock>
-          You dont have any transfers
+          You dont have any transactions
         </S.DontHaveTransfersBlock>
       )}
     </S.Wrapper>

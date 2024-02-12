@@ -240,19 +240,12 @@ export const Line = styled.div`
   border: 2px solid ${({ theme }) => theme.color.bgSecondary};
 `
 
-export const CustomTab = styled(Tabs)``
-
-// export const Tabs = styled(UITabs)`
-//   min-width: 100%;
-// `
-
-// export const WalletAddressWrapper = styled.div`
-//   display: flex;
-//   align-items: center;
-//   gap: 6px;
-//   cursor: pointer;
-//   margin: 0 auto;
-// `
+export const CustomTab = styled(Tabs)<{ $isActive?: boolean }>`
+  div {
+    color: ${({ theme, $isActive }) =>
+      $isActive ? theme.color.btn : theme.color.redAlert};
+  }
+`
 
 export const WalletLabel = styled.span`
   font-size: 14px;

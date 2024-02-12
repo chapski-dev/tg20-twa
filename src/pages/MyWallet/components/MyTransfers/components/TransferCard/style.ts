@@ -1,61 +1,84 @@
 import styled from 'styled-components'
+export const Wrapper = styled.div``
 
-export const Wrapper = styled.div`
-  border-radius: 10px;
-  background-color: ${({ theme }) => theme.color.bgSecondary};
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px;
-  gap: 12px;
-`
-
-export const ContentWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-`
-
-export const InfoWrapper = styled.div`
+export const HistoryBlock = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 2px;
-
-  &:last-child {
-    align-items: flex-end;
-  }
+  padding: 12px 0px;
 `
 
-export const Title = styled.h4<{ $type?: 'increase' | 'decrease' }>`
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 140%;
-  letter-spacing: -0.16px;
-  margin: 0;
-  padding: 0;
-  color: ${({ theme, $type }) =>
-    $type === 'increase'
-      ? theme.color.greenSuccess
-      : $type === 'decrease'
-      ? theme.color.redAlert
-      : theme.color.text};
+export const HistoryCard = styled.div`
+  display: flex;
+  flex-direction: column;
 `
 
-export const Label = styled.span`
-  font-size: 14px;
-  font-style: normal;
+export const DateBlock = styled.div`
+  padding-bottom: 16px;
+`
+
+export const Date = styled.span`
+  font-size: 12px;
   font-weight: 400;
-  line-height: 140%;
-  letter-spacing: -0.14px;
+  line-height: 16px;
   color: ${({ theme }) => theme.color.hint};
 `
 
-export const TokenImageWrapper = styled.div`
+export const ItemHistory = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`
+
+export const LeftInfo = styled.div`
+  display: flex;
+  gap: 5px;
+`
+
+export const SvgHistory = styled.div`
+  width: 30px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  height: 30px;
+  border-radius: 50px;
+  background-color: ${({ theme }) => theme.color.bgSecondary};
   svg {
-    border-radius: 50%;
-    width: 44px;
-    height: 44px;
+    path {
+      stroke: ${({ theme }) => theme.color.hint};
+    }
+    width: 27px;
   }
 `
+
+export const Group = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+`
+
+export const TypeHistory = styled.span`
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 16px;
+  color: ${({ theme }) => theme.color.text};
+`
+
+export const Adress = styled.span`
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 12px;
+  color: ${({ theme }) => theme.color.hint};
+`
+
+export const CountActions = styled.div`
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 16px;
+  color: ${({ theme }) => theme.color.greenSuccess};
+`
+
+export const CountTransfer = styled.span``
+
+export const TypeСurrency = styled.span``
