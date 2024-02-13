@@ -56,12 +56,10 @@ export const Marketplace: FC = () => {
 
   const [isConfirmLotModalOpen, setIsConfirmLotModalOpen] = useState(false)
   const [isBuyModalOpen, setIsBuyModalOpen] = useState(false)
-  const [isOrderCancellationModalOpen, setIsOrderCancellationModalOpen] =
-    useState(false)
-  const [isActivityDetailsModalOpen, setIsActivityDetailsModalOpen] =
-    useState(false)
+  const [isOrderCancellationModalOpen, setIsOrderCancellationModalOpen] = useState(false)
+  const [isActivityDetailsModalOpen, setIsActivityDetailsModalOpen] = useState(false)
 
-  const [isTransactionModalOpen, setIsTransactionModalOpen] = useState(false)
+  const [isTransactionStatusModalOpen, setIsTransactionStatusModalOpen] = useState(false)
   const [isTransactionSuccessful, setIsTransactionSuccessful] = useState(false)
 
   const [lotInfo, setLotInfo] = useState<LotInfo | null>(null)
@@ -79,8 +77,7 @@ export const Marketplace: FC = () => {
 
   const [priceFilter, setPriceFilter] = useState<'TON' | 'USD'>('TON')
 
-  const onShowPriceIn = () =>
-    setPriceFilter((prevSt) => (prevSt === 'TON' ? 'USD' : 'TON'))
+  const onShowPriceIn = () => setPriceFilter((prevSt) => (prevSt === 'TON' ? 'USD' : 'TON'))
 
   const { currentWalletBalance } = useTelegram()
 
@@ -105,8 +102,8 @@ export const Marketplace: FC = () => {
   )
 
   const handleConfirmLotClick = useCallback(() => {
-    if (isTransactionModalOpen) {
-      setIsTransactionModalOpen(false)
+    if (isTransactionStatusModalOpen) {
+      setIsTransactionStatusModalOpen(false)
       return
     }
 
@@ -115,7 +112,7 @@ export const Marketplace: FC = () => {
       return
     }
     setIsConfirmLotModalOpen(true)
-  }, [address, isTransactionModalOpen, tonConnectUI])
+  }, [address, isTransactionStatusModalOpen, tonConnectUI])
 
   const handleCancelOrderClick = useCallback(
     (lotInfoVal: LotInfo) => {
@@ -154,21 +151,19 @@ export const Marketplace: FC = () => {
           ],
           validUntil: Math.floor(Date.now() / 1000) + 180,
         },
-        {
-          returnStrategy: 'none',
-        }
+        { returnStrategy: 'none' }
       )
       setIsTransactionSuccessful(true)
     } catch (e) {
       setIsTransactionSuccessful(false)
     }
 
-    setIsTransactionModalOpen(true)
+    setIsTransactionStatusModalOpen(true)
   }, [lotInfo, tonConnectUI])
 
   const handleCancelLot = useCallback(async () => {
     if (!isOrderCancellationModalOpen) {
-      setIsTransactionModalOpen(false)
+      setIsTransactionStatusModalOpen(false)
       return
     }
 
@@ -190,16 +185,14 @@ export const Marketplace: FC = () => {
           ],
           validUntil: Math.floor(Date.now() / 1000) + 180,
         },
-        {
-          returnStrategy: 'none',
-        }
+        { returnStrategy: 'none' }
       )
       setIsTransactionSuccessful(true)
     } catch (e) {
       setIsTransactionSuccessful(false)
     }
 
-    setIsTransactionModalOpen(true)
+    setIsTransactionStatusModalOpen(true)
   }, [isOrderCancellationModalOpen, lotInfo, tonConnectUI])
 
   const tabs: TTabs[] = useMemo(
@@ -321,15 +314,15 @@ export const Marketplace: FC = () => {
             sortSelectValue={`${sort}_${direction}`}
             tick={tick}
           />
-        </S.ActionsContainer>{' '}
-        *<S.TabContentWrapper>{tabs[activeTab].component}</S.TabContentWrapper>
+        </S.ActionsContainer>
+        <S.TabContentWrapper>{tabs[activeTab].component}</S.TabContentWrapper>
         {isConfirmLotModalOpen && (
           <ConfirmLotPopup
             onClose={() => setIsConfirmLotModalOpen(false)}
             tick={tick}
             tokenBalance={currentWalletTickerData?.balance || 0}
             updateIsSuccessfulTransactionStatus={setIsTransactionSuccessful}
-            updateSuccessfulPopupDisplayMode={setIsTransactionModalOpen}
+            updateSuccessfulPopupDisplayMode={setIsTransactionStatusModalOpen}
           />
         )}
         {isBuyModalOpen && (
@@ -366,9 +359,9 @@ export const Marketplace: FC = () => {
             ticker={tick}
           />
         )}
-        {isTransactionModalOpen && (
+        {isTransactionStatusModalOpen && (
           <TransactionStatusModal
-            onClose={() => setIsTransactionModalOpen(false)}
+            onClose={() => setIsTransactionStatusModalOpen(false)}
             success={isTransactionSuccessful}
           />
         )}
@@ -376,7 +369,7 @@ export const Marketplace: FC = () => {
           activeTab={activeTab}
           handleCancelLot={handleCancelLot}
           isOrderCancellationModalOpen={isOrderCancellationModalOpen}
-          isTransactionModalOpen={isTransactionModalOpen}
+          isTransactionStatusModalOpen={isTransactionStatusModalOpen}
         />
       </S.Wrapper>
     </>
@@ -385,13 +378,13 @@ export const Marketplace: FC = () => {
 
 type RenderMainButtonProps = {
   activeTab: MarketplaceTabsValueEnum
-  isTransactionModalOpen: boolean
+  isTransactionStatusModalOpen: boolean
   isOrderCancellationModalOpen: boolean
   handleCancelLot: () => void
 }
 const RenderMainButton: FC<RenderMainButtonProps> = ({
   activeTab,
-  isTransactionModalOpen,
+  isTransactionStatusModalOpen,
   isOrderCancellationModalOpen,
   handleCancelLot,
 }) => {
@@ -401,7 +394,7 @@ const RenderMainButton: FC<RenderMainButtonProps> = ({
     case (activeTab === MarketplaceTabsValueEnum.MY_ORDERS &&
       isOrderCancellationModalOpen) ||
       (activeTab === MarketplaceTabsValueEnum.MY_ORDERS &&
-        isTransactionModalOpen):
+        isTransactionStatusModalOpen):
       return (
         <MainButton
           color={

@@ -19,7 +19,7 @@ export const ActivityDetailsPopup: FC<ActivityDetailsPopupProps> = ({
   address,
   date,
 }) => {
-  const tma = useTelegram();
+  const {webApp} = useTelegram();
 
   return (
     <Modal onClose={onClose} title="Transaction Detail">
@@ -63,9 +63,7 @@ export const ActivityDetailsPopup: FC<ActivityDetailsPopupProps> = ({
         </S.PositionsContainer>
 
         <S.BlockExplorer
-          onClick={() => {
-            tma.webApp!.openLink(`https://tonviewer.com/${address}`);
-          }}
+          onClick={() => webApp!.openLink(`https://tonviewer.com/${address}`)}
         >
           <S.PositionValueLink
             children="View on block explorer"
