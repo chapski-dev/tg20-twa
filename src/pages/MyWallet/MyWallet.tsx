@@ -12,7 +12,8 @@ import {
 } from 'ui/icons'
 
 import { type Tab } from 'ui/TabsFilled/TabsFilled'
-import { MyAssets, MyTransfers, PromoSlider } from './components'
+import { MyAssets, PromoSlider } from './components'
+import { MyTransactions } from './components/MyTransfers/MyTransfers'
 import { NotAuthorized } from './components/NotAuthorized/NotAuthorized'
 import { PROCENT_MOCK } from './mock'
 import * as S from './style'
@@ -23,8 +24,8 @@ const tabs: Tab[] = [
     value: 'assets',
   },
   {
-    label: 'Transfers',
-    value: 'transfers',
+    label: 'Transactions',
+    value: 'transactions',
   },
 ]
 
@@ -42,7 +43,7 @@ export const MyWallet: FC = () => {
       return <MyAssets />
     }
 
-    return <MyTransfers />
+    return <MyTransactions />
   }, [currentTab.value])
 
   if (!userWalletAddress) {
@@ -108,17 +109,18 @@ export const MyWallet: FC = () => {
         <PromoSlider />
       </S.CarouselContainer>
 
-      <Container>
-        <S.TabsBlock>
-          <S.CustomTab
+      <S.TabsBlock>
+        <Container>
+          <S.Tabs
             containerClassName="tabs"
             onChange={setCurrentTab}
             selectedTab={currentTab}
             tabs={tabs}
           />
-          {currentWalletContent}
-        </S.TabsBlock>
-      </Container>
+        </Container>
+
+        {currentWalletContent}
+      </S.TabsBlock>
 
       {/* <div onClick={() => navigate(AppRoutes.TranferHistory)}>
         TransferHistory
