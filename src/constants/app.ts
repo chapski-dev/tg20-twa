@@ -10,5 +10,6 @@ export const AppRoutes = {
   Mint: '/mint',
   Swap: '/swap',
   Deploy: '/deploy',
+  Notifications: '/notifications',
   TransferHistory: '/transfer-history/:tick',
 } as const

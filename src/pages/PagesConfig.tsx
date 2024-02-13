@@ -8,6 +8,7 @@ import { Inscriptions } from './Inscriptions/Inscriptions'
 import { Marketplace } from './Marketplace/Marketplace'
 import { Mint } from './Mint/Mint'
 import { MyWallet } from './MyWallet/MyWallet'
+import { Notifications } from './Notifications/Notifications'
 import { Swap } from './Swap/Swap'
 import { Token } from './Token/Token'
 import { TransferHistory } from './TransferHistory/TransferHistory'
@@ -57,6 +58,10 @@ export const PagesConfig = () => {
         {
           element: <Inscriptions />,
           path: AppRoutes.Inscriptions,
+        },
+        {
+          element: <Notifications />,
+          path: AppRoutes.Notifications,
         },
         {
           element: <TransferHistory />,
