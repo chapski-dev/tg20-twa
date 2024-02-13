@@ -279,7 +279,6 @@ export const Marketplace: FC = () => {
     [activeTab]
   )
 
-
   return (
     <>
       <HeaderUserBalance />
@@ -321,8 +320,8 @@ export const Marketplace: FC = () => {
             sortSelectValue={`${sort}_${direction}`}
             tick={tick}
           />
-        </S.ActionsContainer>{' '}
-        *<S.TabContentWrapper>{tabs[activeTab].component}</S.TabContentWrapper>
+        </S.ActionsContainer>
+        <S.TabContentWrapper>{tabs[activeTab].component}</S.TabContentWrapper>
         {isConfirmLotModalOpen && (
           <ConfirmLotPopup
             onClose={() => setIsConfirmLotModalOpen(false)}

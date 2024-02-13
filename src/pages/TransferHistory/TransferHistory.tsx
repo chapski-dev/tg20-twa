@@ -1,14 +1,19 @@
-import { FC, ReactHTMLElement } from 'react'
+import { FC, useMemo } from 'react'
+import { fromNano } from '@ton/core'
+import { useTonAddress } from '@tonconnect/ui-react'
+import { useQuery } from 'react-query'
 import { useNavigate, useParams } from 'react-router-dom'
+import { getMarketplaceTokenStats, getTokenWalletBalance } from 'api'
 import { AppRoutes } from 'constants/app'
 import { BackButton } from 'features/BackButton'
+import { useTelegram } from 'hooks/useTelegram/useTelegram'
 import {
   SvgArrowSwap,
   SvgLogoHistoryToken,
   SvgRecieveSquare,
-  SvgSendSquare,
   SvgTrade,
 } from 'ui/icons'
+import { convertNumberToShortFormat } from 'utils/convertNumberToShortFormat'
 import * as S from './style'
 
 type FunctionalProps = {
@@ -19,11 +24,6 @@ type FunctionalProps = {
 
 const functionalBlocks: FunctionalProps[] = [
   {
-    title: 'Send',
-    icon: <SvgSendSquare />,
-    action: () => alert('Send button'),
-  },
-  {
     title: 'Recieve',
     icon: <SvgRecieveSquare />,
     action: () => alert('Recieve button'),
@@ -32,22 +32,40 @@ const functionalBlocks: FunctionalProps[] = [
   { title: 'Trade', icon: <SvgTrade />, action: () => alert('Trade button') },
 ]
 
-const TRANSFER_MOCK = {
-  balance: '280 000 000 GRAM',
-  dollarCount: '800.28',
-  supply: '210B',
-  price: '0.001',
-  volume: '2.6M',
-}
+const GRAM_PRICE = 0.000004
 
-export const TransferHistory: FC = (props) => {
-  // const { balance, dollarCount, supply, price, volume } = props
+export const TransferHistory: FC = () => {
+  const { tonPrice } = useTelegram()
+
+  const userWalletAddress = useTonAddress()
 
   const navigate = useNavigate()
 
   const { tick } = useParams()
 
-  console.log(tick)
+  const { data: marketplaceGramStats } = useQuery(
+    ['makretplaceTokenStats', tick, tonPrice, tick],
+    () => getMarketplaceTokenStats({ tick: tick as string }),
+    {
+      enabled: !!tick && !!tonPrice,
+    }
+  )
+
+  const { data: currentWalletTickData } = useQuery(
+    ['currentGramBalance', userWalletAddress, tick],
+    () => getTokenWalletBalance(userWalletAddress, tick as string),
+    {
+      enabled: !!userWalletAddress,
+    }
+  )
+
+  const currentTokenPrice = useMemo(() => {
+    if (!tonPrice || !currentWalletTickData || tick !== 'gram') {
+      return
+    }
+
+    return currentWalletTickData.balance * GRAM_PRICE
+  }, [currentWalletTickData, tick, tonPrice])
 
   return (
     <S.Wrapper>
@@ -59,8 +77,12 @@ export const TransferHistory: FC = (props) => {
               <SvgLogoHistoryToken />
             </S.BackGroundSvg>
           </S.Logo>
-          <S.Balance>{TRANSFER_MOCK.balance}</S.Balance>
-          <S.DollarCount>~ $ {TRANSFER_MOCK.dollarCount}</S.DollarCount>
+          <S.Balance>
+            {currentWalletTickData?.balance || '-.--'} {tick?.toUpperCase()}
+          </S.Balance>
+          {tick === 'gram' && (
+            <S.DollarCount>~ ${currentTokenPrice}</S.DollarCount>
+          )}
         </S.TopBlock>
         <S.FunctionalBlock>
           {functionalBlocks.map(({ icon, title, action }, idx) => (
@@ -74,15 +96,28 @@ export const TransferHistory: FC = (props) => {
       <S.InfoTotal>
         <S.Item>
           <S.Title>Total Supply</S.Title>
-          <S.Count>{TRANSFER_MOCK.supply}</S.Count>
+          <S.Count>{210}B</S.Count>
         </S.Item>
         <S.Item>
           <S.Title>Floor Price</S.Title>
-          <S.Count>${TRANSFER_MOCK.price}</S.Count>
+          <S.Count>
+            $
+            {(marketplaceGramStats &&
+              tonPrice &&
+              (
+                tonPrice *
+                Number(fromNano(+marketplaceGramStats.floor_price.toFixed(0)))
+              ).toFixed(7)) ||
+              '-.--'}
+          </S.Count>
         </S.Item>
         <S.Item>
           <S.Title>Total Volume</S.Title>
-          <S.Count>{TRANSFER_MOCK.volume}</S.Count>
+          <S.Count>
+            {(marketplaceGramStats &&
+              convertNumberToShortFormat(marketplaceGramStats.total_volume)) ||
+              '-.--'}
+          </S.Count>
         </S.Item>
       </S.InfoTotal>
       <S.Line />

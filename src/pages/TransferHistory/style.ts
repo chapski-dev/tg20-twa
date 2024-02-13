@@ -9,7 +9,6 @@ export const Wrapper = styled.div`
 
 export const BalanceBlock = styled.div`
   width: 100%;
-  height: 280px;
   background-color: ${({ theme }) => theme.color.bgSecondary};
   padding-bottom: 24px;
 `
@@ -66,6 +65,21 @@ export const BlockWrapper = styled.div`
   justify-content: center;
   gap: 7px;
   cursor: pointer;
+
+  &:nth-child(1) {
+    svg path {
+      stroke: ${({ theme }) => theme.color.btn};
+    }
+  }
+  &:nth-child(2) {
+    svg path {
+      stroke: ${({ theme }) => theme.color.btn};
+    }
+  }
+
+  svg path {
+    fill: ${({ theme }) => theme.color.btn};
+  }
 `
 
 export const Button = styled.button`
@@ -78,10 +92,6 @@ export const Button = styled.button`
   border-radius: 50%;
   border: none;
   cursor: pointer;
-
-  svg {
-    color: ${({ theme }) => theme.color.text};
-  }
 `
 
 export const Text = styled.span`

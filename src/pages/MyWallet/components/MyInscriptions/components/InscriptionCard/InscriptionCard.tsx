@@ -31,6 +31,10 @@ export const InscriptionCard: FC<InscriptionCardProps> = (props) => {
   }, [tick, tonPrice])
 
   const goToTokenTransferHistory = () => {
+    if (tick === 'ton') {
+      return
+    }
+
     const path = generatePath(AppRoutes.TransferHistory, { tick })
     navigate(path)
   }
@@ -59,7 +63,7 @@ export const InscriptionCard: FC<InscriptionCardProps> = (props) => {
               )}
             </S.InfoWrapper>
           </S.ContentInner>
-          <SvgArrowLeftAssets />
+          {tick !== 'ton' && <SvgArrowLeftAssets />}
         </S.ContentWrapper>
       </S.Wrapper>
       <S.Line />
