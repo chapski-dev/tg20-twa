@@ -5,7 +5,7 @@ export const Wrapper = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 24px;
 `
 
 export const Loader = styled(UILoader)`
@@ -23,4 +23,17 @@ export const DontHaveTransfersBlock = styled.div`
   font-weight: 400;
   color: ${({ theme }) => theme.color.hint};
   padding: 12px 0;
+`
+
+export const DateWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+`
+
+export const DateLabel = styled.span`
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  color: ${({ theme }) => theme.color.hint};
 `

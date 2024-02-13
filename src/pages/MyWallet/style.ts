@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Tabs } from 'ui'
+import { Tabs as UITabs } from 'ui'
 import { Input } from 'ui/Input/Input'
 import Vectors from './assets/vectors.png'
 
@@ -240,7 +240,7 @@ export const Line = styled.div`
   border: 2px solid ${({ theme }) => theme.color.bgSecondary};
 `
 
-export const CustomTab = styled(Tabs)<{ $isActive?: boolean }>`
+export const Tabs = styled(UITabs)<{ $isActive?: boolean }>`
   div {
     color: ${({ theme, $isActive }) =>
       $isActive ? theme.color.btn : theme.color.redAlert};

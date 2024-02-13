@@ -1,10 +1,8 @@
 import styled from 'styled-components'
-export const Wrapper = styled.div``
 
-export const HistoryBlock = styled.div`
+export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 12px 0px;
 `
 
 export const HistoryCard = styled.div`
@@ -70,13 +68,15 @@ export const Adress = styled.span`
   color: ${({ theme }) => theme.color.hint};
 `
 
-export const CountActions = styled.div`
+export const CountActions = styled.div<{ isIncrease?: boolean }>`
   display: flex;
   align-items: center;
   font-size: 14px;
   font-weight: 500;
   line-height: 16px;
-  color: ${({ theme }) => theme.color.greenSuccess};
+  color: ${({ theme, isIncrease }) =>
+    isIncrease ? theme.color.greenSuccess : theme.color.text};
+  gap: 4px;
 `
 
 export const CountTransfer = styled.span``

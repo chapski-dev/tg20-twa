@@ -109,17 +109,18 @@ export const MyWallet: FC = () => {
         <PromoSlider />
       </S.CarouselContainer>
 
-      <Container>
-        <S.TabsBlock>
-          <S.CustomTab
+      <S.TabsBlock>
+        <Container>
+          <S.Tabs
             containerClassName="tabs"
             onChange={setCurrentTab}
             selectedTab={currentTab}
             tabs={tabs}
           />
-          {currentWalletContent}
-        </S.TabsBlock>
-      </Container>
+        </Container>
+
+        {currentWalletContent}
+      </S.TabsBlock>
 
       {/* <div onClick={() => navigate(AppRoutes.TranferHistory)}>
         TransferHistory

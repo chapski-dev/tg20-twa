@@ -35,7 +35,6 @@ export const InfoWrapper = styled.div`
   display: flex;
   align-items: flex-start;
   flex-direction: column;
-  gap: 2px;
 
   &:last-child {
     align-items: flex-end;
@@ -69,7 +68,7 @@ export const Label = styled.span`
 export const TokenImageWrapper = styled.div`
   svg {
     border-radius: 50%;
-    width: 44px;
-    height: 44px;
+    width: 30px;
+    height: 30px;
   }
 `
