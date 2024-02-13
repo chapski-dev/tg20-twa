@@ -3,6 +3,7 @@ import { useTonAddress } from '@tonconnect/ui-react'
 import { useQuery } from 'react-query'
 import { getTransfersHistory } from 'api'
 import { TransferCard } from './components'
+
 import * as S from './style'
 
 export const MyTransfers: FC = () => {
