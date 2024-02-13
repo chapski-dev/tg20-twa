@@ -12,4 +12,5 @@ export const AppRoutes = {
   Deploy: '/deploy',
   Notifications: '/notifications',
   TransferHistory: '/transfer-history/:tick',
+  TransferDetailed: '/transfer-detailed/:hash',
 } as const

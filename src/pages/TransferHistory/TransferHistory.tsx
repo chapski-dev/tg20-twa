@@ -1,19 +1,27 @@
-import { FC, useMemo } from 'react'
+import { FC, useCallback, useMemo } from 'react'
 import { fromNano } from '@ton/core'
 import { useTonAddress } from '@tonconnect/ui-react'
 import { useQuery } from 'react-query'
 import { useNavigate, useParams } from 'react-router-dom'
-import { getMarketplaceTokenStats, getTokenWalletBalance } from 'api'
+import {
+  getMarketplaceTokenStats,
+  getTokenWalletBalance,
+  getTransfersHistory,
+} from 'api'
+import { TransferHistoryType } from 'api/types'
 import { AppRoutes } from 'constants/app'
 import { BackButton } from 'features/BackButton'
 import { useTelegram } from 'hooks/useTelegram/useTelegram'
+import { Container } from 'ui/Container/Container'
 import {
   SvgArrowSwap,
   SvgLogoHistoryToken,
   SvgRecieveSquare,
   SvgTrade,
 } from 'ui/icons'
+import { TransferCard } from 'ui/TransferCard/TransferCard'
 import { convertNumberToShortFormat } from 'utils/convertNumberToShortFormat'
+import { transformTransferHistoryByDate } from 'utils/transformTransferHistoryByDate'
 import * as S from './style'
 
 type FunctionalProps = {
@@ -58,6 +66,28 @@ export const TransferHistory: FC = () => {
       enabled: !!userWalletAddress,
     }
   )
+
+  const { data: transfersHistory, isSuccess: isTransferHistoryLoaded } =
+    useQuery(
+      [`my-${tick}-transfers`],
+      () => getTransfersHistory(userWalletAddress),
+      {
+        enabled: !!userWalletAddress,
+        select: useCallback(
+          (data: TransferHistoryType[]) => {
+            const currentTickTransfers = data.filter(
+              (transfer) => transfer.tick === tick
+            )
+
+            const transformedData =
+              transformTransferHistoryByDate(currentTickTransfers)
+
+            return transformedData
+          },
+          [tick]
+        ),
+      }
+    )
 
   const currentTokenPrice = useMemo(() => {
     if (!tonPrice || !currentWalletTickData || tick !== 'gram') {
@@ -121,6 +151,26 @@ export const TransferHistory: FC = () => {
         </S.Item>
       </S.InfoTotal>
       <S.Line />
+      <Container>
+        <S.TransfersWrapper>
+          {isTransferHistoryLoaded &&
+            transfersHistory.map(({ date, transfers }) => (
+              <S.DateWrapper>
+                <S.DateLabel>{date}</S.DateLabel>
+
+                {transfers.map((transfer, idx) => (
+                  <TransferCard
+                    key={idx}
+                    amount={transfer.delta}
+                    hash={transfer.hash}
+                    tick={transfer.tick}
+                    walletAddress={transfer.peer}
+                  />
+                ))}
+              </S.DateWrapper>
+            ))}
+        </S.TransfersWrapper>
+      </Container>
       <S.BtnBlock>
         <S.CheckExplorer>
           Can’t find your transaction?<span> Check explorer</span>

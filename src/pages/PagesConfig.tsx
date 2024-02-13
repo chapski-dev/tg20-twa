@@ -11,6 +11,7 @@ import { MyWallet } from './MyWallet/MyWallet'
 import { Notifications } from './Notifications/Notifications'
 import { Swap } from './Swap/Swap'
 import { Token } from './Token/Token'
+import { TransferDetailed } from './TransferDetailed/TransferDetailed'
 import { TransferHistory } from './TransferHistory/TransferHistory'
 
 export const PagesConfig = () => {
@@ -66,6 +67,10 @@ export const PagesConfig = () => {
         {
           element: <TransferHistory />,
           path: AppRoutes.TransferHistory,
+        },
+        {
+          element: <TransferDetailed />,
+          path: AppRoutes.TransferDetailed,
         },
       ],
     },

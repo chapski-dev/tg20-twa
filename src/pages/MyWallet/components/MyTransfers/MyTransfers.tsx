@@ -1,17 +1,12 @@
 import { FC, useCallback } from 'react'
 import { useTonAddress } from '@tonconnect/ui-react'
-import dayjs from 'dayjs'
 import { useQuery } from 'react-query'
 import { getTransfersHistory } from 'api'
 import { TransferHistoryType } from 'api/types'
 import { Container } from 'ui/Container/Container'
 import { TransferCard } from 'ui/TransferCard/TransferCard'
+import { transformTransferHistoryByDate } from 'utils/transformTransferHistoryByDate'
 import * as S from './style'
-
-type TransformedTransfersHistory = {
-  date: string
-  transfers: TransferHistoryType[]
-}[]
 
 export const MyTransactions: FC = () => {
   const userWalletAddress = useTonAddress()
@@ -23,41 +18,10 @@ export const MyTransactions: FC = () => {
   } = useQuery(['my-transfers'], () => getTransfersHistory(userWalletAddress), {
     enabled: !!userWalletAddress,
     select: useCallback(
-      (
-        data: TransferHistoryType[]
-      ): { date: string; transfers: TransferHistoryType[] }[] => {
-        const sortedData = data.sort((currentTransferItem, nextTransferItem) =>
-          dayjs(currentTransferItem.time * 1000).diff(
-            dayjs(nextTransferItem.time * 1000)
-          )
-        )
-
-        const groupedData = sortedData.reduce((acc: any, item) => {
-          const dateKey = dayjs(item.time * 1000).format('YYYY-MM-DD')
-
-          if (!acc[dateKey]) {
-            acc[dateKey] = {
-              date: dayjs(item.time * 1000).format(' MMMM DD YYYY'),
-              transfers: [],
-            }
-          }
-
-          acc[dateKey].transfers.push({ ...item, time: item.time * 1000 })
-
-          return acc
-        }, {})
-
-        const transformedData = Object.values(
-          groupedData
-        ).reverse() as TransformedTransfersHistory
-
-        return transformedData
-      },
+      (data: TransferHistoryType[]) => transformTransferHistoryByDate(data),
       []
     ),
   })
-
-  console.log(transfersHistory)
 
   if (isTransferHistoryLoading) {
     return <S.Loader />
@@ -75,6 +39,8 @@ export const MyTransactions: FC = () => {
                 <TransferCard
                   key={idx}
                   amount={transfer.delta}
+                  hash={transfer.hash}
+                  tick={transfer.tick}
                   walletAddress={transfer.peer}
                 />
               ))}
