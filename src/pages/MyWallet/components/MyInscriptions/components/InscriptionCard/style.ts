@@ -1,9 +1,9 @@
 import styled from 'styled-components'
-import { theme } from './../../../../../../assets/style/theme'
 
 export const WrapperGaneral = styled.div`
   display: flex;
   flex-direction: column;
+  cursor: pointer;
 `
 
 export const Wrapper = styled.div`

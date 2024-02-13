@@ -1,4 +1,6 @@
 import { FC, useMemo } from 'react'
+import { generatePath, useNavigate } from 'react-router-dom'
+import { AppRoutes } from 'constants/app'
 import { useTelegram } from 'hooks/useTelegram/useTelegram'
 import { SvgArrowLeftAssets, SvgGramIcon, SvgToncoinIcon } from 'ui/icons'
 import * as S from './style'
@@ -13,6 +15,8 @@ export const InscriptionCard: FC<InscriptionCardProps> = (props) => {
 
   const { tonPrice } = useTelegram()
 
+  const navigate = useNavigate()
+
   const currentUsdPrice = useMemo(() => {
     if (!tonPrice) {
       return
@@ -26,8 +30,17 @@ export const InscriptionCard: FC<InscriptionCardProps> = (props) => {
     }
   }, [tick, tonPrice])
 
+  const goToTokenTransferHistory = () => {
+    if (tick === 'ton') {
+      return
+    }
+
+    const path = generatePath(AppRoutes.TransferHistory, { tick })
+    navigate(path)
+  }
+
   return (
-    <S.WrapperGaneral>
+    <S.WrapperGaneral onClick={goToTokenTransferHistory}>
       <S.Wrapper>
         <S.TokenImageWrapper>
           {tick === 'ton' ? <SvgToncoinIcon /> : <SvgGramIcon />}
@@ -50,7 +63,7 @@ export const InscriptionCard: FC<InscriptionCardProps> = (props) => {
               )}
             </S.InfoWrapper>
           </S.ContentInner>
-          <SvgArrowLeftAssets />
+          {tick !== 'ton' && <SvgArrowLeftAssets />}
         </S.ContentWrapper>
       </S.Wrapper>
       <S.Line />

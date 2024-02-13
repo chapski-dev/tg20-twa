@@ -272,7 +272,6 @@ export const Marketplace: FC = () => {
     [activeTab]
   )
 
-
   return (
     <>
       <HeaderUserBalance />

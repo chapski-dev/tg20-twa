@@ -2,10 +2,12 @@ import React, { FC, useCallback, useState } from 'react'
 import { fromNano } from '@ton/core'
 import { useQuery } from 'react-query'
 import {
-  getCurrentMaketplaceTicks, getMarketplaceTokenStats, getTokenInfo,
+  getCurrentMaketplaceTicks,
+  getMarketplaceTokenStats,
+  getTokenInfo,
 } from 'api'
 import { MarketplaceTokenStats } from 'api/types'
-import { useDebounce } from 'hooks/useDebounce/useDebounce'
+// import { useDebounce } from 'hooks/useDebounce/useDebounce'
 import { useTelegram } from 'hooks/useTelegram/useTelegram'
 import { MarketplaceTabsValueEnum } from 'pages/Marketplace/Marketplace'
 import { Accordion } from 'ui'
@@ -99,7 +101,7 @@ const Listings: FC<ListingsProps> = (props) => {
 
   const [searchedValue, setSearchedValue] = useState<string>('')
 
-  const debauncedSearchValue = useDebounce(searchedValue) // eslint-disable-line
+  // const debauncedSearchValue = useDebounce(searchedValue)
 
   const onChangeInput = (evt: React.ChangeEvent<HTMLInputElement>) => {
     setSearchedValue(evt.target.value)
@@ -216,8 +218,9 @@ const Listings: FC<ListingsProps> = (props) => {
               <span>{currentTickData?.tick}</span> Floor Price
             </S.BlockTitle>
             <S.BlockDescription
-              children={`${marketplaceGramStats?.[2].value || 0} TON ${marketplaceGramStats?.[2].description || ''
-                }`}
+              children={`${marketplaceGramStats?.[2].value || 0} TON ${
+                marketplaceGramStats?.[2].description || ''
+              }`}
             />
           </S.Block>
         )}
