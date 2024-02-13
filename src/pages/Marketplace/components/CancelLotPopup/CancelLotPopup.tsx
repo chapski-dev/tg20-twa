@@ -27,26 +27,18 @@ export const CancelLotPopup: FC<CancelLotProps> = ({
       <S.Wrapper>
         <S.PositionsWrapper>
           <S.PositionWrapper>
-            <S.PositionText>Total Value</S.PositionText>
-            <S.PositionValue>
-              {total.toFixed(9).replace(/\.?0+$/, '')} TON /{' '}
-              {totalUsd.toFixed(9).replace(/\.?0+$/, '')} USD
-            </S.PositionValue>
+            <S.PositionText children="Total Value" />
+            <S.PositionValue children={`${total.toFixed(9).replace(/\.?0+$/, '')} TON / ${totalUsd.toFixed(9).replace(/\.?0+$/, '')} USD`} />
           </S.PositionWrapper>
 
           <S.PositionWrapper>
-            <S.PositionText>Price</S.PositionText>
-            <S.PositionValue>
-              {price.toFixed(9).replace(/\.?0+$/, '')} TON /{' '}
-              {priceUsd.toFixed(9).replace(/\.?0+$/, '')} USD
-            </S.PositionValue>
+            <S.PositionText children="Price" />
+            <S.PositionValue children={`${price.toFixed(9).replace(/\.?0+$/, '')} TON / ${priceUsd.toFixed(9).replace(/\.?0+$/, '')} USD`} />
           </S.PositionWrapper>
 
           <S.PositionWrapper>
-            <S.PositionText>Amount</S.PositionText>
-            <S.PositionValue>
-              {amount} {ticker}
-            </S.PositionValue>
+            <S.PositionText children="Amount" />
+            <S.PositionValue children={`${amount} ${ticker}`} />
           </S.PositionWrapper>
         </S.PositionsWrapper>
       </S.Wrapper>

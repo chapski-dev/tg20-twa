@@ -45,7 +45,7 @@ export const InnerToggleWrapper = styled.div`
   cursor: pointer;
 `
 
-export const InnerToggleOption = styled.div<{ active: string }>`
+export const InnerToggleOption = styled.div<{ active: boolean }>`
   font-size: 14px;
   font-style: normal;
   font-weight: 500;
@@ -53,9 +53,9 @@ export const InnerToggleOption = styled.div<{ active: string }>`
   padding: 4px 8px 4px 8px;
   border-radius: 5px;
   color: ${({ theme, active }) =>
-    active === 'true' ? theme.color.btnText : theme.color.text};
+    active ? theme.color.btnText : theme.color.text};
   background-color: ${({ theme, active }) =>
-    active === 'true' ? theme.color.btn : theme.color.bg};
+    active ? theme.color.btn : theme.color.bg};
 `
 
 export const FieldLabelWrapper = styled.div`

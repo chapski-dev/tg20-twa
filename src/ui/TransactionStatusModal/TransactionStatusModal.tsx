@@ -12,17 +12,18 @@ export const TransactionStatusModal: React.FC<TransactionStatusModalProps> = ({
   success,
 }) => {
   return (
-    <Modal onClose={onClose} title={''}>
+    <Modal onClose={onClose}>
       <S.Wrapper>
         {success ? <SvgTransactionSuccess /> : <SvgTransactionCanceled />}
         <S.StatusText>
-          {success ? 'Transaction sent' : 'Transaction canceled'}
+          {success ? 'Transaction Completed' : 'Transaction Failed'}
         </S.StatusText>
         <S.StatusDescription>
           {success
-            ? 'Your transaction will be processed in a few seconds.'
-            : 'There will be no changes to your account.'}
+            ? 'Success! Your transaction is now complete. You can view the details of this transaction'
+            : 'There was a problem processing your transaction. Please ensure your account has sufficient funds and try again'}
         </S.StatusDescription>
+        <S.ActionLink children="View on explorer" />
       </S.Wrapper>
     </Modal>
   )
