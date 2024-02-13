@@ -4,10 +4,13 @@ import { NOTIFICATIONS_ITEMS_MOCK } from './mock'
 import * as S from './style'
 
 export const Notifications: FC = () => {
-  const [showBasket, setShowBasket] = useState<boolean>(false)
+  const [showBasket, setShowBasket] = useState<{ [key: number]: boolean }>({})
 
-  const handleClick = () => {
-    setShowBasket((prev) => !prev)
+  const handleClick = (idx: number) => {
+    setShowBasket((prev) => ({
+      ...prev,
+      [idx]: !prev[idx],
+    }))
   }
 
   return (
@@ -27,8 +30,8 @@ export const Notifications: FC = () => {
               <S.Message>{message}</S.Message>
               <S.Time>{time} mins ago</S.Time>
             </S.InfoBlock>
-            <S.Delete onClick={handleClick}>X</S.Delete>
-            {showBasket ? (
+            <S.Delete onClick={() => handleClick(idx)}>X</S.Delete>
+            {showBasket[idx] ? (
               <S.DeleteCart>
                 <SvgTrash />
               </S.DeleteCart>

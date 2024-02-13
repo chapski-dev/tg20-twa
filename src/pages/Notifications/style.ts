@@ -131,4 +131,6 @@ export const DeleteCart = styled.div`
   height: 100%;
   background-color: #ffa8a8;
   cursor: pointer;
+  margin-left: 5px;
+  margin-right: 5px;
 `
