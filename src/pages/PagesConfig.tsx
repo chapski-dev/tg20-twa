@@ -11,6 +11,7 @@ import { MyWallet } from './MyWallet/MyWallet'
 import { Notifications } from './Notifications/Notifications'
 import { Swap } from './Swap/Swap'
 import { Token } from './Token/Token'
+import { TransferHistory } from './TransferHistory/TransferHistory'
 
 export const PagesConfig = () => {
   return useRoutes([
@@ -61,6 +62,10 @@ export const PagesConfig = () => {
         {
           element: <Notifications />,
           path: AppRoutes.Notifications,
+        },
+        {
+          element: <TransferHistory />,
+          path: AppRoutes.TransferHistory,
         },
       ],
     },

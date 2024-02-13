@@ -1,7 +1,5 @@
 import { FC, useMemo, useState } from 'react'
 import { useTonAddress, useTonConnectUI } from '@tonconnect/ui-react'
-import { useNavigate } from 'react-router-dom'
-import { BackButton } from 'features/BackButton'
 import { useTelegram } from 'hooks/useTelegram/useTelegram'
 import { Container } from 'ui/Container/Container'
 import {
@@ -37,8 +35,6 @@ export const MyWallet: FC = () => {
 
   const { currentWalletBalance } = useTelegram()
 
-  const navigate = useNavigate()
-
   const [tonConnectUI] = useTonConnectUI()
 
   const currentWalletContent = useMemo(() => {
@@ -55,7 +51,6 @@ export const MyWallet: FC = () => {
 
   return (
     <S.Wrapper>
-      <BackButton onClick={() => navigate(-1)} />
       <S.TopWrapperBlock>
         <S.TopBlock>
           <S.Search>
@@ -124,6 +119,10 @@ export const MyWallet: FC = () => {
           {currentWalletContent}
         </S.TabsBlock>
       </Container>
+
+      {/* <div onClick={() => navigate(AppRoutes.TranferHistory)}>
+        TransferHistory
+      </div> */}
     </S.Wrapper>
   )
 }

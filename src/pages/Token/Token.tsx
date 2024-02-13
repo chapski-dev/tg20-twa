@@ -12,8 +12,8 @@ import { Promo } from 'ui/Promo'
 import { convertNumberToShortFormat } from 'utils/convertNumberToShortFormat'
 import { formatNumberWithSeparators } from 'utils/formNumberWithSeparators'
 import { HoldersTable, TransferPopup } from './components'
-
 import * as S from './style'
+
 export const Token: FC = () => {
   const { id: tick } = useParams()
 

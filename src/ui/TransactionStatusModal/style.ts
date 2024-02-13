@@ -6,7 +6,7 @@ export const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 15px;
-  padding: 10vh 0;
+  padding-bottom: 10vh;
 `
 
 export const StatusText = styled.span`
@@ -21,4 +21,8 @@ export const StatusDescription = styled.span`
   font-weight: 400;
   line-height: 20px;
   color: ${({ theme }) => theme.color.hint};
+`
+
+export const ActionLink = styled.span`
+  color: ${({ theme }) => theme.color.link};
 `
