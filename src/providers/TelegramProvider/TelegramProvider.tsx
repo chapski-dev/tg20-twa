@@ -29,7 +29,7 @@ export const TelegramProvider: FCWithChildren = (props) => {
   const [webApp, setWebApp] = useState<WebApp | null>(null)
 
   const [isStartParamChecked, setIsStartParamChecked] = useState<boolean>(false)
-  
+
   const userWalletAddress = useTonAddress()
 
   const navigate = useNavigate()
