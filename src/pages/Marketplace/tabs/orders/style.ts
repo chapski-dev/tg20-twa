@@ -27,8 +27,8 @@ export const Block = styled.div`
   align-items: center;
   flex-direction: column;
   gap: 5px;
-  margin: 130px auto 0 auto;
   width: 100%;
+  padding-top: 129px;
   background-color: ${({ theme }) => theme.color.bg};
 `
 export const Subtitle = styled.div`

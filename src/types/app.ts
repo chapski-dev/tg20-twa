@@ -6,6 +6,7 @@ declare module 'styled-components' {
       bg: string
       bgSecondary: string
       text: string
+      white: string
       hint: string
       link: string
       btn: string
