@@ -16,5 +16,5 @@ export const Tab = styled.div<{ active: boolean }>`
 export const Wrapper = styled.div`
   display: flex;
   width: 100%;
-  border-bottom: 1px solid #ebebeb;
+  border-bottom: 0.5px solid ${({ theme }) => theme.color.bg};
 `

@@ -1,12 +1,12 @@
-import { SvgVerify } from "ui/icons";
-import * as S from './style';
+import { SvgVerify } from 'ui/icons'
+import * as S from './style'
 
-import { Token as TokenType } from "./type";
+import { Token as TokenType } from './type'
 
-import { Chart } from "../../../Chart";
+import { Chart } from '../../../Chart'
 
 type TokenProps = {
-  token: TokenType;
+  token: TokenType
 }
 export const Token = ({ token }: TokenProps) => {
   return (
@@ -26,10 +26,10 @@ export const Token = ({ token }: TokenProps) => {
       </S.Logo>
       <S.Volume>{token.volume}</S.Volume>
 
-      <S.Wrapper2>
+      {/* <S.Wrapper2>
         <S.Volume>${token.lastPrice}</S.Volume>
         <Chart position={token.chartPosition} text={token.chartText} />
-      </S.Wrapper2>
+      </S.Wrapper2> */}
     </S.Box>
-  );
+  )
 }

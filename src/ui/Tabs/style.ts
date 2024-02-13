@@ -29,9 +29,10 @@ export const TabItem = styled.div<{ $isActive?: boolean }>`
     height: 16px;
 
     path {
-      fill: ${({ theme, $isActive }) => ($isActive ? theme.color.btn : 'none')};
-      stroke: ${({ theme, $isActive }) =>
-        $isActive ? theme.color.text : theme.color.hint};
+      fill: ${({ theme, $isActive }) =>
+        $isActive ? theme.color.btn : theme.color.hint};
+      /* stroke: ${({ theme, $isActive }) =>
+        $isActive ? theme.color.link : theme.color.hint}; */
     }
   }
 `
