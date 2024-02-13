@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { Tabs } from 'ui'
 
 export const Home = styled.div`
   .tabs {
@@ -7,5 +8,11 @@ export const Home = styled.div`
 
   .special-offer-container {
     padding: 16px;
+  }
+`
+
+export const TabsWrapper = styled(Tabs)`
+  svg {
+    font-weight: 200;
   }
 `

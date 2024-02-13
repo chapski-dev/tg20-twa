@@ -15,7 +15,7 @@ export const Home2 = () => {
       <Stats />
       <SpecialOffer />
       <Container>
-        <Tabs
+        <S.TabsWrapper
           containerClassName="tabs"
           onChange={setCurrentTab}
           selectedTab={currentTab}

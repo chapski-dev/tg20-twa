@@ -22,8 +22,8 @@ export const Select = styled(RSelect)`
       outline: none;
       /* color: black; */
     }
-    svg {
-      color: black;
+    path {
+      fill: ${({ theme }) => theme.color.text};
     }
   }
   .select__control--menu-is-open {

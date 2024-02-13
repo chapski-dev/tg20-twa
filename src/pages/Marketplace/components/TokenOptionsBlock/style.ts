@@ -67,6 +67,9 @@ export const TokenSelectContentWrapper = styled.div`
 export const SelectWrap = styled(Select)`
   color: red;
   background: ${({ theme }) => theme.color.bg};
+  path {
+    fill: ${({ theme }) => theme.color.text};
+  }
 `
 
 export const Button = styled(ButtonReference)`
@@ -84,9 +87,9 @@ export const Button = styled(ButtonReference)`
 
 export const StyledInput = styled(Input)`
   margin-top: 16px;
-  background: #ebebeb;
+  background: ${({ theme }) => theme.color.bg};
   input {
-    background: #ebebeb;
+    background: ${({ theme }) => theme.color.bg};
   }
 `
 
