@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import { SvgArrow, SvgDeployIcon } from 'ui/icons'
 import { Input } from 'ui/Input/Input'
 import { Loader as UILoader } from 'ui/Loader/Loader'
+import bgExplore from './assets/bg-explore.png'
 
 export const Wrapper = styled.div`
   display: flex;
@@ -9,39 +10,50 @@ export const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 23px;
-  padding: 0px 10px;
+  padding: 0px 16px;
 `
 
 export const ExploreBlock = styled.div`
   display: flex;
-  gap: 8px;
+  border-radius: 9.31px;
+  background: url(${bgExplore});
+  background-size: cover;
+  width: 100%;
+  position: relative;
+`
 
+export const InfoBlock = styled.div`
+  display: flex;
   flex-direction: column;
-  border-bottom: 1px solid #f5f5f5;
-
-  padding-bottom: 10px;
+  gap: 6px;
+  padding: 21px 71px 21px 12px;
 `
 
 export const Title = styled.h2`
-  font-size: 20px;
-  font-style: normal;
+  text-align: center;
+  white-space: nowrap;
+  font-size: 16px;
   font-weight: 700;
-  line-height: 24px; /* 120% */
-  letter-spacing: -0.6px;
-  color: ${({ theme }) => theme.color.text};
+  line-height: 24px;
+  color: ${({ theme }) => theme.color.white};
+`
+
+export const Description = styled.p`
+  text-align: start;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 15.4px;
+  color: ${({ theme }) => theme.color.white};
+`
+
+export const IconsBlock = styled.div`
+  position: absolute;
+  right: 3px;
+  bottom: 2px;
 `
 
 export const InputWrapper = styled.div`
   width: 100%;
-`
-
-export const Description = styled.p`
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 20px; /* 142.857% */
-  letter-spacing: -0.42px;
-  color: ${({ theme }) => theme.color.hint};
 `
 
 export const TokenCardsWrapper = styled.div`

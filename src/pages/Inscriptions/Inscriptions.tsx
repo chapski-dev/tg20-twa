@@ -6,7 +6,7 @@ import { AppRoutes } from 'constants/app'
 import { SpecialOffer } from 'features/SpecialOffer'
 import { useDebounce } from 'hooks/useDebounce/useDebounce'
 import { Tabs } from 'ui'
-import { SvgLoop, SvgVerified } from 'ui/icons'
+import { SvgCoinsSet, SvgLoop, SvgVerified } from 'ui/icons'
 import { Input } from 'ui/Input/Input'
 
 import { Tab } from 'ui/Tabs/Tabs'
@@ -48,8 +48,13 @@ export const Inscriptions: FC = () => {
   return (
     <S.Wrapper>
       <S.ExploreBlock>
-        <S.Title children="Explore the big world of TG20 tokens!" />
-        <S.Description children="With TG20 platform you can easily deploy, mint and transfer tokens based on BRC-20 standards" />
+        <S.InfoBlock>
+          <S.Title children="Explore the big world of TG20 tokens!" />
+          <S.Description children="With TG20 platform you can easily deploy, mint and transfer tokens based on BRC-20 standards." />
+        </S.InfoBlock>
+        <S.IconsBlock>
+          <SvgCoinsSet />
+        </S.IconsBlock>
       </S.ExploreBlock>
       <S.InputWrapper>
         <Input
