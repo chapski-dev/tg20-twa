@@ -194,7 +194,7 @@ export const Deploy: FC = () => {
   ])
 
   return (
-    <S.Wrapper>
+    <>
       <HeaderUserBalance />
       <BackButton
         onClick={() =>
@@ -203,37 +203,39 @@ export const Deploy: FC = () => {
             : navigate(-1)
         }
       />
-      <S.Container>
-        <S.Title children="Deploy your own token with ease!" />
-        <Formik
-          initialValues={initialState}
-          onSubmit={handleFormikSubmit}
-          validateOnBlur={true}
-          validateOnChange={true}
-          validationSchema={getValidationSchema()}
-        >
-          <DeployForm
-            currentConfirmData={currentConfirmData}
-            intervalFreeze={intervalFreeze}
-            loading={loading}
-            setCurrentConfirmData={setCurrentConfirmData}
-            signConfirmTransaction={signConfirmTransaction}
-          />
-        </Formik>
-        <S.StatusBlocks>
-          {renderActionStatusData?.map((el, i: number) => (
-            <S.StatusBlock key={i}>
-              <S.StatusBlockLabel
-                children={`${el.tick}: ${el.type.toUpperCase()}`}
-              />
-              <S.StatusBlockLabel
-                children={actionStatusDictionary[el.status].toUpperCase()}
-                $status={el.status}
-              />
-            </S.StatusBlock>
-          ))}
-        </S.StatusBlocks>
-      </S.Container>
+      <S.Wrapper>
+        <S.Container>
+          <S.Title children="Deploy your own token with ease!" />
+          <Formik
+            initialValues={initialState}
+            onSubmit={handleFormikSubmit}
+            validateOnBlur={true}
+            validateOnChange={true}
+            validationSchema={getValidationSchema()}
+          >
+            <DeployForm
+              currentConfirmData={currentConfirmData}
+              intervalFreeze={intervalFreeze}
+              loading={loading}
+              setCurrentConfirmData={setCurrentConfirmData}
+              signConfirmTransaction={signConfirmTransaction}
+            />
+          </Formik>
+          <S.StatusBlocks>
+            {renderActionStatusData?.map((el, i: number) => (
+              <S.StatusBlock key={i}>
+                <S.StatusBlockLabel
+                  children={`${el.tick}: ${el.type.toUpperCase()}`}
+                />
+                <S.StatusBlockLabel
+                  children={actionStatusDictionary[el.status].toUpperCase()}
+                  $status={el.status}
+                />
+              </S.StatusBlock>
+            ))}
+          </S.StatusBlocks>
+        </S.Container>
+      </S.Wrapper>
       <S.PromoWrapper>
         <Promo
           className="promo"
@@ -242,6 +244,6 @@ export const Deploy: FC = () => {
           variant="purple"
         />
       </S.PromoWrapper>
-    </S.Wrapper>
+    </>
   )
 }
