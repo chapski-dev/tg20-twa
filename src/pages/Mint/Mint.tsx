@@ -1,9 +1,4 @@
-import {
-  FC,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react'
+import { FC, useCallback, useEffect, useState } from 'react'
 import { Address, TonClient, beginCell, fromNano, toNano } from '@ton/ton'
 import {
   useTonAddress,
@@ -53,7 +48,8 @@ export const Mint: FC = () => {
   // } as const
 
   const [isInscribing, setIsInscribing] = useState<boolean>(false)
-  const [currentConfirmData, setCurrentConfirmData] = useState<CurrentConfirmData | null>(null)
+  const [currentConfirmData, setCurrentConfirmData] =
+    useState<CurrentConfirmData | null>(null)
   const [intervalFreeze, setIntervalFreeze] = useState<number | null>(null)
 
   const tickSearchParam = searchParams.get('tick')
@@ -71,216 +67,216 @@ export const Mint: FC = () => {
 
   const handleFormikSubmit = useCallback<
     FormikConfig<InitialValues>['onSubmit']
-  >(async (values, helpers) => {
+  >(
+    async (values, helpers) => {
+      const tonClient = new TonClient({
+        endpoint: 'https://toncenter-v4.gram20.com/jsonRPC',
+      })
 
+      const zeroOpcode = 0
 
-    const tonClient = new TonClient({
-      endpoint: 'https://toncenter-v4.gram20.com/jsonRPC',
-    })
+      const masterAddress = 'EQBoPPFXQpGIiXQNkJ8DpQANN_OmMimp5dx6lWjRZmvEgZCI'
 
-    const zeroOpcode = 0
+      const storedMasterAddress = localStorage.getItem('master_address')
 
-    const masterAddress = 'EQBoPPFXQpGIiXQNkJ8DpQANN_OmMimp5dx6lWjRZmvEgZCI'
+      const storedTickData = localStorage.getItem(values.tick.toString())
 
-    const storedMasterAddress = localStorage.getItem('master_address')
+      const parsedStoredTickData =
+        storedTickData &&
+        storedTickData.includes('userContractAddress') &&
+        JSON.parse(storedTickData)
 
-    const storedTickData = localStorage.getItem(values.tick.toString())
+      const storedUserContractAddress =
+        parsedStoredTickData?.userContractAddress
 
-    const parsedStoredTickData =
-      storedTickData &&
-      storedTickData.includes('userContractAddress') &&
-      JSON.parse(storedTickData)
+      if (
+        (storedMasterAddress && storedMasterAddress !== masterAddress) ||
+        storedMasterAddress === null ||
+        parsedStoredTickData?.userWalletAddress !== userWalletAddress ||
+        !storedUserContractAddress
+      ) {
+        localStorage.removeItem(values.tick.toString())
+      }
 
-    const storedUserContractAddress =
-      parsedStoredTickData?.userContractAddress
+      try {
+        setIsInscribing(true)
+        const tokenData = await getTokenInfo(values.tick)
 
-    if (
-      (storedMasterAddress && storedMasterAddress !== masterAddress) ||
-      storedMasterAddress === null ||
-      parsedStoredTickData?.userWalletAddress !== userWalletAddress ||
-      !storedUserContractAddress
-    ) {
-      localStorage.removeItem(values.tick.toString())
-    }
+        if (tokenData.address) {
+          const currentPayload = `data:application/json,{"p":"gram-20","op":"mint","tick":"${values.tick}","repeat":"${values.repeat}","amt":"${values.amount}"}`
 
-    try {
-      setIsInscribing(true)
-      const tokenData = await getTokenInfo(values.tick)
+          const currentBody = beginCell()
+            .storeUint(zeroOpcode, 32)
+            .storeStringTail(currentPayload)
+            .endCell()
 
-      if (tokenData.address) {
-        const currentPayload = `data:application/json,{"p":"gram-20","op":"mint","tick":"${values.tick}","repeat":"${values.repeat}","amt":"${values.amount}"}`;
+          if (Number(values.amount) > tokenData.mint_limit) {
+            setIsInscribing(false)
 
-        const currentBody = beginCell()
-          .storeUint(zeroOpcode, 32)
-          .storeStringTail(currentPayload)
-          .endCell()
-
-        if (Number(values.amount) > tokenData.mint_limit) {
-          setIsInscribing(false)
-
-          helpers.setFieldError(
-            'amount',
-            'Amount cannot be more than limit per mint'
-          )
-          return
-        }
-
-        const rootTokenDataResult = await tonClient.runMethod(
-          Address.parse(tokenData.address),
-          'get_token_data'
-        )
-
-        rootTokenDataResult.stack.skip(5)
-
-        const protocolFee = rootTokenDataResult.stack.readBigNumber()
-
-        setTimeout(async () => {
-          if (!storedUserContractAddress) {
-            const userData = await tonClient.runMethod(
-              Address.parse(tokenData.address),
-              'get_user_data',
-              [
-                {
-                  type: 'slice',
-                  cell: beginCell()
-                    .storeAddress(Address.parse(userWalletAddress))
-                    .endCell(),
-                },
-              ]
+            helpers.setFieldError(
+              'amount',
+              'Amount cannot be more than limit per mint'
             )
-
-            const userStateInit = userData.stack.readCell()
-            const userContractAddress = userData.stack.readAddress()
-
-            setTimeout(async () => {
-              const userState = await tonClient.getContractState(
-                userContractAddress
-              )
-
-              if (userState.state === 'active') {
-                localStorage.setItem(
-                  values.tick.toString(),
-                  JSON.stringify({
-                    userContractAddress: userContractAddress.toString(),
-                    userWalletAddress: userWalletAddress.toString(),
-                  })
-                )
-
-                localStorage.setItem('master_address', masterAddress)
-              }
-
-              setTimeout(async () => {
-                try {
-                  const currentUserBalance =
-                    await tonClient.getBalance(Address.parse(userWalletAddress))
-
-                  setCurrentConfirmData({
-                    fee: protocolFee.toString(),
-                    tick: values.tick,
-                    messages: [
-                      {
-                        address: userContractAddress.toString(),
-                        amount: (protocolFee *
-                          BigInt(Number(values.repeat)) +
-                          toNano('0.008')
-                        ).toString(),
-                        payload: currentBody.toBoc().toString('base64'),
-                        stateInit:
-                          userState.state !== 'active'
-                            ? userStateInit.toBoc().toString('base64')
-                            : undefined,
-                      },
-                    ],
-                    balance: Number(fromNano(currentUserBalance)),
-                    interval: null,
-                  })
-                } catch (err) {
-                  alert('Oops, network error. Please try again')
-                } finally {
-                  setIsInscribing(false)
-                }
-              }, 1000)
-            }, 1000)
-
             return
           }
 
+          const rootTokenDataResult = await tonClient.runMethod(
+            Address.parse(tokenData.address),
+            'get_token_data'
+          )
+
+          rootTokenDataResult.stack.skip(5)
+
+          const protocolFee = rootTokenDataResult.stack.readBigNumber()
+
           setTimeout(async () => {
-            try {
-              const userContractResult = await tonClient.runMethod(
-                Address.parse(storedUserContractAddress),
-                'get_user_data'
+            if (!storedUserContractAddress) {
+              const userData = await tonClient.runMethod(
+                Address.parse(tokenData.address),
+                'get_user_data',
+                [
+                  {
+                    type: 'slice',
+                    cell: beginCell()
+                      .storeAddress(Address.parse(userWalletAddress))
+                      .endCell(),
+                  },
+                ]
               )
 
-              userContractResult.stack.skip(2)
-
-              const lastMinted = userContractResult.stack.readNumber()
-              const interval = userContractResult.stack.readNumber()
-
-              const currentTime = Date.now()
-
-              const isCanMint =
-                lastMinted * 1000 + interval > currentTime ? false : true
-
-              if (!isCanMint) {
-                const timeToWaitInSeconds =
-                  lastMinted + interval - currentTime
-
-                alert(
-                  `Please, wait ${timeToWaitInSeconds} seconds, and try to mint again. `
-                )
-
-                setIsInscribing(false)
-
-                return
-              }
+              const userStateInit = userData.stack.readCell()
+              const userContractAddress = userData.stack.readAddress()
 
               setTimeout(async () => {
-                try {
-                  const currentUserBalance = await tonClient.getBalance(
-                    Address.parse(userWalletAddress)
+                const userState = await tonClient.getContractState(
+                  userContractAddress
+                )
+
+                if (userState.state === 'active') {
+                  localStorage.setItem(
+                    values.tick.toString(),
+                    JSON.stringify({
+                      userContractAddress: userContractAddress.toString(),
+                      userWalletAddress: userWalletAddress.toString(),
+                    })
                   )
 
-                  setCurrentConfirmData({
-                    fee: protocolFee.toString(),
-                    tick: values.tick,
-                    messages: [
-                      {
-                        address: storedUserContractAddress,
-                        amount: (protocolFee *
-                          BigInt(Number(values.repeat)) +
-                          toNano('0.008')
-                        ).toString(),
-                        payload: currentBody.toBoc().toString('base64'),
-                      },
-                    ],
-                    balance: Number(fromNano(currentUserBalance)),
-                    interval,
-                  })
-                } catch (err) {
-                  setIsInscribing(false)
-                  alert('Oops, network error. Please try again')
+                  localStorage.setItem('master_address', masterAddress)
                 }
 
-                setIsInscribing(false)
+                setTimeout(async () => {
+                  try {
+                    const currentUserBalance = await tonClient.getBalance(
+                      Address.parse(userWalletAddress)
+                    )
+
+                    setCurrentConfirmData({
+                      fee: protocolFee.toString(),
+                      tick: values.tick,
+                      messages: [
+                        {
+                          address: userContractAddress.toString(),
+                          amount: (
+                            protocolFee * BigInt(Number(values.repeat)) +
+                            toNano('0.008')
+                          ).toString(),
+                          payload: currentBody.toBoc().toString('base64'),
+                          stateInit:
+                            userState.state !== 'active'
+                              ? userStateInit.toBoc().toString('base64')
+                              : undefined,
+                        },
+                      ],
+                      balance: Number(fromNano(currentUserBalance)),
+                      interval: null,
+                    })
+                  } catch (err) {
+                    alert('Oops, network error. Please try again')
+                  } finally {
+                    setIsInscribing(false)
+                  }
+                }, 1000)
               }, 1000)
-            } catch (error) {
-              setIsInscribing(false)
-              alert('Oops, network error. Please try again')
+
+              return
             }
+
+            setTimeout(async () => {
+              try {
+                const userContractResult = await tonClient.runMethod(
+                  Address.parse(storedUserContractAddress),
+                  'get_user_data'
+                )
+
+                userContractResult.stack.skip(2)
+
+                const lastMinted = userContractResult.stack.readNumber()
+                const interval = userContractResult.stack.readNumber()
+
+                const currentTime = Date.now()
+
+                const isCanMint =
+                  lastMinted * 1000 + interval > currentTime ? false : true
+
+                if (!isCanMint) {
+                  const timeToWaitInSeconds =
+                    lastMinted + interval - currentTime
+
+                  alert(
+                    `Please, wait ${timeToWaitInSeconds} seconds, and try to mint again. `
+                  )
+
+                  setIsInscribing(false)
+
+                  return
+                }
+
+                setTimeout(async () => {
+                  try {
+                    const currentUserBalance = await tonClient.getBalance(
+                      Address.parse(userWalletAddress)
+                    )
+
+                    setCurrentConfirmData({
+                      fee: protocolFee.toString(),
+                      tick: values.tick,
+                      messages: [
+                        {
+                          address: storedUserContractAddress,
+                          amount: (
+                            protocolFee * BigInt(Number(values.repeat)) +
+                            toNano('0.008')
+                          ).toString(),
+                          payload: currentBody.toBoc().toString('base64'),
+                        },
+                      ],
+                      balance: Number(fromNano(currentUserBalance)),
+                      interval,
+                    })
+                  } catch (err) {
+                    setIsInscribing(false)
+                    alert('Oops, network error. Please try again')
+                  }
+
+                  setIsInscribing(false)
+                }, 1000)
+              } catch (error) {
+                setIsInscribing(false)
+                alert('Oops, network error. Please try again')
+              }
+            }, 1000)
           }, 1000)
-        }, 1000)
 
-        return
+          return
+        }
+      } catch (err) {
+        setIsInscribing(false)
+        alert('Oops, network error. Please try again')
+        console.log(err)
       }
-    } catch (err) {
-      setIsInscribing(false)
-      alert('Oops, network error. Please try again')
-      console.log(err)
-    }
 
-    return
-  },
+      return
+    },
     [userWalletAddress]
   )
 
@@ -322,15 +318,11 @@ export const Mint: FC = () => {
           },
         ]
 
-        localStorage.setItem(
-          'action_status',
-          JSON.stringify(actionStatusData)
-        )
+        localStorage.setItem('action_status', JSON.stringify(actionStatusData))
 
         //TODO: Доработать, заменив контекст инскрайба на необходимый
         // updateRenderActionStatusData!(actionStatusData)
         // checkBalanceChange!()
-
 
         alert('Your mint application is successfully processed, waiting!')
 
@@ -348,7 +340,8 @@ export const Mint: FC = () => {
     currentConfirmData,
     tonConnectUI,
     //  updateRenderActionStatusData,
-    userWalletAddress])
+    userWalletAddress,
+  ])
 
   return (
     <>
@@ -410,7 +403,7 @@ export const Mint: FC = () => {
           </S.StatusBlocks>
         </Container>
         <SpecialOffer />
-        <MintHistory />
+        {/* <MintHistory /> */}
       </S.Wrapper>
     </>
   )

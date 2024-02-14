@@ -23,7 +23,7 @@ export const Stats: FC<StatsBlockProps> = (props) => {
           ${tonPrice && (tonPrice * gramFloorPrice).toFixed(7)}
         </S.StatTitle>
         <S.Head>
-          <S.StatText>TGT Price</S.StatText>
+          <S.StatText>GRAM Price</S.StatText>
         </S.Head>
       </S.StatItem>
       <S.StatItem>

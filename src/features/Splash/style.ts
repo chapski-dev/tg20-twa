@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import bgImg from './assets/splash.png'
-import { SvgLogo } from './assets/SvgLogo';
+import { SvgLogo } from './assets/SvgLogo'
 
 export const Logo = styled(SvgLogo)`
   position: absolute;
@@ -17,7 +17,30 @@ export const Wrapper = styled.div`
   align-items: flex-end;
   padding: 0 17px 20px;
   justify-content: flex-end;
-  background: linear-gradient(#ffffff00, ${({ theme }) => theme.color.bg}), url(${bgImg});
+  background: linear-gradient(#ffffff00, ${({ theme }) => theme.color.bg}),
+    url(${bgImg});
+  background-color: ${({ theme }) => theme.color.bg};
+  background-position: center;
+  background-size: cover;
+  z-index: 999;
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  &.faid {
+    opacity: 0%;
+    visibility: hidden;
+    transition: opacity 0.7s, visibility 0.7s;
+  }
+`
+
+export const LoaderWrapper = styled.div`
+  height: 100vh;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-end;
   background-color: ${({ theme }) => theme.color.bg};
   background-position: center;
   background-size: cover;

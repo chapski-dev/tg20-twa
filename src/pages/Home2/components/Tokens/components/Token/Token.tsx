@@ -25,7 +25,7 @@ export const Token = ({ token }: TokenProps) => {
         <SvgGramIcon style={{ width: '30px', height: '30px' }} />
         <S.Wrapper>
           <S.TokenTitleWrapper>
-            <S.TokenTitle>{token.tick}</S.TokenTitle>
+            <S.TokenTitle>{token.tick.toUpperCase()}</S.TokenTitle>
             {token.verified && <SvgVerify />}
           </S.TokenTitleWrapper>
           <S.TokenDescription>

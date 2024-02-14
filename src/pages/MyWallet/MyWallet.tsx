@@ -56,9 +56,9 @@ export const MyWallet: FC = () => {
           <S.Search>
             <S.SearchInput
               icon={<SvgSearch />}
+              isSearchInput={false}
               onChange={() => {}}
               placeholder="Search tokens"
-              isSearchInput={false}
             />
           </S.Search>
           <S.LogOut
