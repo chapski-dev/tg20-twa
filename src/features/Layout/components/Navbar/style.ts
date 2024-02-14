@@ -8,11 +8,12 @@ export const Container = styled.div`
   justify-content: space-between;
   border-top-left-radius: 24px;
   border-top-right-radius: 24px;
-  border-top: 0.9px solid #ebebeb;
+  border-top: 0.9px solid ${({ theme }) => theme.color.bgSecondary};
   align-items: center;
-  position: fixed;
+  position: sticky;
   bottom: 0;
   z-index: 3;
+  margin-top: 10px;
 `
 
 export const NavItem = styled.div<{ active: boolean }>`

@@ -56,10 +56,13 @@ export const Marketplace: FC = () => {
 
   const [isConfirmLotModalOpen, setIsConfirmLotModalOpen] = useState(false)
   const [isBuyModalOpen, setIsBuyModalOpen] = useState(false)
-  const [isOrderCancellationModalOpen, setIsOrderCancellationModalOpen] = useState(false)
-  const [isActivityDetailsModalOpen, setIsActivityDetailsModalOpen] = useState(false)
+  const [isOrderCancellationModalOpen, setIsOrderCancellationModalOpen] =
+    useState(false)
+  const [isActivityDetailsModalOpen, setIsActivityDetailsModalOpen] =
+    useState(false)
 
-  const [isTransactionStatusModalOpen, setIsTransactionStatusModalOpen] = useState(false)
+  const [isTransactionStatusModalOpen, setIsTransactionStatusModalOpen] =
+    useState(false)
   const [isTransactionSuccessful, setIsTransactionSuccessful] = useState(false)
 
   const [lotInfo, setLotInfo] = useState<LotInfo | null>(null)
@@ -77,7 +80,8 @@ export const Marketplace: FC = () => {
 
   const [priceFilter, setPriceFilter] = useState<'TON' | 'USD'>('TON')
 
-  const onShowPriceIn = () => setPriceFilter((prevSt) => (prevSt === 'TON' ? 'USD' : 'TON'))
+  const onShowPriceIn = () =>
+    setPriceFilter((prevSt) => (prevSt === 'TON' ? 'USD' : 'TON'))
 
   const { currentWalletBalance } = useTelegram()
 
@@ -302,7 +306,6 @@ export const Marketplace: FC = () => {
             selectedTab={tabs[activeTab]}
             tabs={tabs}
           />
-
           <TokenOptionsBlock
             activeTab={activeTab}
             onListing={handleConfirmLotClick}
@@ -312,7 +315,7 @@ export const Marketplace: FC = () => {
             priceFilter={priceFilter}
             sortSelectValue={`${sort}_${direction}`}
             tick={tick}
-          />
+          />{' '}
         </S.ActionsContainer>
         <S.TabContentWrapper>{tabs[activeTab].component}</S.TabContentWrapper>
         {isConfirmLotModalOpen && (

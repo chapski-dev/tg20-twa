@@ -84,12 +84,12 @@ export const MyWallet: FC = () => {
         </S.BalanceBlock>
       </S.TopWrapperBlock>
       <S.WalletFunctions>
-        <S.SendBlockWrapper onClick={() => alert('Send button')}>
+        {/* <S.SendBlockWrapper onClick={() => alert('Send button')}>
           <S.SendButton>
             <SvgSendSquare />
           </S.SendButton>
           <S.SendText>Send</S.SendText>
-        </S.SendBlockWrapper>
+        </S.SendBlockWrapper> */}
         <S.RecieveBlockWrapper onClick={() => alert('Recieve button')}>
           <S.RecieveButton>
             <SvgRecieveSquare />

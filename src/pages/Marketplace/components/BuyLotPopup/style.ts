@@ -12,7 +12,7 @@ export const FieldsWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 4px;
+  gap: 8px;
 `
 
 export const FieldWrapper = styled.div`

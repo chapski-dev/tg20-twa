@@ -157,3 +157,22 @@ export const CheckExplorer = styled.button`
     color: ${({ theme }) => theme.color.link};
   }
 `
+
+export const TransfersWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding-top: 16px;
+`
+
+export const DateWrapper = styled(TransfersWrapper)`
+  gap: 16px;
+  padding: 0;
+`
+
+export const DateLabel = styled.span`
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  color: ${({ theme }) => theme.color.hint};
+`
