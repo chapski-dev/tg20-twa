@@ -5,8 +5,6 @@ export const Stats = styled.div`
   background: url(${statsBg});
   padding: 20px 16px;
   display: flex;
-  justify-content: center;
-  align-items: center;
   gap: 8px;
 `
 
@@ -25,6 +23,8 @@ export const StatTitle = styled.div`
   font-weight: 600;
   color: ${({ theme }) => theme.color.text};
   line-height: 16px;
+  display: flex;
+  gap: 2px;
 `
 
 export const StatText = styled.div`
@@ -37,4 +37,12 @@ export const StatText = styled.div`
 export const Head = styled.div`
   display: flex;
   align-items: flex-end;
+`
+
+export const StatProcent = styled.p`
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 16px;
+  color: ${({ theme }) => theme.color.greenSuccess};
+  display: flex;
 `

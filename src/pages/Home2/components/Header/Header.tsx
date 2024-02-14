@@ -19,6 +19,7 @@ export const Header = () => {
         placeholder="Search tokens"
         value={value}
         wrapperClassName="search-container"
+        isSearchInput={false}
       />
       <S.Notifications
         onClick={() => navigate(AppRoutes.Notifications)}
