@@ -1,10 +1,4 @@
-import {
-  FC,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from 'react'
+import { FC, useCallback, useContext, useEffect, useState } from 'react'
 import { Address, TonClient, beginCell, fromNano, toNano } from '@ton/ton'
 import {
   useTonAddress,
@@ -49,11 +43,10 @@ export const Deploy: FC = () => {
   } = useContext(ActionsStatusContext)
 
   const [loading, setLoading] = useState<boolean>(false)
-  const [currentConfirmData, setCurrentConfirmData] = useState<CurrentConfirmData | null>(null)
+  const [currentConfirmData, setCurrentConfirmData] =
+    useState<CurrentConfirmData | null>(null)
   const [intervalFreeze, setIntervalFreeze] = useState(0)
   const fromSearchParam = searchParams.get('from')
-
-
 
   useEffect(() => {
     if (intervalFreeze && intervalFreeze > 0) {
@@ -80,73 +73,79 @@ export const Deploy: FC = () => {
     file: '',
   }
 
-  const handleFormikSubmit = useCallback<FormikConfig<InitialValues>['onSubmit']>(async (values) => {
-    if (!userWalletAddress) {
-      tonConnectUI.openModal()
-      return;
-    }
-
-    const tonClient = new TonClient({ endpoint: TON_CLIENT_URL })
-    const zeroOpcode = 0
-    const masterAddress = 'EQBoPPFXQpGIiXQNkJ8DpQANN_OmMimp5dx6lWjRZmvEgZCI'
-    const storedMasterAddress = localStorage.getItem('master_address')
-    const storedTickData = localStorage.getItem(values.tick.toString())
-    const parsedStoredTickData = storedTickData &&
-      storedTickData.includes('userContractAddress') &&
-      JSON.parse(storedTickData)
-
-    const storedUserContractAddress = parsedStoredTickData?.userContractAddress
-
-    if (
-      (storedMasterAddress && storedMasterAddress !== masterAddress) ||
-      storedMasterAddress === null ||
-      parsedStoredTickData?.userWalletAddress !== userWalletAddress ||
-      !storedUserContractAddress
-    ) {
-      localStorage.removeItem(values.tick.toString())
-    }
-
-    setLoading(true)
-    const deployPayload = `data:application/json,{"p":"gram-20","op":"deploy","tick":"${values.tick}","max":"${values.amount}","limit":"${values.limit}","start":"0","interval":"10","penalty":"10"}`
-
-    setTimeout(async () => {
-      try {
-        const currentUserBalance = await tonClient.getBalance(
-          Address.parse(userWalletAddress)
-        )
-
-        const tokenDeployBody = beginCell()
-          .storeUint(zeroOpcode, 32)
-          .storeStringTail(deployPayload)
-          .endCell()
-
-        setCurrentConfirmData({
-          fee: '0',
-          tick: values.tick,
-          messages: [
-            {
-              address: masterAddress,
-              amount: toNano('0.1').toString(),
-              payload: tokenDeployBody.toBoc().toString('base64'),
-            },
-          ],
-          balance: Number(fromNano(currentUserBalance)),
-          interval: null,
-        })
-
-        setLoading(false)
-      } catch (err) {
-        setLoading(false)
-
-        console.log(err)
+  const handleFormikSubmit = useCallback<
+    FormikConfig<InitialValues>['onSubmit']
+  >(
+    async (values) => {
+      if (!userWalletAddress) {
+        tonConnectUI.openModal()
+        return
       }
-    }, 1000)
 
-  }, [tonConnectUI, userWalletAddress]);
+      const tonClient = new TonClient({ endpoint: TON_CLIENT_URL })
+      const zeroOpcode = 0
+      const masterAddress = 'EQBoPPFXQpGIiXQNkJ8DpQANN_OmMimp5dx6lWjRZmvEgZCI'
+      const storedMasterAddress = localStorage.getItem('master_address')
+      const storedTickData = localStorage.getItem(values.tick.toString())
+      const parsedStoredTickData =
+        storedTickData &&
+        storedTickData.includes('userContractAddress') &&
+        JSON.parse(storedTickData)
+
+      const storedUserContractAddress =
+        parsedStoredTickData?.userContractAddress
+
+      if (
+        (storedMasterAddress && storedMasterAddress !== masterAddress) ||
+        storedMasterAddress === null ||
+        parsedStoredTickData?.userWalletAddress !== userWalletAddress ||
+        !storedUserContractAddress
+      ) {
+        localStorage.removeItem(values.tick.toString())
+      }
+
+      setLoading(true)
+      const deployPayload = `data:application/json,{"p":"gram-20","op":"deploy","tick":"${values.tick}","max":"${values.amount}","limit":"${values.limit}","start":"0","interval":"10","penalty":"10"}`
+
+      setTimeout(async () => {
+        try {
+          const currentUserBalance = await tonClient.getBalance(
+            Address.parse(userWalletAddress)
+          )
+
+          const tokenDeployBody = beginCell()
+            .storeUint(zeroOpcode, 32)
+            .storeStringTail(deployPayload)
+            .endCell()
+
+          setCurrentConfirmData({
+            fee: '0',
+            tick: values.tick,
+            messages: [
+              {
+                address: masterAddress,
+                amount: toNano('0.1').toString(),
+                payload: tokenDeployBody.toBoc().toString('base64'),
+              },
+            ],
+            balance: Number(fromNano(currentUserBalance)),
+            interval: null,
+          })
+
+          setLoading(false)
+        } catch (err) {
+          setLoading(false)
+
+          console.log(err)
+        }
+      }, 1000)
+    },
+    [tonConnectUI, userWalletAddress]
+  )
 
   const signConfirmTransaction = useCallback(async () => {
     if (!currentConfirmData) {
-      return;
+      return
     }
 
     try {
@@ -187,14 +186,22 @@ export const Deploy: FC = () => {
     } catch (err) {
       setLoading(false)
     }
-  }, [checkContractDeployStatus, currentConfirmData, tonConnectUI, updateRenderActionStatusData])
-
+  }, [
+    checkContractDeployStatus,
+    currentConfirmData,
+    tonConnectUI,
+    updateRenderActionStatusData,
+  ])
 
   return (
     <S.Wrapper>
       <HeaderUserBalance />
       <BackButton
-        onClick={() => fromSearchParam === 'start_param' ? navigate(AppRoutes.Home) : navigate(-1)}
+        onClick={() =>
+          fromSearchParam === 'start_param'
+            ? navigate(AppRoutes.Home)
+            : navigate(-1)
+        }
       />
       <S.Container>
         <S.Title children="Deploy your own token with ease!" />
@@ -216,7 +223,9 @@ export const Deploy: FC = () => {
         <S.StatusBlocks>
           {renderActionStatusData?.map((el, i: number) => (
             <S.StatusBlock key={i}>
-              <S.StatusBlockLabel children={`${el.tick}: ${el.type.toUpperCase()}`} />
+              <S.StatusBlockLabel
+                children={`${el.tick}: ${el.type.toUpperCase()}`}
+              />
               <S.StatusBlockLabel
                 children={actionStatusDictionary[el.status].toUpperCase()}
                 $status={el.status}

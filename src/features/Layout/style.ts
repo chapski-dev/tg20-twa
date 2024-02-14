@@ -13,5 +13,4 @@ export const ContentWrapper = styled.div`
   background-color: ${({ theme }) => theme.color.bg};
   display: flex;
   flex-direction: column;
-  padding-bottom: 68px;
 `

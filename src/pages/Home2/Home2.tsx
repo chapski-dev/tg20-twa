@@ -1,15 +1,13 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import { fromNano } from '@ton/core'
+import dayjs from 'dayjs'
 import { useQuery } from 'react-query'
 import {
   getMarketplaceStats,
   getMarketplaceTokenStats,
   getTopTokensList,
-  getSearchedTokensList
+  getSearchedTokensList,
 } from 'api'
-import { useCallback, useState } from 'react'
-import dayjs from 'dayjs'
-import { useQuery } from 'react-query'
 import { TopToken } from 'api/types'
 import { SpecialOffer } from 'features/SpecialOffer'
 import { useDebounce } from 'hooks/useDebounce/useDebounce'
@@ -62,18 +60,16 @@ export const Home2 = () => {
     setSearchedValue(value)
   }, [])
 
-  const {
-    data: searchedTokens,
-    isLoading: isSearchedTokensLoading,
-    isSuccess: isSearchedTokensLoaded,
-  } = useQuery(['searchedTokens', debauncedSearchValue], () =>
-    getSearchedTokensList({ query: debauncedSearchValue.toLowerCase() })
+  const { data: searchedTokens, isSuccess: isSearchedTokensLoaded } = useQuery(
+    ['searchedTokens', debauncedSearchValue],
+    () => getSearchedTokensList({ query: debauncedSearchValue.toLowerCase() })
+  )
 
   const { data: marketplaceGramStats } = useQuery(
     ['makretplaceGramStatsData'],
     () => getMarketplaceTokenStats({ tick: 'gram' })
   )
-  
+
   return (
     <S.Home>
       <Header
@@ -83,11 +79,11 @@ export const Home2 = () => {
       {!debauncedSearchValue && (
         <>
           <Stats
-             gramFloorPrice={Number(
+            gramFloorPrice={Number(
               fromNano(marketplaceGramStats?.floor_price || 0)
-             )}
-             totalVolume={marketplaceStats?.total_volume || 0}
-             volume24h={marketplaceStats?.volume_24h || 0}
+            )}
+            totalVolume={marketplaceStats?.total_volume || 0}
+            volume24h={marketplaceStats?.volume_24h || 0}
           />
           <SpecialOffer />
           <Container>
