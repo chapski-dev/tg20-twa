@@ -69,6 +69,7 @@ export const Inscriptions: FC = () => {
           onChange={updateSeachedValue}
           placeholder="Search tokens:"
           value={searchedValue}
+          isSearchInput={false}
         />
       </S.InputWrapper>
 

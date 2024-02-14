@@ -23,6 +23,7 @@ export const Header: FC<HeaderProps> = (props) => {
         placeholder="Search tokens"
         value={searchValue}
         wrapperClassName="search-container"
+        isSearchInput={false}
       />
       {/* <S.Notifications
         onClick={() => navigate(AppRoutes.Notifications)}
