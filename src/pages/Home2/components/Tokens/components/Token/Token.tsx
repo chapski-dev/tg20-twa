@@ -1,30 +1,29 @@
+import { TopToken } from 'api/types'
+import { useTelegram } from 'hooks/useTelegram/useTelegram'
 import { SvgVerify } from 'ui/icons'
 import * as S from './style'
-
-import { Token as TokenType } from './type'
-
-import { Chart } from '../../../Chart'
+import Pepe from '../../assets/pepe.png'
 
 type TokenProps = {
-  token: TokenType
+  token: TopToken
 }
+
 export const Token = ({ token }: TokenProps) => {
+  const { tonPrice } = useTelegram()
+
   return (
     <S.Box>
       <S.Logo>
-        <S.Img alt={token.title} src={token.logo} />
+        <S.Img alt={token.tick} src={Pepe} />
         <S.Wrapper>
-          {token.verificated && (
-            <S.TokenTitleWrapper>
-              <S.TokenTitle>{token.title}</S.TokenTitle>
-              <SvgVerify />
-            </S.TokenTitleWrapper>
-          )}
-          {!token.verificated && <S.TokenTitle>{token.title}</S.TokenTitle>}
-          <S.TokenDescription>{token.description}</S.TokenDescription>
+          <S.TokenTitleWrapper>
+            <S.TokenTitle>{token.tick}</S.TokenTitle>
+            {token.verified && <SvgVerify />}
+          </S.TokenTitleWrapper>
+          {/* <S.TokenDescription>{token.}</S.TokenDescription> */}
         </S.Wrapper>
       </S.Logo>
-      <S.Volume>{token.volume}</S.Volume>
+      <S.Volume>${tonPrice && token.volume_24h * tonPrice}</S.Volume>
 
       {/* <S.Wrapper2>
         <S.Volume>${token.lastPrice}</S.Volume>

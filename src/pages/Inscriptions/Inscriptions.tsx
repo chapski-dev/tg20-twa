@@ -40,22 +40,29 @@ export const Inscriptions: FC = () => {
 
   const updateSeachedValue = useCallback(
     (evt: ChangeEvent<HTMLInputElement>) => {
+      if (currentTab.value !== 'all') {
+        setCurrentTab(tabs[0])
+      }
+
       setSearchedValue(evt.target.value)
     },
-    []
+    [currentTab.value]
   )
 
   return (
     <S.Wrapper>
-      <S.ExploreBlock>
-        <S.InfoBlock>
-          <S.Title children="Explore the big world of TG20 tokens!" />
-          <S.Description children="With TG20 platform you can easily deploy, mint and transfer tokens based on BRC-20 standards." />
-        </S.InfoBlock>
-        <S.IconsBlock>
-          <SvgCoinsSet />
-        </S.IconsBlock>
-      </S.ExploreBlock>
+      {!Boolean(debauncedSearchValue) && (
+        <S.ExploreBlock>
+          <S.InfoBlock>
+            <S.Title children="Explore the big world of TG20 tokens!" />
+            <S.Description children="With TG20 platform you can easily deploy, mint and transfer tokens based on BRC-20 standards." />
+          </S.InfoBlock>
+          <S.IconsBlock>
+            <SvgCoinsSet />
+          </S.IconsBlock>
+        </S.ExploreBlock>
+      )}
+
       <S.InputWrapper>
         <Input
           icon={<SvgLoop />}
@@ -64,27 +71,31 @@ export const Inscriptions: FC = () => {
           value={searchedValue}
         />
       </S.InputWrapper>
-      <S.InputWrapper>
-        <S.DeployTokenBlock
-          onClick={() =>
-            navigate({
-              pathname: AppRoutes.Deploy,
-              search: createSearchParams({
-                from: 'home',
-                type: 'deploy',
-              }).toString(),
-            })
-          }
-        >
-          <S.DeployInfoBlock>
-            <S.DeployIcon />
-            Deploy new inscription
-          </S.DeployInfoBlock>
-          <S.ArrowIcon />
-        </S.DeployTokenBlock>
-      </S.InputWrapper>
 
-      <Tabs onChange={setCurrentTab} selectedTab={currentTab} tabs={tabs} />
+      {!Boolean(debauncedSearchValue) && (
+        <>
+          <S.InputWrapper>
+            <S.DeployTokenBlock
+              onClick={() =>
+                navigate({
+                  pathname: AppRoutes.Deploy,
+                  search: createSearchParams({
+                    from: 'home',
+                    type: 'deploy',
+                  }).toString(),
+                })
+              }
+            >
+              <S.DeployInfoBlock>
+                <S.DeployIcon />
+                Deploy new inscription
+              </S.DeployInfoBlock>
+              <S.ArrowIcon />
+            </S.DeployTokenBlock>
+          </S.InputWrapper>
+          <Tabs onChange={setCurrentTab} selectedTab={currentTab} tabs={tabs} />
+        </>
+      )}
 
       {isTopTokensLoading || isSearchedTokensLoading ? (
         <S.Loader />
@@ -121,7 +132,7 @@ export const Inscriptions: FC = () => {
                 )
               )}
 
-          <SpecialOffer />
+          {!debauncedSearchValue && <SpecialOffer />}
 
           {!debauncedSearchValue &&
             isTopTokensLoaded &&
