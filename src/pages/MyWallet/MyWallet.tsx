@@ -8,7 +8,6 @@ import {
   SvgLogout,
   SvgRecieveSquare,
   SvgSearch,
-  SvgSendSquare,
 } from 'ui/icons'
 
 import { type Tab } from 'ui/TabsFilled/TabsFilled'

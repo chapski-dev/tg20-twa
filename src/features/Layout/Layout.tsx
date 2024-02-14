@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import { Outlet } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
-import { Splash } from 'features/Splash'
+// import { Splash } from 'features/Splash'
 import { SvgError, SvgSuccess } from 'ui/icons'
 import { Navbar } from './components'
 
@@ -10,7 +10,7 @@ import * as S from './style'
 export const Layout: FC = () => {
   return (
     <>
-      <Splash />
+      {/* <Splash /> */}
       <S.Wrapper>
         <S.ContentWrapper>
           <Outlet />
