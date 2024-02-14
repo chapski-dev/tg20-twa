@@ -1,6 +1,7 @@
 import styled, { DefaultTheme } from 'styled-components'
 
 type Status = 'success' | 'in_progress' | 'failed'
+
 const getColorLabel = ($status: Status, theme: DefaultTheme) => {
   switch (true) {
     case $status === 'success':
@@ -16,9 +17,9 @@ const getColorLabel = ($status: Status, theme: DefaultTheme) => {
 export const Wrapper = styled.div`
   width: 100%;
   padding: 16px 16px 4px;
-  background: ${({ theme }) => theme.color.bgSecondary};
   padding-top: 24px;
-  height: 100%;
+  display: flex;
+  flex-direction: column;
 `
 export const PromoWrapper = styled.div`
   padding: 20px 16px;
@@ -26,11 +27,10 @@ export const PromoWrapper = styled.div`
 
   .promo {
     width: 100%;
-    height: 83px;
   }
 `
 
-export const TitleDeploy = styled.div`
+export const Title = styled.div`
   font-weight: 600;
   font-size: 17px;
   line-height: 94%;
@@ -39,6 +39,7 @@ export const TitleDeploy = styled.div`
   color: ${({ theme }) => theme.color.text};
   text-align: left;
 `
+
 export const Container = styled.div`
   border-radius: 10px;
   display: flex;
@@ -47,6 +48,7 @@ export const Container = styled.div`
   padding: 24px 12px;
   background: ${({ theme }) => theme.color.bg};
 `
+
 export const TopBlock = styled.div`
   padding: 36px 0 42px;
   display: flex;
@@ -54,36 +56,6 @@ export const TopBlock = styled.div`
   justify-content: center;
   flex-direction: column;
   gap: 12px;
-`
-
-export const Title = styled.h1`
-  margin: 0;
-  padding: 0;
-  font-size: 40px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: 40px;
-  color: ${({ theme }) => theme.color.text};
-  text-align: center;
-`
-
-export const FormWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  background-color: ${({ theme }) => theme.color.bg};
-  width: 100%;
-  gap: 24px;
-
-  .button {
-    height: 50px;
-    border-radius: 6px;
-    padding: 16px 30px;
-    background-color: ${({ theme }) => theme.color.btn};
-    color: ${({ theme }) => theme.color.btnText};
-    font-weight: 600;
-    font-size: 16px;
-    line-height: 112%;
-  }
 `
 
 export const StatusBlocks = styled.div`

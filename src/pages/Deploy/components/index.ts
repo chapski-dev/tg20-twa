@@ -1,2 +1,2 @@
-export { InscribeForm } from './InscribeForm/InscribeForm'
+export { DeployForm } from './DeployForm/DeployForm'
 export { ConfirmPopup } from './ConfirmPopup/ConfirmPopup'

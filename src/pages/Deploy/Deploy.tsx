@@ -3,7 +3,6 @@ import {
   useCallback,
   useContext,
   useEffect,
-  useMemo,
   useState,
 } from 'react'
 import { Address, TonClient, beginCell, fromNano, toNano } from '@ton/ton'
@@ -15,19 +14,19 @@ import {
 import dayjs from 'dayjs'
 import { Formik, FormikConfig } from 'formik'
 import { useNavigate, useSearchParams } from 'react-router-dom'
+import { TON_CLIENT_URL } from 'constants/api'
 import { AppRoutes } from 'constants/app'
 import { BackButton } from 'features/BackButton'
 import { HeaderUserBalance } from 'features/HeaderUserBalance'
 import { ActionsStatusContext } from 'providers/ActionsStatusProvider'
-import { Button } from 'ui/Button/Button'
 import { Promo } from 'ui/Promo'
-import { InscribeForm, ConfirmPopup } from './components'
-import { type InitialValues } from './components/InscribeForm/types'
+import { DeployForm } from './components'
+import { type InitialValues } from './components/DeployForm/types'
 import * as S from './style'
 import { ActionStatusData } from './types'
 import { getValidationSchema } from './validationSchema'
 
-type TCurrentConfirmData = {
+export type CurrentConfirmData = {
   messages: SendTransactionRequest['messages']
   fee: string
   tick: string
@@ -43,21 +42,18 @@ const actionStatusDictionary = {
 
 export const Deploy: FC = () => {
   const [searchParams] = useSearchParams()
-
   const {
     renderActionStatusData,
     updateRenderActionStatusData,
     checkContractDeployStatus,
   } = useContext(ActionsStatusContext)
 
-  const [isInscribing, setIsInscribing] = useState<boolean>(false)
-
-  const [currentConfirmData, setCurrentConfirmData] =
-    useState<TCurrentConfirmData | null>(null)
-
-  const [intervalFreeze, setIntervalFreeze] = useState<number | null>(null)
-
+  const [loading, setLoading] = useState<boolean>(false)
+  const [currentConfirmData, setCurrentConfirmData] = useState<CurrentConfirmData | null>(null)
+  const [intervalFreeze, setIntervalFreeze] = useState(0)
   const fromSearchParam = searchParams.get('from')
+
+
 
   useEffect(() => {
     if (intervalFreeze && intervalFreeze > 0) {
@@ -70,117 +66,101 @@ export const Deploy: FC = () => {
   }, [intervalFreeze])
 
   const userWalletAddress = useTonAddress()
-
   const [tonConnectUI] = useTonConnectUI()
 
   const navigate = useNavigate()
 
-  const getInitialValues = (): InitialValues => {
-    return {
-      tick: '',
-      amount: '',
-      limit: '',
-      premintAmount: '0',
-      interval: '15',
-      penalty: '15',
-      file: '',
-    }
+  const initialState: InitialValues = {
+    tick: '',
+    amount: '',
+    limit: '',
+    premintAmount: '0',
+    interval: '15',
+    penalty: '15',
+    file: '',
   }
 
-  const handleFormikSubmit = useCallback<
-    FormikConfig<InitialValues>['onSubmit']
-  >(
-    async (values) => {
-      const tonClient = new TonClient({
-        endpoint: 'https://toncenter-v4.gram20.com/jsonRPC',
-      })
+  const handleFormikSubmit = useCallback<FormikConfig<InitialValues>['onSubmit']>(async (values) => {
+    if (!userWalletAddress) {
+      tonConnectUI.openModal()
+      return;
+    }
 
-      const zeroOpcode = 0
+    const tonClient = new TonClient({ endpoint: TON_CLIENT_URL })
+    const zeroOpcode = 0
+    const masterAddress = 'EQBoPPFXQpGIiXQNkJ8DpQANN_OmMimp5dx6lWjRZmvEgZCI'
+    const storedMasterAddress = localStorage.getItem('master_address')
+    const storedTickData = localStorage.getItem(values.tick.toString())
+    const parsedStoredTickData = storedTickData &&
+      storedTickData.includes('userContractAddress') &&
+      JSON.parse(storedTickData)
 
-      const masterAddress = 'EQBoPPFXQpGIiXQNkJ8DpQANN_OmMimp5dx6lWjRZmvEgZCI'
+    const storedUserContractAddress = parsedStoredTickData?.userContractAddress
 
-      const storedMasterAddress = localStorage.getItem('master_address')
+    if (
+      (storedMasterAddress && storedMasterAddress !== masterAddress) ||
+      storedMasterAddress === null ||
+      parsedStoredTickData?.userWalletAddress !== userWalletAddress ||
+      !storedUserContractAddress
+    ) {
+      localStorage.removeItem(values.tick.toString())
+    }
 
-      const storedTickData = localStorage.getItem(values.tick.toString())
+    setLoading(true)
+    const deployPayload = `data:application/json,{"p":"gram-20","op":"deploy","tick":"${values.tick}","max":"${values.amount}","limit":"${values.limit}","start":"0","interval":"10","penalty":"10"}`
 
-      const parsedStoredTickData =
-        storedTickData &&
-        storedTickData.includes('userContractAddress') &&
-        JSON.parse(storedTickData)
+    setTimeout(async () => {
+      try {
+        const currentUserBalance = await tonClient.getBalance(
+          Address.parse(userWalletAddress)
+        )
 
-      const storedUserContractAddress =
-        parsedStoredTickData?.userContractAddress
+        const tokenDeployBody = beginCell()
+          .storeUint(zeroOpcode, 32)
+          .storeStringTail(deployPayload)
+          .endCell()
 
-      if (
-        (storedMasterAddress && storedMasterAddress !== masterAddress) ||
-        storedMasterAddress === null ||
-        parsedStoredTickData?.userWalletAddress !== userWalletAddress ||
-        !storedUserContractAddress
-      ) {
-        localStorage.removeItem(values.tick.toString())
+        setCurrentConfirmData({
+          fee: '0',
+          tick: values.tick,
+          messages: [
+            {
+              address: masterAddress,
+              amount: toNano('0.1').toString(),
+              payload: tokenDeployBody.toBoc().toString('base64'),
+            },
+          ],
+          balance: Number(fromNano(currentUserBalance)),
+          interval: null,
+        })
+
+        setLoading(false)
+      } catch (err) {
+        setLoading(false)
+
+        console.log(err)
       }
+    }, 1000)
 
-      setIsInscribing(true)
-      const deployPayload = `data:application/json,{"p":"gram-20","op":"deploy","tick":"${values.tick}","max":"${values.amount}","limit":"${values.limit}","start":"0","interval":"10","penalty":"10"}`
-
-      setTimeout(async () => {
-        try {
-          const currentUserBalance = await tonClient.getBalance(
-            Address.parse(userWalletAddress)
-          )
-
-          const tokenDeployBody = beginCell()
-            .storeUint(zeroOpcode, 32)
-            .storeStringTail(deployPayload)
-            .endCell()
-
-          setCurrentConfirmData({
-            fee: '0',
-            tick: values.tick,
-            messages: [
-              {
-                address: masterAddress,
-                amount: toNano('0.1').toString(),
-                payload: tokenDeployBody.toBoc().toString('base64'),
-              },
-            ],
-            balance: Number(fromNano(currentUserBalance)),
-            interval: null,
-          })
-
-          setIsInscribing(false)
-        } catch (err) {
-          setIsInscribing(false)
-
-          console.log(err)
-        }
-      }, 1000)
-
-      return
-    },
-    [userWalletAddress]
-  )
+  }, [tonConnectUI, userWalletAddress]);
 
   const signConfirmTransaction = useCallback(async () => {
     if (!currentConfirmData) {
-      return null
+      return;
     }
 
     try {
-      setIsInscribing(true)
-
+      setLoading(true)
       const trx = await tonConnectUI.sendTransaction(
         {
           validUntil: Math.floor(Date.now() / 1000) + 180,
           messages: currentConfirmData.messages,
         },
-        {
-          returnStrategy: 'none',
-        }
+        { returnStrategy: 'none' }
       )
 
       if (trx.boc) {
-        setIsInscribing(false)
+        setLoading(false)
         const actionStatusData: ActionStatusData[] = [
           {
             tick: currentConfirmData.tick,
@@ -205,87 +185,46 @@ export const Deploy: FC = () => {
         setCurrentConfirmData(null)
       }
     } catch (err) {
-      setIsInscribing(false)
+      setLoading(false)
     }
   }, [checkContractDeployStatus, currentConfirmData, tonConnectUI, updateRenderActionStatusData])
 
-  const currentMainButtonName = useMemo(() => {
-    switch (true) {
-      case !userWalletAddress:
-        return 'Connect Wallet'
-      case intervalFreeze !== null && intervalFreeze > 0:
-        return `Repeat Deploy after ${intervalFreeze} seconds...`
-      default:
-        return 'Deploy'
-    }
-  }, [intervalFreeze, userWalletAddress])
 
   return (
-    <>
+    <S.Wrapper>
       <HeaderUserBalance />
-      <S.Wrapper>
-        <BackButton
-          onClick={() =>
-            fromSearchParam && fromSearchParam === 'start_param'
-              ? navigate(AppRoutes.Home)
-              : navigate(-1)
-          }
-        />
-        <S.Container>
-          <S.TitleDeploy>Deploy your own token with ease!</S.TitleDeploy>
-          <Formik
-            initialValues={getInitialValues()}
-            onSubmit={handleFormikSubmit}
-            validateOnBlur={false}
-            validateOnChange={true}
-            validationSchema={getValidationSchema()}
-          >
-            {({ handleSubmit }) => (
-              <S.FormWrapper>
-                <InscribeForm />
-                {!currentConfirmData && (
-                  <Button
-                    className="button"
-                    isDisabled={intervalFreeze !== null && intervalFreeze > 0}
-                    isLoading={isInscribing}
-                    onClick={
-                      !userWalletAddress
-                        ? () => tonConnectUI.openModal()
-                        : handleSubmit
-                    }
-                  >
-                    {currentMainButtonName}
-                  </Button>
-                )}
-                {currentConfirmData !== null && (
-                  <ConfirmPopup
-                    fee={currentConfirmData.fee}
-                    isLoading={isInscribing}
-                    onClose={() => setCurrentConfirmData(null)}
-                    onConfirm={signConfirmTransaction}
-                    userBalance={currentConfirmData.balance}
-                  />
-                )}
-              </S.FormWrapper>
-            )}
-          </Formik>
-          <S.StatusBlocks>
-            {renderActionStatusData &&
-              renderActionStatusData.map(
-                ({ tick, status, type }: ActionStatusData, idx: number) => (
-                  <S.StatusBlock key={idx}>
-                    <S.StatusBlockLabel>
-                      {tick}: {type.toUpperCase()}
-                    </S.StatusBlockLabel>
-                    <S.StatusBlockLabel $status={status}>
-                      {actionStatusDictionary[status].toUpperCase()}
-                    </S.StatusBlockLabel>
-                  </S.StatusBlock>
-                )
-              )}
-          </S.StatusBlocks>
-        </S.Container>
-      </S.Wrapper>
+      <BackButton
+        onClick={() => fromSearchParam === 'start_param' ? navigate(AppRoutes.Home) : navigate(-1)}
+      />
+      <S.Container>
+        <S.Title children="Deploy your own token with ease!" />
+        <Formik
+          initialValues={initialState}
+          onSubmit={handleFormikSubmit}
+          validateOnBlur={true}
+          validateOnChange={true}
+          validationSchema={getValidationSchema()}
+        >
+          <DeployForm
+            currentConfirmData={currentConfirmData}
+            intervalFreeze={intervalFreeze}
+            loading={loading}
+            setCurrentConfirmData={setCurrentConfirmData}
+            signConfirmTransaction={signConfirmTransaction}
+          />
+        </Formik>
+        <S.StatusBlocks>
+          {renderActionStatusData?.map((el, i: number) => (
+            <S.StatusBlock key={i}>
+              <S.StatusBlockLabel children={`${el.tick}: ${el.type.toUpperCase()}`} />
+              <S.StatusBlockLabel
+                children={actionStatusDictionary[el.status].toUpperCase()}
+                $status={el.status}
+              />
+            </S.StatusBlock>
+          ))}
+        </S.StatusBlocks>
+      </S.Container>
       <S.PromoWrapper>
         <Promo
           className="promo"
@@ -294,6 +233,6 @@ export const Deploy: FC = () => {
           variant="purple"
         />
       </S.PromoWrapper>
-    </>
+    </S.Wrapper>
   )
 }

@@ -2,6 +2,25 @@ import styled from 'styled-components'
 import { Button } from 'ui/Button/Button'
 import { Input as UIInput } from 'ui/Input/Input'
 
+export const FormWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  background-color: ${({ theme }) => theme.color.bg};
+  width: 100%;
+  gap: 24px;
+
+  .button {
+    height: 50px;
+    border-radius: 6px;
+    padding: 16px 30px;
+    background-color: ${({ theme }) => theme.color.btn};
+    color: ${({ theme }) => theme.color.btnText};
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 112%;
+  }
+`
+
 export const Wrapper = styled.div`
   width: 100%;
   height: 100%;

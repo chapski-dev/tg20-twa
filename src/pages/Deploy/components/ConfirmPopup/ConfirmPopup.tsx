@@ -6,7 +6,7 @@ import { SvgToncoinIcon } from 'ui/icons';
 import { Modal } from 'ui/Modal/Modal';
 import { formatNumberWithSeparators } from 'utils/formNumberWithSeparators';
 import * as S from './style';
-import { type InitialValues } from '../InscribeForm/types';
+import { type InitialValues } from '../DeployForm/types';
 
 type ConfirmPopupProps = {
   onClose: () => void;
