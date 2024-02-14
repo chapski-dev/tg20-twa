@@ -73,7 +73,7 @@ export const DeployForm: FC<DeployFormProps> = (props) => {
             {...amountField}
             error={!!(amountMeta?.touched && amountMeta?.error)}
             errorMessage={amountMeta?.error}
-            isSuccess={amountMeta?.value?.length === 8}
+            isSuccess={amountMeta?.value?.length >= 8}
             label="Set Total Supply"
             name="amount"
             placeholder="210 000 000 000"

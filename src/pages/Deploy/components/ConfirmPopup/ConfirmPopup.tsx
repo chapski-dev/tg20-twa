@@ -39,7 +39,7 @@ export const ConfirmPopup: FC<ConfirmPopupProps> = (props) => {
   return (
     <Modal onClose={onClose}>
       <S.Flex>
-        <S.Image alt="image" src={values.file} />
+        {/* <S.Image alt="image" src={values.file} /> */}
         <S.Title children="Confirm Deploy" />
         <S.Description children="Confirm in your wallet to deploy" />
       </S.Flex>
