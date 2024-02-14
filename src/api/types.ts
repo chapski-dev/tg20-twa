@@ -5,6 +5,8 @@ export type TopToken = {
   tick: string
   total_supply: number
   verified: boolean
+  volume_24h: number
+  create_time: number
 }
 
 export type Token = TopToken & {
