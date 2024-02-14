@@ -12,6 +12,7 @@ import { TON_CLIENT_URL } from 'constants/api'
 import { AppRoutes } from 'constants/app'
 import { BackButton } from 'features/BackButton'
 import { HeaderUserBalance } from 'features/HeaderUserBalance'
+import { PromoSlider } from 'pages/MyWallet/components'
 import { ActionsStatusContext } from 'providers/ActionsStatusProvider'
 import { Promo } from 'ui/Promo'
 import { DeployForm } from './components'
@@ -236,14 +237,17 @@ export const Deploy: FC = () => {
           </S.StatusBlocks>
         </S.Container>
       </S.Wrapper>
-      <S.PromoWrapper>
+      {/* <S.PromoWrapper>
         <Promo
           className="promo"
           subtitle="Explore Wallet"
           title="See what's new in your wallet"
           variant="purple"
         />
-      </S.PromoWrapper>
+      </S.PromoWrapper> */}
+      <S.CarouselContainer>
+        <PromoSlider />
+      </S.CarouselContainer>
     </>
   )
 }

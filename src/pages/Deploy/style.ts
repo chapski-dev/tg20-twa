@@ -21,7 +21,6 @@ export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   background: ${({ theme }) => theme.color.bgSecondary};
-
 `
 export const PromoWrapper = styled.div`
   padding: 20px 16px;
@@ -87,4 +86,14 @@ export const StatusBlockLabel = styled.span<{
   font-weight: 600;
   line-height: 20px;
   color: ${({ theme, $status }) => $status && getColorLabel($status, theme)};
+`
+
+export const CarouselContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding-left: 15px;
+  padding-top: 15px;
+  padding-bottom: 15px;
 `
