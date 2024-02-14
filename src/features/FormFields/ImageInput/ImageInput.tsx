@@ -1,49 +1,68 @@
-import { ChangeEvent, FC, useEffect, useState } from 'react'
+import { ChangeEvent, FC, useRef, useState } from 'react'
 import { useField } from 'formik'
 import { SvgExit, SvgPlus } from 'ui/icons'
 import * as S from './style'
 
 type FormInputProps = {
   name: string
-  error?: boolean
   label?: string
+  disabled?: boolean;
 }
 
 export const ImageInput: FC<FormInputProps> = (props) => {
-  const { name, error, label } = props
+  const { name, label, disabled } = props
   const [field, meta, helpers] = useField(name)
+  const [fileUrl, setFileUrl] = useState('')
+  const inputRef = useRef<any>(null);
 
-  function handleChange(e: ChangeEvent<HTMLInputElement>) {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (disabled) {
+      return;
+    }
     if (!e.target.files?.[0]) return
+    const file = e.target.files[0];
+    const fileToUrl = URL.createObjectURL(file);
+    setFileUrl(fileToUrl);
 
-    const file = URL.createObjectURL(e.target.files[0])
-    helpers.setValue(file)
+    let reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => helpers.setValue(reader.result);
+  }
+
+  const onClear = () => {
+    helpers.setValue('');
+    setFileUrl('');
+    inputRef.current.value = "";
   }
 
   return (
-    <S.Container>
-      <S.Label error={error || meta.error !== undefined}>{label}</S.Label>
-      <S.Wrapper>
+    <S.Container >
+      <S.Label
+        children={label}
+        error={meta.touched && meta.error !== undefined}
+      />
+      <S.Wrapper disabled={disabled}>
         <S.Input
-          isImage={field.value}
+          {...field}
+          ref={inputRef}
           name="file"
-          onChange={(event) => handleChange(event)}
+          onChange={handleChange}
           type="file"
         />
-        {field.value && (
+        {fileUrl && (
           <>
-            <S.Image alt="image" src={field.value} />
-            <SvgExit onClick={() => helpers.setValue('')} />
+            <S.Image alt="image" src={fileUrl} />
+            <SvgExit id='exit' onClick={onClear} />
           </>
         )}
-        {!field.value && (
+        {!fileUrl && (
           <S.Flex>
             <SvgPlus />
-            <S.Title>Upload</S.Title>
+            <S.Title children="Upload" />
           </S.Flex>
         )}
       </S.Wrapper>
-      <S.ErrorMessage>{meta.error}</S.ErrorMessage>
+      <S.ErrorMessage children={meta.touched && meta.error} />
     </S.Container>
   )
-}
+};

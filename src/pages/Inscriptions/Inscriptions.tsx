@@ -12,7 +12,6 @@ import { Input } from 'ui/Input/Input'
 import { Tab } from 'ui/Tabs/Tabs'
 import { TokenCard } from './components'
 import * as S from './style'
-import { TransferInfo } from 'pages/MyWallet/components/MyTransfers/components/TransferCard/components/style'
 
 export const Inscriptions: FC = () => {
   const [searchedValue, setSearchedValue] = useState<string>('')

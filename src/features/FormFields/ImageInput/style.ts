@@ -8,7 +8,7 @@ const getLabelColor = (theme: DefaultTheme, error?: boolean) => {
       return theme.color.text
   }
 }
-export const Wrapper = styled.div`
+export const Wrapper = styled.div<{disabled?: boolean}>`
   display: flex;
   flex-direction: column;
   gap: 2px;
@@ -21,7 +21,6 @@ export const Wrapper = styled.div`
 
   border: 1px dashed ${({ theme }) => theme.color.hint};
   background-color: ${({ theme }) => theme.color.bgSecondary};
-
   #exit {
     position: absolute;
     path {
@@ -60,7 +59,7 @@ export const Flex = styled.div`
     fill: ${({ theme }) => theme.color.hint};
   }
 `
-export const Input = styled.input<{ isImage: boolean }>`
+export const Input = styled.input`
   width: 100%;
   height: 100%;
   position: absolute;
@@ -68,7 +67,6 @@ export const Input = styled.input<{ isImage: boolean }>`
   cursor: pointer;
   border: none;
   z-index: 2;
-  ${({ isImage }) => isImage && 'pointer-events: none;'}
   outline: 0;
   opacity: 0;
   user-select: none;
@@ -83,8 +81,10 @@ export const Container = styled.div`
 `
 
 export const Image = styled.img`
-  width: 68px;
-  height: 68px;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
 `
 
 export const ErrorMessage = styled.span`

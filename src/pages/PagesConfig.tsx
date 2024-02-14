@@ -56,10 +56,6 @@ export const PagesConfig = () => {
           path: AppRoutes.MyWallet,
         },
         {
-          element: <Inscriptions />,
-          path: AppRoutes.Inscriptions,
-        },
-        {
           element: <Notifications />,
           path: AppRoutes.Notifications,
         },

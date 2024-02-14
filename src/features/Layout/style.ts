@@ -5,7 +5,6 @@ export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
-  padding-bottom: 68px;
 `
 
 export const ContentWrapper = styled.div`
@@ -14,4 +13,5 @@ export const ContentWrapper = styled.div`
   background-color: ${({ theme }) => theme.color.bg};
   display: flex;
   flex-direction: column;
+  padding-bottom: 68px;
 `

@@ -97,7 +97,6 @@ export const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
       <S.InputContainer className={className} error={error} focused={isFocused}>
         {icon}
         <S.Input
-          ref={ref}
           disabled={disabled}
           max={max}
           min={min}
@@ -108,11 +107,12 @@ export const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
           placeholder={placeholder}
           value={value}
           {...otherInputProps}
+          ref={ref}
         />
         {actionElement}
         {isSuccess && value && !error && <SvgTickCircle />}
       </S.InputContainer>
-      {error && <S.ErrorMessageBlock>{errorMessage}</S.ErrorMessageBlock>}
+      {error && <S.ErrorMessageBlock children={errorMessage} />}
     </S.InputWrapper>
   )
 })
