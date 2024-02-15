@@ -16,6 +16,7 @@ import { type Tab } from 'ui/TabsFilled/TabsFilled'
 import { MyAssets } from './components'
 import { MyTransactions } from './components/MyTransfers/MyTransfers'
 import { NotAuthorized } from './components/NotAuthorized/NotAuthorized'
+import { ReceivePopup } from './components/ReceivePopup/ReceivePopup'
 import { PROCENT_MOCK } from './mock'
 import * as S from './style'
 
@@ -38,6 +39,12 @@ export const MyWallet: FC = () => {
   const { currentWalletBalance } = useTelegram()
 
   const [tonConnectUI] = useTonConnectUI()
+
+  const [isReceiveModalOpen, setIsReceiveModalOpen] = useState<boolean>(false)
+
+  const toggleReceiveModal = () => {
+    setIsReceiveModalOpen((prev) => !prev)
+  }
 
   const currentWalletContent = useMemo(() => {
     if (currentTab.value === 'assets') {
@@ -92,7 +99,7 @@ export const MyWallet: FC = () => {
           </S.SendButton>
           <S.SendText>Send</S.SendText>
         </S.SendBlockWrapper> */}
-        <S.RecieveBlockWrapper onClick={() => alert('Recieve button')}>
+        <S.RecieveBlockWrapper onClick={toggleReceiveModal}>
           <S.RecieveButton>
             <SvgRecieveSquare />
           </S.RecieveButton>
@@ -121,6 +128,8 @@ export const MyWallet: FC = () => {
 
         {currentWalletContent}
       </S.TabsBlock>
+
+      {isReceiveModalOpen && <ReceivePopup onClose={toggleReceiveModal} />}
 
       {/* <div onClick={() => navigate(AppRoutes.TranferHistory)}>
         TransferHistory
