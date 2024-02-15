@@ -45,8 +45,8 @@ export const Token: FC = () => {
       return (
         <S.NotFoundBlock>
           <S.NotFountInfoBlockWrapper>
-            <S.NotFountLabel>Oops! Token not found</S.NotFountLabel>
-            <Button onClick={() => navigate(AppRoutes.Home)}>Go home</Button>
+            <S.NotFountLabel children="Oops! Token not found" />
+            <Button children="Go home" onClick={() => navigate(AppRoutes.Home)} />
           </S.NotFountInfoBlockWrapper>
         </S.NotFoundBlock>
       )
@@ -65,37 +65,25 @@ export const Token: FC = () => {
             <S.TitleWrapper>
               <S.Title>{tokenData.tick}</S.Title>
               {(tokenData.tick === 'gram' || tokenData.verified) && (
-                <SvgVerified />
+                <SvgVerified color='red' />
               )}
-              {tokenData.mintable && <S.Mintable>Minting Fast 🔥</S.Mintable>}
-              {!tokenData.mintable && <S.NotMintable>Trading ✅</S.NotMintable>}
+              {tokenData.mintable && <S.Mintable children="Minting Fast 🔥" />}
+              {!tokenData.mintable && <S.NotMintable children="Trading ✅" />}
             </S.TitleWrapper>
           </S.TokenCardHeaderLeftSideWrapper>
         </S.TokenCardHeader>
         <S.TokenCardHeaderList>
           <S.TokenCardHeaderListItem align="flex-start">
-            <S.TokenCardHeaderListItemTitle>
-              Total Supply
-            </S.TokenCardHeaderListItemTitle>
-            <S.TokenCardHeaderListItemText>
-              {convertNumberToShortFormat(tokenData.total_supply)}
-            </S.TokenCardHeaderListItemText>
+            <S.TokenCardHeaderListItemTitle children="Total Supply" />
+            <S.TokenCardHeaderListItemText children={convertNumberToShortFormat(tokenData.total_supply)} />
           </S.TokenCardHeaderListItem>
           <S.TokenCardHeaderListItem align="flex-start">
-            <S.TokenCardHeaderListItemTitle>
-              Minted Supply
-            </S.TokenCardHeaderListItemTitle>
-            <S.TokenCardHeaderListItemText>
-              {convertNumberToShortFormat(tokenData.supply)}
-            </S.TokenCardHeaderListItemText>
+            <S.TokenCardHeaderListItemTitle children="Minted Supply" />
+            <S.TokenCardHeaderListItemText children={convertNumberToShortFormat(tokenData.supply)} />
           </S.TokenCardHeaderListItem>
           <S.TokenCardHeaderListItem align="flex-end">
-            <S.TokenCardHeaderListItemTitle>
-              Minted %
-            </S.TokenCardHeaderListItemTitle>
-            <S.TokenCardHeaderListItemText>
-              {mintedSupplyPercent.toFixed(2)}%
-            </S.TokenCardHeaderListItemText>
+            <S.TokenCardHeaderListItemTitle children="Minted %" />
+            <S.TokenCardHeaderListItemText children={`${mintedSupplyPercent.toFixed(2)}%`} />
           </S.TokenCardHeaderListItem>
         </S.TokenCardHeaderList>
         <S.Container>
@@ -106,7 +94,7 @@ export const Token: FC = () => {
           >
             <S.Field>
               <S.FieldWrapper>
-                <S.Label $isBold>Inscription Address</S.Label>
+                <S.Label children="Inscription Address" $isBold />
                 <S.LinkFieldWrapper
                   href={`https://tonviewer.com/${tokenData.address}`}
                   target="_blank"
@@ -116,7 +104,7 @@ export const Token: FC = () => {
                 </S.LinkFieldWrapper>
               </S.FieldWrapper>
               <S.FieldWrapper>
-                <S.Label $isBold>Deployed by</S.Label>
+                <S.Label children="Deployed by" $isBold />
                 <S.LinkFieldWrapper
                   href={`https://tonviewer.com/${tokenData.owner}`}
                   target="_blank"
@@ -126,7 +114,7 @@ export const Token: FC = () => {
                 </S.LinkFieldWrapper>
               </S.FieldWrapper>
               <S.FieldWrapper>
-                <S.Label $isBold>Deploy time</S.Label>
+                <S.Label children="Deploy time" $isBold />
                 <S.Label>
                   {dayjs(tokenData.deploy_time * 1000).format(
                     'YYYY/MM/DD HH:mm:ss'
@@ -135,28 +123,25 @@ export const Token: FC = () => {
               </S.FieldWrapper>
               <S.FieldFlex>
                 <S.FieldFlexItem>
-                  <S.FieldFlexItemLabel $isBold>
-                    Limit/Mint
-                  </S.FieldFlexItemLabel>
+                  <S.FieldFlexItemLabel children="Limit/Mint" $isBold />
                   <S.FieldFlexItemLabel>
                     {tokenData.mint_limit}
                   </S.FieldFlexItemLabel>
                 </S.FieldFlexItem>
                 <S.FieldFlexItem>
-                  <S.FieldFlexItemLabel $isBold>Decimal</S.FieldFlexItemLabel>
-                  <S.FieldFlexItemLabel>9</S.FieldFlexItemLabel>
+                  <S.FieldFlexItemLabel children="Decimal" $isBold />
+                  <S.FieldFlexItemLabel children="9" />
                 </S.FieldFlexItem>
                 <S.FieldFlexItem>
-                  <S.FieldFlexItemLabel $isBold>Holders</S.FieldFlexItemLabel>
-                  <S.FieldFlexItemLabel>
-                    {formatNumberWithSeparators(tokenData.holders)}
-                  </S.FieldFlexItemLabel>
+                  <S.FieldFlexItemLabel children="Holders" $isBold />
+                  <S.FieldFlexItemLabel children={formatNumberWithSeparators(tokenData.holders)} />
                 </S.FieldFlexItem>
               </S.FieldFlex>
             </S.Field>
           </Accordion>
           {tokenData.mintable && (
             <Button
+              children="Mint Now"
               className="btn"
               onClick={() =>
                 navigate({
@@ -168,12 +153,11 @@ export const Token: FC = () => {
                   }).toString(),
                 })
               }
-            >
-              Mint Now
-            </Button>
+            />
           )}
           {!tokenData.mintable && (
             <Button
+              children={`Buy / Sell ${tokenData.tick.toUpperCase()}`}
               className="btn"
               onClick={() =>
                 navigate({
@@ -183,9 +167,7 @@ export const Token: FC = () => {
                   }).toString(),
                 })
               }
-            >
-              Buy / Sell {tokenData.tick.toUpperCase()}
-            </Button>
+            />
           )}
           <S.PromoContainer>
             <Promo
@@ -201,7 +183,7 @@ export const Token: FC = () => {
           </S.PromoContainer>
         </S.Container>
         <S.TableWrapper>
-          <S.TableTitle>Holdings</S.TableTitle>
+          <S.TableTitle children="Holdings" />
         </S.TableWrapper>
         <HoldersTable
           supplied={tokenData.supply}

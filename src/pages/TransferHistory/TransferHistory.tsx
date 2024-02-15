@@ -1,4 +1,4 @@
-import { FC, useCallback, useMemo } from 'react'
+import { FC, useCallback, useMemo, useState } from 'react'
 import { fromNano } from '@ton/core'
 import { useTonAddress } from '@tonconnect/ui-react'
 import { useQuery } from 'react-query'
@@ -17,11 +17,13 @@ import {
   SvgArrowSwap,
   SvgLogoHistoryToken,
   SvgRecieveSquare,
+  SvgSendSquare,
   SvgTrade,
 } from 'ui/icons'
 import { TransferCard } from 'ui/TransferCard/TransferCard'
 import { convertNumberToShortFormat } from 'utils/convertNumberToShortFormat'
 import { transformTransferHistoryByDate } from 'utils/transformTransferHistoryByDate'
+import { SendPopup } from './components'
 import * as S from './style'
 
 type FunctionalProps = {
@@ -30,25 +32,12 @@ type FunctionalProps = {
   action: () => void
 }
 
-const functionalBlocks: FunctionalProps[] = [
-  {
-    title: 'Recieve',
-    icon: <SvgRecieveSquare />,
-    action: () => alert('Recieve button'),
-  },
-  { title: 'Swap', icon: <SvgArrowSwap />, action: () => alert('Swap button') },
-  { title: 'Trade', icon: <SvgTrade />, action: () => alert('Trade button') },
-]
-
 const GRAM_PRICE = 0.000004
 
 export const TransferHistory: FC = () => {
   const { tonPrice } = useTelegram()
-
   const userWalletAddress = useTonAddress()
-
   const navigate = useNavigate()
-
   const { tick } = useParams()
 
   const { data: marketplaceGramStats } = useQuery(
@@ -58,7 +47,6 @@ export const TransferHistory: FC = () => {
       enabled: !!tick && !!tonPrice,
     }
   )
-
   const { data: currentWalletTickData } = useQuery(
     ['currentGramBalance', userWalletAddress, tick],
     () => getTokenWalletBalance(userWalletAddress, tick as string),
@@ -66,7 +54,6 @@ export const TransferHistory: FC = () => {
       enabled: !!userWalletAddress,
     }
   )
-
   const { data: transfersHistory, isSuccess: isTransferHistoryLoaded } =
     useQuery(
       [`my-${tick}-transfers`],
@@ -97,85 +84,101 @@ export const TransferHistory: FC = () => {
     return currentWalletTickData.balance * GRAM_PRICE
   }, [currentWalletTickData, tick, tonPrice])
 
-  return (
-    <S.Wrapper>
-      <BackButton onClick={() => navigate(AppRoutes.MyWallet)} />
-      <S.BalanceBlock>
-        <S.TopBlock>
-          <S.Logo>
-            <S.BackGroundSvg>
-              <SvgLogoHistoryToken />
-            </S.BackGroundSvg>
-          </S.Logo>
-          <S.Balance>
-            {currentWalletTickData?.balance || '-.--'} {tick?.toUpperCase()}
-          </S.Balance>
-          {tick === 'gram' && (
-            <S.DollarCount>~ ${currentTokenPrice}</S.DollarCount>
-          )}
-        </S.TopBlock>
-        <S.FunctionalBlock>
-          {functionalBlocks.map(({ icon, title, action }, idx) => (
-            <S.BlockWrapper key={idx} onClick={action}>
-              <S.Button>{icon}</S.Button>
-              <S.Text>{title}</S.Text>
-            </S.BlockWrapper>
-          ))}
-        </S.FunctionalBlock>
-      </S.BalanceBlock>
-      <S.InfoTotal>
-        <S.Item>
-          <S.Title>Total Supply</S.Title>
-          <S.Count>{210}B</S.Count>
-        </S.Item>
-        <S.Item>
-          <S.Title>Floor Price</S.Title>
-          <S.Count>
-            $
-            {(marketplaceGramStats &&
-              tonPrice &&
-              (
-                tonPrice *
-                Number(fromNano(+marketplaceGramStats.floor_price.toFixed(0)))
-              ).toFixed(7)) ||
-              '-.--'}
-          </S.Count>
-        </S.Item>
-        <S.Item>
-          <S.Title>Total Volume</S.Title>
-          <S.Count>
-            {(marketplaceGramStats &&
-              convertNumberToShortFormat(marketplaceGramStats.total_volume)) ||
-              '-.--'}
-          </S.Count>
-        </S.Item>
-      </S.InfoTotal>
-      <S.Line />
-      <Container>
-        <S.TransfersWrapper>
-          {isTransferHistoryLoaded &&
-            transfersHistory.map(({ date, transfers }) => (
-              <S.DateWrapper>
-                <S.DateLabel>{date}</S.DateLabel>
+  const [sendPopuplOpen, setSendPopuplOpen] = useState(false);
+  const actionsBlocks: FunctionalProps[] = useMemo(() => [
+    {
+      title: 'Send',
+      icon: <SvgSendSquare />,
+      action: () => setSendPopuplOpen(true),
+    },
+    {
+      title: 'Recieve',
+      icon: <SvgRecieveSquare />,
+      action: () => alert('Recieve button'),
+    },
+    { title: 'Swap', icon: <SvgArrowSwap />, action: () => alert('Swap button') },
+    { title: 'Trade', icon: <SvgTrade />, action: () => alert('Trade button') },
+  ], [])
 
-                {transfers.map((transfer, idx) => (
-                  <TransferCard
-                    key={idx}
-                    amount={transfer.delta}
-                    hash={transfer.hash}
-                    tick={transfer.tick}
-                    walletAddress={transfer.peer}
-                  />
-                ))}
-              </S.DateWrapper>
+
+  return (
+    <>
+      <S.Wrapper>
+        <BackButton onClick={() => navigate(AppRoutes.MyWallet)} />
+        <S.BalanceBlock>
+          <S.TopBlock>
+            <S.Logo>
+              <S.BackGroundSvg>
+                <SvgLogoHistoryToken />
+              </S.BackGroundSvg>
+            </S.Logo>
+            <S.Balance children={`${currentWalletTickData?.balance || '-.--'} ${tick?.toUpperCase() || ''}`} />
+            {tick === 'gram' && (
+              <S.DollarCount children={`~ $${currentTokenPrice}`} />
+            )}
+          </S.TopBlock>
+          <S.FunctionalBlock>
+            {actionsBlocks.map(({ icon, title, action }, idx) => (
+              <S.BlockWrapper key={idx} onClick={action}>
+                <S.Button children={icon} />
+                <S.Text children={title} />
+              </S.BlockWrapper>
             ))}
-        </S.TransfersWrapper>
-      </Container>
-      <S.BtnBlock>
-        <S.CheckExplorer>
-          Can’t find your transaction?<span> Check explorer</span>
-        </S.CheckExplorer>
-      </S.BtnBlock>
-    </S.Wrapper>
+          </S.FunctionalBlock>
+        </S.BalanceBlock>
+        <S.InfoTotal>
+          <S.Item>
+            <S.Title children="Total Supply" />
+            <S.Count children={`${210}B`} />
+          </S.Item>
+          <S.Item>
+            <S.Title children="Floor Price" />
+            <S.Count>
+              $
+              {(marketplaceGramStats &&
+                tonPrice &&
+                (
+                  tonPrice *
+                  Number(fromNano(+marketplaceGramStats.floor_price.toFixed(0)))
+                ).toFixed(7)) ||
+                '-.--'}
+            </S.Count>
+          </S.Item>
+          <S.Item>
+            <S.Title children="Total Volume" />
+            <S.Count children={`${(convertNumberToShortFormat(marketplaceGramStats?.total_volume || 0)) ||
+              '-.--'}`} />
+          </S.Item>
+        </S.InfoTotal>
+        <S.Line />
+        <Container>
+          <S.TransfersWrapper>
+            {isTransferHistoryLoaded &&
+              transfersHistory.map(({ date, transfers }) => (
+                <S.DateWrapper>
+                  <S.DateLabel children={date} />
+                  {transfers.map((transfer, idx) => (
+                    <TransferCard
+                      key={idx}
+                      amount={transfer.delta}
+                      hash={transfer.hash}
+                      tick={transfer.tick}
+                      walletAddress={transfer.peer}
+                    />
+                  ))}
+                </S.DateWrapper>
+              ))}
+          </S.TransfersWrapper>
+        </Container>
+        <S.BtnBlock>
+          <S.CheckExplorer>
+            Can’t find your transaction?<span> Check explorer</span>
+          </S.CheckExplorer>
+        </S.BtnBlock>
+      </S.Wrapper>
+      {sendPopuplOpen && !!tick && (
+        <SendPopup onClose={() => setSendPopuplOpen(false)} tick={tick} />
+      )}
+    </>
   )
 }

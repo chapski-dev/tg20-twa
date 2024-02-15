@@ -8,6 +8,7 @@ import {
 import dayjs from 'dayjs'
 import { Formik, FormikConfig } from 'formik'
 import { getTokenInfo, getTokenWalletBalance, getTransfersHistory } from 'api'
+import { TON_CLIENT_URL } from 'constants/api'
 import { buyTonLink, masterAddress } from 'constants/blockchain'
 import { MainButton } from 'features/MainButton'
 import { useTelegram } from 'hooks/useTelegram/useTelegram'
@@ -38,49 +39,36 @@ export type CurrentTransferConfirmData = {
   interval: number | null
 }
 
+const initialValues: InitialValues = {
+  amount: '',
+  address: '',
+  memo: '',
+}
+
 const CURRENT_TOTAL_AMOUNT = Number(toNano('0.008')) / 1e9
 
 export const TransferPopup: FC<TransferPopupProps> = (props) => {
   const { onClose, tick } = props
-
   const { webApp } = useTelegram()
-
   const { checkTransferValid } = useContext(ActionsStatusContext)
-
   const [isTransfering, setIsTransfering] = useState<boolean>(false)
-
-  const [currentConfirmData, setCurrentConfirmData] =
-    useState<CurrentTransferConfirmData | null>(null)
-
+  const [currentConfirmData, setCurrentConfirmData] = useState<CurrentTransferConfirmData | null>(null)
   const [tonConnectUI] = useTonConnectUI()
-
   const userWalletAddress = useTonAddress()
-
-  const initialValues: InitialValues = {
-    amount: '',
-    address: '',
-    memo: '',
-  }
 
   const handleSubmit = useCallback<FormikConfig<InitialValues>['onSubmit']>(
     async (values, helpers) => {
       setIsTransfering(true)
 
-      const tonClient = new TonClient({
-        endpoint: 'https://toncenter-v4.gram20.com/jsonRPC',
-      })
-
+      const tonClient = new TonClient({ endpoint: TON_CLIENT_URL })
       const storedMasterAddress = localStorage.getItem('master_address')
-
       const storedTickData = localStorage.getItem(tick)
-
       const parsedStoredTickData =
         storedTickData &&
         storedTickData.includes('userContractAddress') &&
         JSON.parse(storedTickData)
 
-      const storedUserContractAddress =
-        parsedStoredTickData?.userContractAddress
+      const storedUserContractAddress = parsedStoredTickData?.userContractAddress
 
       if (
         (storedMasterAddress && storedMasterAddress !== masterAddress) ||
@@ -108,18 +96,11 @@ export const TransferPopup: FC<TransferPopupProps> = (props) => {
 
             if (!Address.isFriendly(values.address)) {
               setIsTransfering(false)
-
-              helpers.setFieldError(
-                'address',
-                'Incorrect wallet address format'
-              )
-
+              helpers.setFieldError('address', 'Incorrect wallet address format')
               return
             }
 
-            if (
-              Number(values.amount) > currentWalletAdddressTokenBalance.balance
-            ) {
+            if (Number(values.amount) > currentWalletAdddressTokenBalance.balance) {
               setIsTransfering(false)
 
               helpers.setFieldError(
@@ -224,19 +205,12 @@ export const TransferPopup: FC<TransferPopupProps> = (props) => {
 
               const lastMinted = userContractResult.stack.readNumber()
               const interval = userContractResult.stack.readNumber()
-
               const currentTime = Date.now()
-
-              const isCanMint =
-                lastMinted * 1000 + interval > currentTime ? false : true
+              const isCanMint = lastMinted * 1000 + interval > currentTime ? false : true
 
               if (!isCanMint) {
                 const timeToWaitInSeconds = lastMinted + interval - currentTime
-
-                alert(
-                  `Please, wait ${timeToWaitInSeconds} seconds, and try to mint again. `
-                )
-
+                alert(`Please, wait ${timeToWaitInSeconds} seconds, and try to mint again.`)
                 setIsTransfering(false)
 
                 return
@@ -245,8 +219,7 @@ export const TransferPopup: FC<TransferPopupProps> = (props) => {
               setTimeout(async () => {
                 try {
                   const currentUserBalance = await tonClient.getBalance(
-                    Address.parse(userWalletAddress)
-                  )
+                    Address.parse(userWalletAddress))
 
                   setCurrentConfirmData({
                     address: values.address,
@@ -299,9 +272,7 @@ export const TransferPopup: FC<TransferPopupProps> = (props) => {
           validUntil: Math.floor(Date.now() / 1000) + 180,
           messages: currentConfirmData.messages,
         },
-        {
-          returnStrategy: 'none',
-        }
+        { returnStrategy: 'none' }
       )
 
       if (trx.boc) {
@@ -328,9 +299,7 @@ export const TransferPopup: FC<TransferPopupProps> = (props) => {
         }
 
         alert(`Your transfer application is successfully processed, waiting!`)
-
         setCurrentConfirmData(null)
-
         onClose()
       }
     } catch (err) {
@@ -350,33 +319,29 @@ export const TransferPopup: FC<TransferPopupProps> = (props) => {
         <S.ConfirmBlockWrapper>
           <S.ConfirmFieldsWrapper>
             <S.ConfirmFieldWrapper>
-              <S.Label>TICK:</S.Label>
-              <S.ValueLabel>{tick}</S.ValueLabel>
+              <S.Label children="TICK:" />
+              <S.ValueLabel children={tick} />
             </S.ConfirmFieldWrapper>
 
             <S.Line />
 
             <S.ConfirmFieldWrapper>
-              <S.Label>TO:</S.Label>
-              <S.ValueLabel>
-                {shortenAddress(currentConfirmData.address)}
-              </S.ValueLabel>
+              <S.Label children="TO:" />
+              <S.ValueLabel children={shortenAddress(currentConfirmData.address)} />
             </S.ConfirmFieldWrapper>
 
             <S.Line />
 
             <S.ConfirmFieldWrapper>
-              <S.Label>AMOUNT</S.Label>
-              <S.ValueLabel>{currentConfirmData.amount}</S.ValueLabel>
+              <S.Label children="AMOUNT" />
+              <S.ValueLabel children={currentConfirmData.amount} />
             </S.ConfirmFieldWrapper>
           </S.ConfirmFieldsWrapper>
 
           <S.ConfirmFieldsWrapper>
             <S.ConfirmFieldWrapper>
-              <S.Label>TOTAL AMOUNT:</S.Label>
-              <S.ValueLabel>
-                {(Number(toNano('0.008')) / 1e9).toString()} TON
-              </S.ValueLabel>
+              <S.Label children="TOTAL AMOUNT:" />
+              <S.ValueLabel children={`${(Number(toNano('0.008')) / 1e9).toString()} TON`} />
             </S.ConfirmFieldWrapper>
           </S.ConfirmFieldsWrapper>
 

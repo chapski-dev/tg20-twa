@@ -50,16 +50,14 @@ export const InscriptionCard: FC<InscriptionCardProps> = (props) => {
             <S.InfoWrapper>
               <S.Title>{tick === 'ton' ? tick.toUpperCase() : tick}</S.Title>
               {(tick === 'gram' || tick === 'ton') && (
-                <S.Label>${currentUsdPrice && currentUsdPrice}</S.Label>
+                <S.Label children={`$${currentUsdPrice && currentUsdPrice}`} />
               )}
             </S.InfoWrapper>
             <S.InfoWrapper>
-              <S.Title>{balance}</S.Title>
+              <S.Title children={balance} />
 
               {(tick === 'gram' || tick === 'ton') && (
-                <S.Label>
-                  ${currentUsdPrice && (currentUsdPrice * balance).toFixed(2)}
-                </S.Label>
+                <S.Label children={`$${currentUsdPrice && (currentUsdPrice * balance).toFixed(2)}`} />
               )}
             </S.InfoWrapper>
           </S.ContentInner>
