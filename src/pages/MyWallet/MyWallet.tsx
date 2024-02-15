@@ -1,6 +1,8 @@
 import { FC, useMemo, useState } from 'react'
 import { useTonAddress, useTonConnectUI } from '@tonconnect/ui-react'
+import { PromoSlider } from 'features/PromoSlider/PromoSlider'
 import { useTelegram } from 'hooks/useTelegram/useTelegram'
+import { promoSlides } from 'mocks/promosMock'
 import { Container } from 'ui/Container/Container'
 import {
   SvgArrowSwap,
@@ -11,7 +13,7 @@ import {
 } from 'ui/icons'
 
 import { type Tab } from 'ui/TabsFilled/TabsFilled'
-import { MyAssets, PromoSlider } from './components'
+import { MyAssets } from './components'
 import { MyTransactions } from './components/MyTransfers/MyTransfers'
 import { NotAuthorized } from './components/NotAuthorized/NotAuthorized'
 import { PROCENT_MOCK } from './mock'
@@ -105,9 +107,7 @@ export const MyWallet: FC = () => {
       </S.WalletFunctions>
       <S.Line />
 
-      <S.CarouselContainer>
-        <PromoSlider />
-      </S.CarouselContainer>
+      <PromoSlider slides={promoSlides} />
 
       <S.TabsBlock>
         <Container>
