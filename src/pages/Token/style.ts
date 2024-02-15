@@ -3,6 +3,7 @@ import { Container as Container2 } from 'ui/Container/Container'
 import { DynamicTickLogo as UIDynamicTickLogo } from 'ui/DynamicTickLogo/DynamicTickLogo'
 import { SvgLink, SvgLogos, SvgLogo2 } from 'ui/icons'
 import { Loader as UILoader } from 'ui/Loader/Loader'
+import { theme } from './../../assets/style/theme'
 
 export const Wrapper = styled.div`
   padding: 25px 0 0 0;
@@ -58,17 +59,6 @@ export const TokenCardHeaderLeftSideWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 12px;
-`
-
-export const PromoContainer = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  overflow-x: scroll;
-  padding: 30px 0 0;
-  &::-webkit-scrollbar {
-    height: 0px;
-  }
 `
 
 export const Title = styled.h4`
@@ -128,7 +118,7 @@ export const TitleWrapper = styled.div`
 `
 
 export const FieldWrapper = styled.div`
-  display: flex30px
+  display: flex30px;
   flex-direction: column;
   width: 100%;
   border-bottom: 1px solid ${({ theme }) => theme.color.hint};
@@ -243,4 +233,8 @@ export const TokenIcon = styled(SvgLogo2)`
   width: 100%;
   height: 100%;
   max-height: 60px;
+`
+
+export const PromoSliderWrap = styled.div`
+  background-color: ${({ theme }) => theme.color.bg};
 `

@@ -87,13 +87,3 @@ export const StatusBlockLabel = styled.span<{
   line-height: 20px;
   color: ${({ theme, $status }) => $status && getColorLabel($status, theme)};
 `
-
-export const CarouselContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding-left: 15px;
-  padding-top: 15px;
-  padding-bottom: 15px;
-`

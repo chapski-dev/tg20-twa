@@ -5,6 +5,8 @@ import { createSearchParams, useNavigate, useParams } from 'react-router-dom'
 import { getTokenInfo } from 'api'
 import { AppRoutes } from 'constants/app'
 import { BackButton } from 'features/BackButton'
+import { PromoSlider } from 'features/PromoSlider/PromoSlider'
+import { promoSlides } from 'mocks/promosMock'
 import { Accordion } from 'ui'
 import { Button } from 'ui/Button/Button'
 import { SvgVerified } from 'ui/icons'
@@ -187,19 +189,10 @@ export const Token: FC = () => {
               Buy / Sell {tokenData.tick.toUpperCase()}
             </Button>
           )}
-          <S.PromoContainer>
-            <Promo
-              subtitle="Explore wallet"
-              title="See what’s new in your wallet!"
-              variant="purple"
-            />
-            <Promo
-              subtitle="Explore wallet"
-              title="See what’s new in your wallet!"
-              variant="yellow"
-            />
-          </S.PromoContainer>
         </S.Container>
+        <S.PromoSliderWrap>
+          <PromoSlider slides={promoSlides} />
+        </S.PromoSliderWrap>
         <S.TableWrapper>
           <S.TableTitle>Holdings</S.TableTitle>
         </S.TableWrapper>
