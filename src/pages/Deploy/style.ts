@@ -21,7 +21,6 @@ export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   background: ${({ theme }) => theme.color.bgSecondary};
-
 `
 export const PromoWrapper = styled.div`
   padding: 20px 16px;

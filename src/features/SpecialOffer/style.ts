@@ -10,6 +10,7 @@ export const Wrapper = styled.div`
 
   align-items: center;
   background: url(${specialBg});
+  background-size: cover;
   border-radius: 10px;
   width: 100%;
   color: ${({ theme }) => theme.color.text};
