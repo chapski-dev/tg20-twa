@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom'
 import { useTheme } from 'styled-components'
 import { getTokenWalletBalance } from 'api'
 import { LotSort, LotSortDirection } from 'api/types'
-import { BackButton } from 'features/BackButton'
 import { HeaderUserBalance } from 'features/HeaderUserBalance'
 import { MainButton } from 'features/MainButton'
 import { useTelegram } from 'hooks/useTelegram/useTelegram'
@@ -280,7 +279,6 @@ export const Marketplace: FC = () => {
     <>
       <HeaderUserBalance />
       <S.Wrapper>
-        <BackButton onClick={() => navigate(-1)} />
         <S.ActionsContainer>
           <Tabs
             onChange={(tab) => {
