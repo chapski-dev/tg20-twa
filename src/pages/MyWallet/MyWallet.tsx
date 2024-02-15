@@ -1,10 +1,6 @@
 import { FC, useMemo, useState } from 'react'
 import { useTonAddress, useTonConnectUI } from '@tonconnect/ui-react'
-import { QRCodeSVG } from 'qrcode.react'
-import { theme } from 'assets/style/theme'
-import { MainButton } from 'features/MainButton'
 import { useTelegram } from 'hooks/useTelegram/useTelegram'
-import { Modal } from 'ui'
 import { Container } from 'ui/Container/Container'
 import {
   SvgArrowSwap,
@@ -18,6 +14,7 @@ import { type Tab } from 'ui/TabsFilled/TabsFilled'
 import { MyAssets, PromoSlider } from './components'
 import { MyTransactions } from './components/MyTransfers/MyTransfers'
 import { NotAuthorized } from './components/NotAuthorized/NotAuthorized'
+import { ReceivePopup } from './components/ReceivePopup/ReceivePopup'
 import { PROCENT_MOCK } from './mock'
 import * as S from './style'
 
@@ -41,22 +38,10 @@ export const MyWallet: FC = () => {
 
   const [tonConnectUI] = useTonConnectUI()
 
-  const [isOpenModalRecieve, setIsOpenModalRecieve] = useState(false)
+  const [isReceiveModalOpen, setIsReceiveModalOpen] = useState<boolean>(false)
 
-  const openModal = () => {
-    setIsOpenModalRecieve(true)
-  }
-  const closeModal = () => {
-    setIsOpenModalRecieve(false)
-  }
-
-  const copyWalletAddress = async () => {
-    try {
-      await navigator.clipboard.writeText(userWalletAddress)
-      alert('Address copied!')
-    } catch (error) {
-      console.error('Failed to copy address to clipboard:', error)
-    }
+  const toggleReceiveModal = () => {
+    setIsReceiveModalOpen((prev) => !prev)
   }
 
   const currentWalletContent = useMemo(() => {
@@ -112,7 +97,7 @@ export const MyWallet: FC = () => {
           </S.SendButton>
           <S.SendText>Send</S.SendText>
         </S.SendBlockWrapper> */}
-        <S.RecieveBlockWrapper onClick={openModal}>
+        <S.RecieveBlockWrapper onClick={toggleReceiveModal}>
           <S.RecieveButton>
             <SvgRecieveSquare />
           </S.RecieveButton>
@@ -144,23 +129,7 @@ export const MyWallet: FC = () => {
         {currentWalletContent}
       </S.TabsBlock>
 
-      {isOpenModalRecieve && (
-        <Modal onClose={closeModal}>
-          <S.WrapperModal>
-            <S.TitleModal>Recieve</S.TitleModal>
-            <S.QrCodeWrapper>
-              <QRCodeSVG value={userWalletAddress} />
-            </S.QrCodeWrapper>
-            <S.CopyBtn>
-              <MainButton
-                color={theme.color.greenSuccess}
-                onClick={copyWalletAddress}
-                text="Copy"
-              />
-            </S.CopyBtn>
-          </S.WrapperModal>
-        </Modal>
-      )}
+      {isReceiveModalOpen && <ReceivePopup onClose={toggleReceiveModal} />}
 
       {/* <div onClick={() => navigate(AppRoutes.TranferHistory)}>
         TransferHistory
