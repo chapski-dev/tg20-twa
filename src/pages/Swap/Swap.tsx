@@ -1,5 +1,4 @@
 import React, { FC } from 'react'
-import { BackButton } from 'features/BackButton'
 import firstItems from './assets/items.png'
 import secoundItems from './assets/items2.png'
 import * as S from './style'
@@ -7,7 +6,6 @@ import * as S from './style'
 export const Swap: FC = () => {
   return (
     <>
-      <BackButton />
       <S.Wrapper>
         <S.TopBlock>
           <S.Title>

@@ -1,3 +1,4 @@
+import { NavLink } from 'react-router-dom'
 import styled from 'styled-components'
 
 export const Container = styled.div`
@@ -16,7 +17,7 @@ export const Container = styled.div`
   margin-top: 10px;
 `
 
-export const NavItem = styled.div<{ active: boolean }>`
+export const NavItem = styled(NavLink)`
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -24,31 +25,28 @@ export const NavItem = styled.div<{ active: boolean }>`
   cursor: pointer;
   align-items: center;
   flex: 1;
-  font-weight: 600;
-  transition: all 0.5s ease;
-  div {
-    color: ${({ active, theme }) =>
-      active ? theme.color.link : theme.color.hint};
-    font-weight: ${({ active }) => (active ? 600 : 500)};
-  }
-  svg path {
-    stroke: ${({ active, theme }) =>
-      active ? theme.color.link : theme.color.hint};
-  }
-  &:hover {
-    div {
-      color: ${({ theme }) => theme.color.link};
-      font-weight: 600;
-    }
-    svg path {
-      stroke: ${({ theme }) => theme.color.link};
-    }
-  }
-`
+  text-decoration: none;
 
-export const Text = styled.div`
   font-size: 10px;
-  font-weight: 500;
-  color: ${({ theme }) => theme.color.hint};
   line-height: 16px;
+  color: ${({ theme }) => theme.color.hint};
+  svg {
+    color: ${({ theme }) => theme.color.hint};
+  }
+
+  &.active {
+    color: ${({ theme }) => theme.color.link};
+    font-weight: 600;
+    svg {
+      transform: scale(1.1);
+      color: ${({ theme }) => theme.color.link};
+    }
+  }
+
+  &:hover {
+    font-weight: 600;
+    svg {
+      transform: scale(1.1);
+    }
+  }
 `

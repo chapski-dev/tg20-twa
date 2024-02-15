@@ -31,14 +31,12 @@ export const MyAssets: FC = () => {
     <S.Wrapper>
       <S.InscriptionsWrapper>
         {isMyInscriptionsLoaded && !myInscriptions.length && (
-          <S.DontHaveInscriptionsBlock>
-            You dont have any inscriptions
-          </S.DontHaveInscriptionsBlock>
+          <S.DontHaveInscriptionsBlock children=" You dont have any inscriptions" />
         )}
-        {currentWalletBalance && (
+        {!!currentWalletBalance && (
           <>
             <InscriptionCard balance={currentWalletBalance} tick={'ton'} />
-            {isMyInscriptionsLoaded && myInscriptions.length > 0 && <S.Line />}
+            {(isMyInscriptionsLoaded && myInscriptions.length > 0) && <S.Line />}
           </>
         )}
 

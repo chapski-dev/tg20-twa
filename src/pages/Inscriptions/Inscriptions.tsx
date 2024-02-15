@@ -92,10 +92,10 @@ export const Inscriptions: FC = () => {
       <S.InputWrapper>
         <Input
           icon={<SvgLoop />}
+          isSearchInput={false}
           onChange={updateSeachedValue}
           placeholder="Search tokens:"
           value={searchedValue}
-          isSearchInput={false}
         />
       </S.InputWrapper>
 

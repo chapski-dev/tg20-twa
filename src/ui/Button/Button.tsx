@@ -34,8 +34,7 @@ export const Button: FCWithChildren<ButtonProps> = (props) => {
       type={type}
       variant={variant}
     >
-      {children}
-      {isLoading && <Spinner />}
+      {isLoading ? <Spinner /> : children}
     </S.Wrapper>
   )
 }
