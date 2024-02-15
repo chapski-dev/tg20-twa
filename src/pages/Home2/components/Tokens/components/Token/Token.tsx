@@ -22,7 +22,11 @@ export const Token = ({ token }: TokenProps) => {
   return (
     <S.Box onClick={() => goToToken(token.tick)}>
       <S.Logo>
-        <SvgGramIcon style={{ width: '30px', height: '30px' }} />
+        {token.image_url ? (
+          <S.Img alt="token_logo" src={token.image_url} />
+        ) : (
+          <SvgGramIcon style={{ width: '30px', height: '30px' }} />
+        )}
         <S.Wrapper>
           <S.TokenTitleWrapper>
             <S.TokenTitle>{token.tick.toUpperCase()}</S.TokenTitle>

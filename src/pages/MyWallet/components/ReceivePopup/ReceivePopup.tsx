@@ -2,7 +2,7 @@ import { FC } from 'react'
 import { useTonAddress } from '@tonconnect/ui-react'
 import { QRCodeSVG } from 'qrcode.react'
 import { useClipboard } from 'hooks/useClipboard/useClipboard'
-import { Button, Modal } from 'ui'
+import { Modal } from 'ui'
 import * as S from './style'
 
 type ReceivePopupProps = {
@@ -21,15 +21,13 @@ export const ReceivePopup: FC<ReceivePopupProps> = ({ onClose }) => {
   }
 
   return (
-    <Modal onClose={onClose}>
+    <Modal onClose={onClose} title={'Receive'}>
       <S.WrapperModal>
-        <S.TitleModal>Recieve</S.TitleModal>
         <S.QrCodeWrapper>
-          <QRCodeSVG value={userWalletAddress} />
+          <QRCodeSVG size={220} value={userWalletAddress} />
+          <S.Label>{userWalletAddress}</S.Label>
         </S.QrCodeWrapper>
-        <S.CopyBtn>
-          <Button children="Copy" onClick={copyWalletAddress} />
-        </S.CopyBtn>
+        <S.CopyButton children="Copy" onClick={copyWalletAddress} />
       </S.WrapperModal>
     </Modal>
   )

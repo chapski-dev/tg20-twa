@@ -1,11 +1,9 @@
 import React, { FC, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import Rare from './Rare.png'
 import * as S from './style'
 
 export const SpecialOffer: FC = () => {
   const [isOpen, setIsOpen] = useState(true)
-  const navigate = useNavigate()
 
   return isOpen ? (
     <S.Container className="special-offer-container">

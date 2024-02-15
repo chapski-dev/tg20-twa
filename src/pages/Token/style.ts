@@ -1,9 +1,6 @@
 import styled from 'styled-components'
-import { Container as Container2 } from 'ui/Container/Container'
-import { DynamicTickLogo as UIDynamicTickLogo } from 'ui/DynamicTickLogo/DynamicTickLogo'
-import { SvgLink, SvgLogos, SvgLogo2 } from 'ui/icons'
+import { SvgLink, SvgLogo2 } from 'ui/icons'
 import { Loader as UILoader } from 'ui/Loader/Loader'
-import { theme } from './../../assets/style/theme'
 
 export const Wrapper = styled.div`
   padding: 25px 0 0 0;
@@ -169,7 +166,6 @@ export const FieldFlexItemLabel = styled.p<{ $isBold?: boolean }>`
 export const Label = styled.p<{ $isBold?: boolean }>`
   font-size: ${({ $isBold }) => ($isBold ? '14px' : '12px')};
   font-style: normal;
-  text-wrap: wrap;
   width: 90%;
   word-wrap: break-word;
   font-weight: ${({ $isBold }) => ($isBold ? 600 : 400)};
@@ -237,4 +233,10 @@ export const TokenIcon = styled(SvgLogo2)`
 
 export const PromoSliderWrap = styled.div`
   background-color: ${({ theme }) => theme.color.bg};
+`
+
+export const TokenImage = styled.img`
+  width: 59px;
+  height: 59px;
+  border-radius: 6px;
 `

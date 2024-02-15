@@ -14,7 +14,7 @@ import { BackButton } from 'features/BackButton'
 import { HeaderUserBalance } from 'features/HeaderUserBalance'
 import { SpecialOffer } from 'features/SpecialOffer'
 import { Container } from 'ui/Container/Container'
-import { MintForm, ConfirmPopup, MintHistory } from './components'
+import { MintForm, ConfirmPopup } from './components'
 
 import { InitialValues } from './components/MintForm/types'
 import * as S from './Mint.style'

@@ -1,5 +1,7 @@
 export const BASE_API_URL = 'https://api-2.gram20.com/v1/gram20'
 
+export const BASE_API_URL_V2 = 'https://api-2.gram20.com/v2/gram20'
+
 export const TON_CLIENT_URL = 'https://toncenter-v4.gram20.com/jsonRPC'
 
 export const HUOBI_API_URL = 'https://api.huobi.pro'

@@ -1,4 +1,4 @@
-import { object, string, number, mixed } from 'yup'
+import { object, string, number } from 'yup'
 
 export const getValidationSchema = () => {
   const tickRegex = /^[a-z0-9-]{4}$/

@@ -2,7 +2,6 @@ import React, { FC, useState, useMemo, useCallback } from 'react'
 import { beginCell, toNano } from '@ton/core'
 import { useTonAddress, useTonConnectUI } from '@tonconnect/ui-react'
 import { useQuery } from 'react-query'
-import { useNavigate } from 'react-router-dom'
 import { useTheme } from 'styled-components'
 import { getTokenWalletBalance } from 'api'
 import { LotSort, LotSortDirection } from 'api/types'
@@ -48,7 +47,6 @@ export const Marketplace: FC = () => {
     MarketplaceTabsValueEnum.LISTED
   )
 
-  const navigate = useNavigate()
   const address = useTonAddress()
 
   const [tonConnectUI] = useTonConnectUI()

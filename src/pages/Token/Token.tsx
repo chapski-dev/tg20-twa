@@ -10,7 +10,6 @@ import { promoSlides } from 'mocks/promosMock'
 import { Accordion } from 'ui'
 import { Button } from 'ui/Button/Button'
 import { SvgVerified } from 'ui/icons'
-import { Promo } from 'ui/Promo'
 import { convertNumberToShortFormat } from 'utils/convertNumberToShortFormat'
 import { formatNumberWithSeparators } from 'utils/formNumberWithSeparators'
 import { HoldersTable, TransferPopup } from './components'
@@ -48,7 +47,10 @@ export const Token: FC = () => {
         <S.NotFoundBlock>
           <S.NotFountInfoBlockWrapper>
             <S.NotFountLabel children="Oops! Token not found" />
-            <Button children="Go home" onClick={() => navigate(AppRoutes.Home)} />
+            <Button
+              children="Go home"
+              onClick={() => navigate(AppRoutes.Home)}
+            />
           </S.NotFountInfoBlockWrapper>
         </S.NotFoundBlock>
       )
@@ -61,13 +63,17 @@ export const Token: FC = () => {
         <S.TokenCardHeader>
           <S.TokenCardHeaderLeftSideWrapper>
             <S.TokenIconWrapper>
-              <S.TokenIcon />
+              {tokenData.image_url ? (
+                <S.TokenImage src={tokenData.image_url} />
+              ) : (
+                <S.TokenIcon />
+              )}
             </S.TokenIconWrapper>
 
             <S.TitleWrapper>
               <S.Title>{tokenData.tick}</S.Title>
               {(tokenData.tick === 'gram' || tokenData.verified) && (
-                <SvgVerified color='red' />
+                <SvgVerified color="red" />
               )}
               {tokenData.mintable && <S.Mintable children="Minting Fast 🔥" />}
               {!tokenData.mintable && <S.NotMintable children="Trading ✅" />}
@@ -77,15 +83,21 @@ export const Token: FC = () => {
         <S.TokenCardHeaderList>
           <S.TokenCardHeaderListItem align="flex-start">
             <S.TokenCardHeaderListItemTitle children="Total Supply" />
-            <S.TokenCardHeaderListItemText children={convertNumberToShortFormat(tokenData.total_supply)} />
+            <S.TokenCardHeaderListItemText
+              children={convertNumberToShortFormat(tokenData.total_supply)}
+            />
           </S.TokenCardHeaderListItem>
           <S.TokenCardHeaderListItem align="flex-start">
             <S.TokenCardHeaderListItemTitle children="Minted Supply" />
-            <S.TokenCardHeaderListItemText children={convertNumberToShortFormat(tokenData.supply)} />
+            <S.TokenCardHeaderListItemText
+              children={convertNumberToShortFormat(tokenData.supply)}
+            />
           </S.TokenCardHeaderListItem>
           <S.TokenCardHeaderListItem align="flex-end">
             <S.TokenCardHeaderListItemTitle children="Minted %" />
-            <S.TokenCardHeaderListItemText children={`${mintedSupplyPercent.toFixed(2)}%`} />
+            <S.TokenCardHeaderListItemText
+              children={`${mintedSupplyPercent.toFixed(2)}%`}
+            />
           </S.TokenCardHeaderListItem>
         </S.TokenCardHeaderList>
         <S.Container>
@@ -136,7 +148,9 @@ export const Token: FC = () => {
                 </S.FieldFlexItem>
                 <S.FieldFlexItem>
                   <S.FieldFlexItemLabel children="Holders" $isBold />
-                  <S.FieldFlexItemLabel children={formatNumberWithSeparators(tokenData.holders)} />
+                  <S.FieldFlexItemLabel
+                    children={formatNumberWithSeparators(tokenData.holders)}
+                  />
                 </S.FieldFlexItem>
               </S.FieldFlex>
             </S.Field>

@@ -1,9 +1,7 @@
 import { FC } from 'react'
 import { useTelegram } from 'hooks/useTelegram/useTelegram'
 import { formatNumberWithSeparators } from 'utils/formNumberWithSeparators'
-import { stats } from './config'
 import * as S from './style'
-import { Chart } from '../Chart/Chart'
 
 type StatsBlockProps = {
   totalVolume: number

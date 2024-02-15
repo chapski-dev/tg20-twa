@@ -1,15 +1,14 @@
 import { FC } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { AppRoutes } from 'constants/app'
 import { useTelegram } from 'hooks/useTelegram/useTelegram'
 import { SvgLogo2, SvgToncoinIcon } from 'ui/icons'
 import { convertNumberToShortFormat } from 'utils/convertNumberToShortFormat'
 import * as S from './style'
 
-type HeaderUserBalanceProps = {}
-
-export const HeaderUserBalance: FC<HeaderUserBalanceProps> = () => {
+export const HeaderUserBalance: FC = () => {
   const { currentGramBalance, currentWalletBalance } = useTelegram()
+
   const navigate = useNavigate()
 
   return (

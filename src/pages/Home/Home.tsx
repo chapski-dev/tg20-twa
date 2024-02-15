@@ -31,7 +31,7 @@ export const Home: FC = () => {
     data: topTokens,
     isLoading: isTopTokensLoading,
     isSuccess: isTopTokensLoaded,
-  } = useQuery(['topTokens'], () => getTopTokensList())
+  } = useQuery(['topTokens'], () => getTopTokensList('all'))
 
   const {
     data: marketplaceStats,

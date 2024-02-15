@@ -1,7 +1,5 @@
-import { FC, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { AppRoutes } from 'constants/app'
-import { SvgLoop, SvgNotification, SvgTg20 } from 'ui/icons'
+import { FC } from 'react'
+import { SvgLoop, SvgTg20 } from 'ui/icons'
 import { Input } from 'ui/Input/Input'
 import * as S from './style'
 
@@ -19,11 +17,11 @@ export const Header: FC<HeaderProps> = (props) => {
       <Input
         className="search"
         icon={<SvgLoop />}
+        isSearchInput={false}
         onChange={(e) => updateSearchValue(e.target.value)}
         placeholder="Search tokens"
         value={searchValue}
         wrapperClassName="search-container"
-        isSearchInput={false}
       />
       {/* <S.Notifications
         onClick={() => navigate(AppRoutes.Notifications)}

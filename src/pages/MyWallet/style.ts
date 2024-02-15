@@ -1,7 +1,6 @@
 import styled from 'styled-components'
 import { Tabs as UITabs } from 'ui'
 import { Input } from 'ui/Input/Input'
-import { theme } from './../../assets/style/theme'
 import Vectors from './assets/vectors.png'
 
 export const Wrapper = styled.div`

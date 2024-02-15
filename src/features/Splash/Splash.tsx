@@ -1,7 +1,6 @@
 import { FC, useEffect, useState } from 'react'
 import * as React from 'react'
 import { useTelegram } from 'hooks/useTelegram/useTelegram'
-import { Button } from 'ui'
 import { Loader } from 'ui/Loader/Loader'
 import * as S from './style'
 
@@ -22,10 +21,10 @@ export const Splash: FC = () => {
     }, 1500)
   }, [webApp?.CloudStorage])
 
-  const goToApp = () => {
-    webApp?.CloudStorage?.setItem('first_sign_in', 'false')
-    setFirstSignIn(false)
-  }
+  // const goToApp = () => {
+  //   webApp?.CloudStorage?.setItem('first_sign_in', 'false')
+  //   setFirstSignIn(false)
+  // }
 
   return (
     <S.LoaderWrapper className={!firstSignIn ? 'faid' : ''}>

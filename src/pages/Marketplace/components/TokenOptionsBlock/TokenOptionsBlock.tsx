@@ -204,10 +204,10 @@ const Listings: FC<ListingsProps> = (props) => {
 
       <S.StyledInput
         icon={<SvgLoop />}
+        isSearchInput={false}
         onChange={onChangeInput}
         placeholder="Search order by number"
         value={searchedValue}
-        isSearchInput={false}
       />
 
       <S.Flex>

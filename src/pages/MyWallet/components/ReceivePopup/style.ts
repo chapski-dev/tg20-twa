@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { Button } from 'ui'
 
 export const WrapperModal = styled.div`
   display: flex;
@@ -6,7 +7,6 @@ export const WrapperModal = styled.div`
   flex-direction: column;
   justify-content: center;
   gap: 20px;
-  margin-top: -20px;
 `
 
 export const TitleModal = styled.span`
@@ -19,6 +19,18 @@ export const QrCodeWrapper = styled.div`
   padding: 20px;
   background-color: ${({ theme }) => theme.color.bgSecondary};
   border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 `
 
-export const CopyBtn = styled.div``
+export const Label = styled.span`
+  font-size: 16px;
+  color: ${({ theme }) => theme.color.hint};
+  word-break: break-all;
+  max-width: 220px;
+`
+
+export const CopyButton = styled(Button)`
+  width: 100%;
+`

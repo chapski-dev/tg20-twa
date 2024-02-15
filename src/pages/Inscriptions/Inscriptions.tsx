@@ -1,9 +1,8 @@
 import { ChangeEvent, FC, useCallback, useState } from 'react'
-import dayjs from 'dayjs'
 import { useQuery } from 'react-query'
 import { createSearchParams, useNavigate } from 'react-router-dom'
 import { getSearchedTokensList, getTopTokensList } from 'api'
-import { TopToken } from 'api/types'
+import { TopTokenFilter } from 'api/types'
 import { AppRoutes } from 'constants/app'
 import { SpecialOffer } from 'features/SpecialOffer'
 import { useDebounce } from 'hooks/useDebounce/useDebounce'
@@ -26,31 +25,9 @@ export const Inscriptions: FC = () => {
     data: topTokens,
     isLoading: isTopTokensLoading,
     isSuccess: isTopTokensLoaded,
-  } = useQuery(['topTokens'], () => getTopTokensList(), {
-    select: useCallback(
-      (tokensData: TopToken[]) => {
-        switch (currentTab.value) {
-          case 'top':
-            return tokensData
-          case 'verified':
-            return tokensData.filter((token) => token.verified)
-          case 'new':
-            return tokensData
-              .filter((token) =>
-                dayjs(token.create_time).isAfter(dayjs().subtract(7, 'day'))
-              )
-              .sort((a, b) => dayjs(b.create_time).diff(dayjs(a.create_time)))
-          case 'trending':
-            return tokensData.sort((a, b) => b.supply - a.supply)
-          case 'minted':
-            return tokensData.filter((token) => !token.mintable)
-          default:
-            return tokensData
-        }
-      },
-      [currentTab.value]
-    ),
-  })
+  } = useQuery(['topTokens', currentTab.value], () =>
+    getTopTokensList(currentTab.value as TopTokenFilter)
+  )
 
   const {
     data: searchedTokens,
@@ -225,24 +202,24 @@ const tabs: Tab[] = [
     value: 'all',
   },
   {
+    label: 'New',
+    value: 'new',
+  },
+  {
     label: 'Verified',
     value: 'verified',
     icon: <SvgVerified />,
+  },
+  {
+    label: 'Volume',
+    value: 'volume',
   },
   {
     label: 'Trending',
     value: 'trending',
   },
   {
-    label: 'New',
-    value: 'new',
-  },
-  {
-    label: 'Minted',
-    value: 'minted',
-  },
-  {
-    label: 'Deployed',
-    value: 'deployed',
+    label: 'Holders',
+    value: 'holders',
   },
 ]

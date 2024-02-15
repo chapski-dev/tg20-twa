@@ -7,6 +7,7 @@ export type TopToken = {
   verified: boolean
   volume_24h: number
   create_time: number
+  image_url: string
 }
 
 export type Token = TopToken & {
@@ -89,3 +90,11 @@ export type MarketplaceTokenStats = {
   floor_price: number
   market_cap: number
 }
+
+export type TopTokenFilter =
+  | 'all'
+  | 'new'
+  | 'volume'
+  | 'trending'
+  | 'holders'
+  | 'usage'

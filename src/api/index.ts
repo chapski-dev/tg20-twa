@@ -1,11 +1,14 @@
 import axios from 'axios'
 import { ApiRoutes, HUOBI_API_URL } from 'constants/api'
-import { AXIOS_INSTANCE } from 'libs/axios-instance/axios-instance'
+import {
+  AXIOS_INSTANCE,
+  AXIOS_INSTANCE_V2,
+} from 'libs/axios-instance/axios-instance'
 import * as ApiTypes from './types'
 
-export const getTopTokensList = async () => {
-  const { data } = await AXIOS_INSTANCE.get<ApiTypes.TopToken[]>(
-    ApiRoutes.TopTokensList
+export const getTopTokensList = async (filter: ApiTypes.TopTokenFilter) => {
+  const { data } = await AXIOS_INSTANCE_V2.get<ApiTypes.TopToken[]>(
+    `${ApiRoutes.TopTokensList}/${filter}`
   )
 
   return data
