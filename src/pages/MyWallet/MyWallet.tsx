@@ -46,6 +46,10 @@ export const MyWallet: FC = () => {
 
   const [isReceiveModalOpen, setIsReceiveModalOpen] = useState<boolean>(false)
 
+  const toggleRecieveModal = () => {
+    setIsReceiveModalOpen((prev) => !prev)
+  }
+
   const currentWalletContent = useMemo(() => {
     if (currentTab.value === 'assets') {
       return <MyAssets />
@@ -99,7 +103,7 @@ export const MyWallet: FC = () => {
           </S.SendButton>
           <S.SendText>Send</S.SendText>
         </S.SendBlockWrapper> */}
-        <S.RecieveBlockWrapper onClick={() => setIsReceiveModalOpen(true)}>
+        <S.RecieveBlockWrapper onClick={toggleRecieveModal}>
           <S.RecieveButton>
             <SvgRecieveSquare />
           </S.RecieveButton>
@@ -129,9 +133,7 @@ export const MyWallet: FC = () => {
         {currentWalletContent}
       </S.TabsBlock>
 
-      {isReceiveModalOpen && (
-        <ReceivePopup onClose={() => setIsReceiveModalOpen(false)} />
-      )}
+      {isReceiveModalOpen && <ReceivePopup onClose={toggleRecieveModal} />}
 
       {/* <div onClick={() => navigate(AppRoutes.TranferHistory)}>
         TransferHistory

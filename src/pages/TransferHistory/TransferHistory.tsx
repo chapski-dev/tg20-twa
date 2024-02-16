@@ -86,6 +86,13 @@ export const TransferHistory: FC = () => {
   }, [currentWalletTickData, tick, tonPrice])
 
   const [sendPopuplOpen, setSendPopuplOpen] = useState(false)
+
+  const [isReceiveModalOpen, setIsReceiveModalOpen] = useState<boolean>(false)
+
+  const toggleRecieveModal = () => {
+    setIsReceiveModalOpen((prev) => !prev)
+  }
+
   const actionsBlocks: FunctionalProps[] = useMemo(
     () => [
       {
@@ -96,12 +103,12 @@ export const TransferHistory: FC = () => {
       {
         title: 'Recieve',
         icon: <SvgRecieveSquare />,
-        action: () => setIsReceiveModalOpen(true),
+        action: toggleRecieveModal,
       },
       {
         title: 'Swap',
         icon: <SvgArrowSwap />,
-        action: () => alert('Swap button'),
+        action: () => navigate(AppRoutes.Swap),
       },
       {
         title: 'Trade',
@@ -111,8 +118,6 @@ export const TransferHistory: FC = () => {
     ],
     []
   )
-
-  const [isReceiveModalOpen, setIsReceiveModalOpen] = useState<boolean>(false)
 
   return (
     <>
@@ -201,9 +206,7 @@ export const TransferHistory: FC = () => {
       {sendPopuplOpen && !!tick && (
         <SendPopup onClose={() => setSendPopuplOpen(false)} tick={tick} />
       )}
-      {isReceiveModalOpen && (
-        <ReceivePopup onClose={() => setIsReceiveModalOpen(false)} />
-      )}
+      {isReceiveModalOpen && <ReceivePopup onClose={toggleRecieveModal} />}
     </>
   )
 }
