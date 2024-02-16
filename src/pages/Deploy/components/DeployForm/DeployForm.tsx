@@ -2,7 +2,7 @@ import { FC, useCallback, useContext, useMemo, useState } from 'react'
 import { Address, TonClient, beginCell, fromNano, toNano } from '@ton/ton'
 import { useTonAddress, useTonConnectUI } from '@tonconnect/ui-react'
 import dayjs from 'dayjs'
-import { Formik, FormikConfig, useFormikContext } from 'formik'
+import { Formik, FormikConfig } from 'formik'
 import { TON_CLIENT_URL } from 'constants/api'
 import { CurrentConfirmData } from 'pages/Deploy/Deploy'
 import { getValidationSchema } from 'pages/Deploy/validationSchema'
@@ -31,8 +31,6 @@ export const DeployForm: FC<DeployFormProps> = (props) => {
   const [loading, setLoading] = useState<boolean>(false)
 
   const [currentDeployStep, setCurrentDeployStep] = useState<number>(1)
-
-  const { handleSubmit } = useFormikContext()
 
   const userWalletAddress = useTonAddress()
 
@@ -69,19 +67,15 @@ export const DeployForm: FC<DeployFormProps> = (props) => {
     return <DeployStep2 />
   }, [currentDeployStep])
 
-  const handleMainButtonClick = useCallback(() => {
-    if (currentDeployStep === 1) {
-      setCurrentDeployStep((prev) => prev + 1)
-      return
-    }
-
-    handleSubmit()
-  }, [currentDeployStep, handleSubmit])
-
   const handleFormikSubmit = useCallback<
     FormikConfig<InitialValues>['onSubmit']
   >(
     async (values) => {
+      if (currentDeployStep === 1) {
+        setCurrentDeployStep((prev) => prev + 1)
+        return
+      }
+
       if (!userWalletAddress) {
         tonConnectUI.openModal()
         return
@@ -146,7 +140,7 @@ export const DeployForm: FC<DeployFormProps> = (props) => {
         }
       }, 1000)
     },
-    [setCurrentConfirmData, tonConnectUI, userWalletAddress]
+    [currentDeployStep, setCurrentConfirmData, tonConnectUI, userWalletAddress]
   )
 
   const signConfirmTransaction = useCallback(async () => {
@@ -204,28 +198,30 @@ export const DeployForm: FC<DeployFormProps> = (props) => {
       validateOnChange={true}
       validationSchema={getValidationSchema()}
     >
-      <S.FormWrapper>
-        <S.Wrapper>{currentDeployStepForm}</S.Wrapper>
+      {({ handleSubmit }) => (
+        <S.FormWrapper>
+          <S.Wrapper>{currentDeployStepForm}</S.Wrapper>
 
-        {!currentConfirmData && (
-          <Button
-            children={buttonText}
-            className="button"
-            isDisabled={intervalFreeze !== null && intervalFreeze > 0}
-            isLoading={loading}
-            onClick={handleMainButtonClick}
-          />
-        )}
-        {currentConfirmData !== null && (
-          <ConfirmPopup
-            fee={currentConfirmData.fee}
-            isLoading={loading}
-            onClose={() => setCurrentConfirmData(null)}
-            onConfirm={signConfirmTransaction}
-            userBalance={currentConfirmData.balance}
-          />
-        )}
-      </S.FormWrapper>
+          {!currentConfirmData && (
+            <Button
+              children={buttonText}
+              className="button"
+              isDisabled={intervalFreeze !== null && intervalFreeze > 0}
+              isLoading={loading}
+              onClick={handleSubmit}
+            />
+          )}
+          {currentConfirmData !== null && (
+            <ConfirmPopup
+              fee={currentConfirmData.fee}
+              isLoading={loading}
+              onClose={() => setCurrentConfirmData(null)}
+              onConfirm={signConfirmTransaction}
+              userBalance={currentConfirmData.balance}
+            />
+          )}
+        </S.FormWrapper>
+      )}
     </Formik>
   )
 }
