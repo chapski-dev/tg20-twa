@@ -12,6 +12,7 @@ import { TransferHistoryType } from 'api/types'
 import { AppRoutes } from 'constants/app'
 import { BackButton } from 'features/BackButton'
 import { useTelegram } from 'hooks/useTelegram/useTelegram'
+import { ReceivePopup } from 'ui'
 import { Container } from 'ui/Container/Container'
 import {
   SvgArrowSwap,
@@ -84,22 +85,34 @@ export const TransferHistory: FC = () => {
     return currentWalletTickData.balance * GRAM_PRICE
   }, [currentWalletTickData, tick, tonPrice])
 
-  const [sendPopuplOpen, setSendPopuplOpen] = useState(false);
-  const actionsBlocks: FunctionalProps[] = useMemo(() => [
-    {
-      title: 'Send',
-      icon: <SvgSendSquare />,
-      action: () => setSendPopuplOpen(true),
-    },
-    {
-      title: 'Recieve',
-      icon: <SvgRecieveSquare />,
-      action: () => alert('Recieve button'),
-    },
-    { title: 'Swap', icon: <SvgArrowSwap />, action: () => alert('Swap button') },
-    { title: 'Trade', icon: <SvgTrade />, action: () => alert('Trade button') },
-  ], [])
+  const [sendPopuplOpen, setSendPopuplOpen] = useState(false)
+  const actionsBlocks: FunctionalProps[] = useMemo(
+    () => [
+      {
+        title: 'Send',
+        icon: <SvgSendSquare />,
+        action: () => setSendPopuplOpen(true),
+      },
+      {
+        title: 'Recieve',
+        icon: <SvgRecieveSquare />,
+        action: () => setIsReceiveModalOpen(true),
+      },
+      {
+        title: 'Swap',
+        icon: <SvgArrowSwap />,
+        action: () => alert('Swap button'),
+      },
+      {
+        title: 'Trade',
+        icon: <SvgTrade />,
+        action: () => navigate(AppRoutes.Marketplace),
+      },
+    ],
+    []
+  )
 
+  const [isReceiveModalOpen, setIsReceiveModalOpen] = useState<boolean>(false)
 
   return (
     <>
@@ -112,7 +125,11 @@ export const TransferHistory: FC = () => {
                 <SvgLogoHistoryToken />
               </S.BackGroundSvg>
             </S.Logo>
-            <S.Balance children={`${currentWalletTickData?.balance || '-.--'} ${tick?.toUpperCase() || ''}`} />
+            <S.Balance
+              children={`${currentWalletTickData?.balance || '-.--'} ${
+                tick?.toUpperCase() || ''
+              }`}
+            />
             {tick === 'gram' && (
               <S.DollarCount children={`~ $${currentTokenPrice}`} />
             )}
@@ -146,8 +163,13 @@ export const TransferHistory: FC = () => {
           </S.Item>
           <S.Item>
             <S.Title children="Total Volume" />
-            <S.Count children={`${(convertNumberToShortFormat(marketplaceGramStats?.total_volume || 0)) ||
-              '-.--'}`} />
+            <S.Count
+              children={`${
+                convertNumberToShortFormat(
+                  marketplaceGramStats?.total_volume || 0
+                ) || '-.--'
+              }`}
+            />
           </S.Item>
         </S.InfoTotal>
         <S.Line />
@@ -178,6 +200,9 @@ export const TransferHistory: FC = () => {
       </S.Wrapper>
       {sendPopuplOpen && !!tick && (
         <SendPopup onClose={() => setSendPopuplOpen(false)} tick={tick} />
+      )}
+      {isReceiveModalOpen && (
+        <ReceivePopup onClose={() => setIsReceiveModalOpen(false)} />
       )}
     </>
   )

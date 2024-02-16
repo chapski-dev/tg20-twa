@@ -1,5 +1,7 @@
 import { FC, useMemo, useState } from 'react'
 import { useTonAddress, useTonConnectUI } from '@tonconnect/ui-react'
+import { useNavigate } from 'react-router-dom'
+import { AppRoutes } from 'constants/app'
 import { PromoSlider } from 'features/PromoSlider/PromoSlider'
 import { useTelegram } from 'hooks/useTelegram/useTelegram'
 import { promoSlides } from 'mocks/promosMock'
@@ -16,9 +18,9 @@ import { type Tab } from 'ui/TabsFilled/TabsFilled'
 import { MyAssets } from './components'
 import { MyTransactions } from './components/MyTransfers/MyTransfers'
 import { NotAuthorized } from './components/NotAuthorized/NotAuthorized'
-import { ReceivePopup } from './components/ReceivePopup/ReceivePopup'
-import { PROCENT_MOCK } from './mock'
+// import { PROCENT_MOCK } from './mock'
 import * as S from './style'
+import { ReceivePopup } from '../../ui/ReceivePopup/ReceivePopup'
 
 const tabs: Tab[] = [
   {
@@ -40,11 +42,9 @@ export const MyWallet: FC = () => {
 
   const [tonConnectUI] = useTonConnectUI()
 
-  const [isReceiveModalOpen, setIsReceiveModalOpen] = useState<boolean>(false)
+  const navigate = useNavigate()
 
-  const toggleReceiveModal = () => {
-    setIsReceiveModalOpen((prev) => !prev)
-  }
+  const [isReceiveModalOpen, setIsReceiveModalOpen] = useState<boolean>(false)
 
   const currentWalletContent = useMemo(() => {
     if (currentTab.value === 'assets') {
@@ -83,8 +83,8 @@ export const MyWallet: FC = () => {
             <S.TotlaBalance>Total Balance</S.TotlaBalance>
             <S.Balance>${currentWalletBalance}</S.Balance>
             <S.InfoChange>
-              <S.Time>24h change</S.Time>
-              <S.Procent>{PROCENT_MOCK.procent}%</S.Procent>
+              {/* <S.Time>24h change</S.Time> */}
+              {/* <S.Procent>{PROCENT_MOCK.procent}%</S.Procent> */}
             </S.InfoChange>
             <S.SvgRightDown>
               <SvgIconWalletTg />
@@ -99,13 +99,13 @@ export const MyWallet: FC = () => {
           </S.SendButton>
           <S.SendText>Send</S.SendText>
         </S.SendBlockWrapper> */}
-        <S.RecieveBlockWrapper onClick={toggleReceiveModal}>
+        <S.RecieveBlockWrapper onClick={() => setIsReceiveModalOpen(true)}>
           <S.RecieveButton>
             <SvgRecieveSquare />
           </S.RecieveButton>
           <S.RecieveText>Recieve</S.RecieveText>
         </S.RecieveBlockWrapper>
-        <S.SwapBlockWrapper onClick={() => alert('Swap button')}>
+        <S.SwapBlockWrapper onClick={() => navigate(AppRoutes.Swap)}>
           <S.SwapButton>
             <SvgArrowSwap />
           </S.SwapButton>
@@ -129,7 +129,9 @@ export const MyWallet: FC = () => {
         {currentWalletContent}
       </S.TabsBlock>
 
-      {isReceiveModalOpen && <ReceivePopup onClose={toggleReceiveModal} />}
+      {isReceiveModalOpen && (
+        <ReceivePopup onClose={() => setIsReceiveModalOpen(false)} />
+      )}
 
       {/* <div onClick={() => navigate(AppRoutes.TranferHistory)}>
         TransferHistory
