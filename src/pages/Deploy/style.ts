@@ -16,11 +16,8 @@ const getColorLabel = ($status: Status, theme: DefaultTheme) => {
 }
 export const Wrapper = styled.div`
   width: 100%;
-  padding: 16px 16px 4px;
-  padding-top: 24px;
   display: flex;
   flex-direction: column;
-  background: ${({ theme }) => theme.color.bgSecondary};
 `
 export const PromoWrapper = styled.div`
   padding: 20px 16px;

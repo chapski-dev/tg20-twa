@@ -1,118 +1,231 @@
-import { FC, useEffect, useMemo } from 'react'
-import { useTonAddress } from '@tonconnect/ui-react'
-import { useField, useFormikContext } from 'formik'
-import { useQuery } from 'react-query'
-import { getTokenInfo } from 'api'
-import { useDebounce } from 'hooks/useDebounce/useDebounce'
+import { FC, useCallback, useContext, useMemo, useState } from 'react'
+import { Address, TonClient, beginCell, fromNano, toNano } from '@ton/ton'
+import { useTonAddress, useTonConnectUI } from '@tonconnect/ui-react'
+import dayjs from 'dayjs'
+import { Formik, FormikConfig, useFormikContext } from 'formik'
+import { TON_CLIENT_URL } from 'constants/api'
 import { CurrentConfirmData } from 'pages/Deploy/Deploy'
+import { getValidationSchema } from 'pages/Deploy/validationSchema'
+import { ActionStatusData } from 'pages/Inscribe/types'
+import { ActionsStatusContext } from 'providers/ActionsStatusProvider'
 import { Button } from 'ui'
-import { Input } from 'ui/Input/Input'
+import { DeployStep1, DeployStep2 } from './components'
 import * as S from './style'
+import { InitialValues } from './types'
 import { ConfirmPopup } from '../ConfirmPopup/ConfirmPopup'
 
 type DeployFormProps = {
-  loading: boolean;
   currentConfirmData: CurrentConfirmData | null
   intervalFreeze: number
-  signConfirmTransaction: () => Promise<void>
-  setCurrentConfirmData: React.Dispatch<React.SetStateAction<CurrentConfirmData | null>>;
+  setCurrentConfirmData: React.Dispatch<
+    React.SetStateAction<CurrentConfirmData | null>
+  >
 }
 
 export const DeployForm: FC<DeployFormProps> = (props) => {
-  const { loading, currentConfirmData, intervalFreeze, signConfirmTransaction, setCurrentConfirmData } = props;
-  const { handleSubmit } = useFormikContext();
+  const { currentConfirmData, intervalFreeze, setCurrentConfirmData } = props
+
+  const { updateRenderActionStatusData, checkContractDeployStatus } =
+    useContext(ActionsStatusContext)
+
+  const [loading, setLoading] = useState<boolean>(false)
+
+  const [currentDeployStep, setCurrentDeployStep] = useState<number>(1)
+
+  const { handleSubmit } = useFormikContext()
+
   const userWalletAddress = useTonAddress()
-  const [tickField, tickMeta, tickHepler] = useField<string>('tick');
-  const [amountField, amountMeta] = useField('amount');
-  const [limitField, limitMeta] = useField('limit');
 
+  const [tonConnectUI] = useTonConnectUI()
 
-  const tickValueDebounce = useDebounce(tickField.value, 500);
+  const initialValues: InitialValues = {
+    tick: '',
+    amount: '',
+    limit: '',
+    premintAmount: '0',
+    interval: '15',
+    penalty: '15',
+    file: '',
+  }
 
-  const { data } = useQuery(
-    ['token-data-by-search-param'],
-    () => getTokenInfo(tickValueDebounce.toLowerCase()),
-    {
-      enabled: tickValueDebounce.length === 4,
-      onError: (error) => console.error("getTokenInfo error", error)
-    }
-  );
-
-  useEffect(() => {
-    if(data?.tick) {
-      tickHepler.setError('Tick already exist, select different tick name')
-    }
-  }, [data, tickHepler]);
-  
   const buttonText = useMemo(() => {
     switch (true) {
       case !userWalletAddress:
         return 'Connect Wallet'
       case intervalFreeze !== null && intervalFreeze > 0:
         return `Repeat Deploy after ${intervalFreeze} seconds...`
+      case currentDeployStep === 1:
+        return 'Continue'
       default:
         return 'Deploy'
     }
-  }, [intervalFreeze, userWalletAddress])
+  }, [currentDeployStep, intervalFreeze, userWalletAddress])
+
+  const currentDeployStepForm = useMemo(() => {
+    if (currentDeployStep === 1) {
+      return <DeployStep1 />
+    }
+
+    return <DeployStep2 />
+  }, [currentDeployStep])
+
+  const handleMainButtonClick = useCallback(() => {
+    if (currentDeployStep === 1) {
+      setCurrentDeployStep((prev) => prev + 1)
+      return
+    }
+
+    handleSubmit()
+  }, [currentDeployStep, handleSubmit])
+
+  const handleFormikSubmit = useCallback<
+    FormikConfig<InitialValues>['onSubmit']
+  >(
+    async (values) => {
+      if (!userWalletAddress) {
+        tonConnectUI.openModal()
+        return
+      }
+
+      const tonClient = new TonClient({ endpoint: TON_CLIENT_URL })
+      const zeroOpcode = 0
+      const masterAddress = 'EQBoPPFXQpGIiXQNkJ8DpQANN_OmMimp5dx6lWjRZmvEgZCI'
+      const storedMasterAddress = localStorage.getItem('master_address')
+      const storedTickData = localStorage.getItem(values.tick.toString())
+      const parsedStoredTickData =
+        storedTickData &&
+        storedTickData.includes('userContractAddress') &&
+        JSON.parse(storedTickData)
+
+      const storedUserContractAddress =
+        parsedStoredTickData?.userContractAddress
+
+      if (
+        (storedMasterAddress && storedMasterAddress !== masterAddress) ||
+        storedMasterAddress === null ||
+        parsedStoredTickData?.userWalletAddress !== userWalletAddress ||
+        !storedUserContractAddress
+      ) {
+        localStorage.removeItem(values.tick.toString())
+      }
+
+      setLoading(true)
+
+      const deployPayload = `data:application/json,{"p":"gram-20","op":"deploy","tick":"${values.tick}","max":"${values.amount}","limit":"${values.limit}","start":"0","interval":"10","penalty":"10"}`
+
+      setTimeout(async () => {
+        try {
+          const currentUserBalance = await tonClient.getBalance(
+            Address.parse(userWalletAddress)
+          )
+
+          const tokenDeployBody = beginCell()
+            .storeUint(zeroOpcode, 32)
+            .storeStringTail(deployPayload)
+            .endCell()
+
+          setCurrentConfirmData({
+            fee: '0',
+            tick: values.tick,
+            messages: [
+              {
+                address: masterAddress,
+                amount: toNano('0.1').toString(),
+                payload: tokenDeployBody.toBoc().toString('base64'),
+              },
+            ],
+            balance: Number(fromNano(currentUserBalance)),
+            interval: null,
+          })
+
+          setLoading(false)
+        } catch (err) {
+          setLoading(false)
+
+          console.log(err)
+        }
+      }, 1000)
+    },
+    [setCurrentConfirmData, tonConnectUI, userWalletAddress]
+  )
+
+  const signConfirmTransaction = useCallback(async () => {
+    if (!currentConfirmData) {
+      return
+    }
+
+    try {
+      setLoading(true)
+      const trx = await tonConnectUI.sendTransaction(
+        {
+          validUntil: Math.floor(Date.now() / 1000) + 180,
+          messages: currentConfirmData.messages,
+        },
+        { returnStrategy: 'none' }
+      )
+
+      if (trx.boc) {
+        setLoading(false)
+        const actionStatusData: ActionStatusData[] = [
+          {
+            tick: currentConfirmData.tick,
+            type: 'deploy',
+            status: 'in_progress',
+            current_value: '',
+            time: dayjs() as any,
+          },
+        ]
+
+        localStorage.setItem('action_status', JSON.stringify(actionStatusData))
+        updateRenderActionStatusData!(actionStatusData)
+
+        checkContractDeployStatus!()
+
+        alert(`Your Deploy application is successfully processed, waiting!`)
+
+        setCurrentConfirmData(null)
+      }
+    } catch (err) {
+      setLoading(false)
+    }
+  }, [
+    checkContractDeployStatus,
+    currentConfirmData,
+    setCurrentConfirmData,
+    tonConnectUI,
+    updateRenderActionStatusData,
+  ])
 
   return (
-    <S.FormWrapper>
-      <S.Wrapper>
-        <S.FieldsWrapper>
-          <Input
-            {...tickField}
-            error={!!(tickMeta?.touched && tickMeta?.error) || !!data?.tick}
-            errorMessage={tickMeta?.error}
-            isSuccess={tickField?.value?.length === 4}
-            label="Tick "
-            onChange={(e) => tickHepler.setValue(e.target.value.toLowerCase())}
-            placeholder="Characters like “abcd”"
-            sublabel="(only 4 characters allowed)"
-          />
-          <Input
-            {...amountField}
-            error={!!(amountMeta?.touched && amountMeta?.error)}
-            errorMessage={amountMeta?.error}
-            isSuccess={amountMeta?.value?.length >= 8}
-            label="Set Total Supply"
-            name="amount"
-            placeholder="210 000 000 000"
-          />
-          <Input
-            {...limitField}
-            error={!!(limitMeta?.touched && limitMeta?.error)}
-            errorMessage={limitMeta?.error}
-            label="Set Limit/Mint"
-            name="limit"
-            placeholder="0"
-          />
-          {/* // TODO: Вернуть когда будут степы */}
-          {/* <ImageInput
-            disabled={!(tickField.value && amountField.value && limitField.value)}
-            label="Upload token logo"
-            name="file"
-          /> */}
-        </S.FieldsWrapper>
-      </S.Wrapper>
+    <Formik
+      initialValues={initialValues}
+      onSubmit={handleFormikSubmit}
+      validateOnBlur={true}
+      validateOnChange={true}
+      validationSchema={getValidationSchema()}
+    >
+      <S.FormWrapper>
+        <S.Wrapper>{currentDeployStepForm}</S.Wrapper>
 
-      {!currentConfirmData && (
-        <Button
-          children={buttonText}
-          className="button"
-          isDisabled={intervalFreeze !== null && intervalFreeze > 0}
-          isLoading={loading}
-          onClick={handleSubmit}
-        />
-      )}
-      {currentConfirmData !== null && (
-        <ConfirmPopup
-          fee={currentConfirmData.fee}
-          isLoading={loading}
-          onClose={() => setCurrentConfirmData(null)}
-          onConfirm={signConfirmTransaction}
-          userBalance={currentConfirmData.balance}
-        />
-      )}
-    </S.FormWrapper>
+        {!currentConfirmData && (
+          <Button
+            children={buttonText}
+            className="button"
+            isDisabled={intervalFreeze !== null && intervalFreeze > 0}
+            isLoading={loading}
+            onClick={handleMainButtonClick}
+          />
+        )}
+        {currentConfirmData !== null && (
+          <ConfirmPopup
+            fee={currentConfirmData.fee}
+            isLoading={loading}
+            onClose={() => setCurrentConfirmData(null)}
+            onConfirm={signConfirmTransaction}
+            userBalance={currentConfirmData.balance}
+          />
+        )}
+      </S.FormWrapper>
+    </Formik>
   )
 }
