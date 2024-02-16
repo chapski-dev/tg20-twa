@@ -17,9 +17,11 @@ export const Header: FC<HeaderProps> = (props) => {
       <Input
         className="search"
         icon={<SvgLoop />}
+        inputMode="search"
         isSearchInput={false}
         onChange={(e) => updateSearchValue(e.target.value)}
-        placeholder="Search tokens"
+        placeholder="Search tokens:"
+        type="search"
         value={searchValue}
         wrapperClassName="search-container"
       />

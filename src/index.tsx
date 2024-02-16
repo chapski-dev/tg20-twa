@@ -2,6 +2,7 @@ import React from 'react'
 import * as Sentry from '@sentry/react'
 import { AxiosError } from 'axios'
 import ReactDOM from 'react-dom/client'
+import { SkeletonTheme } from 'react-loading-skeleton'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { BrowserRouter } from 'react-router-dom'
 import { ThemeProvider } from 'styled-components'
@@ -68,7 +69,9 @@ root.render(
               <ActionsStatusProvider>
                 <TelegramProvider>
                   <GlobalStyle />
-                  <App />
+                  <SkeletonTheme baseColor={theme.color.bgSecondary} duration={3} highlightColor={'#ffffff30'}>
+                    <App />
+                  </SkeletonTheme>
                 </TelegramProvider>
               </ActionsStatusProvider>
             </TonConnectProvider>

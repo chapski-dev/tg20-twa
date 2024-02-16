@@ -1,7 +1,8 @@
+import Skeleton from 'react-loading-skeleton'
 import styled from 'styled-components'
 import statsBg from './statsBg.png'
 
-export const Stats = styled.div`
+export const Wrapper = styled.div`
   background: url(${statsBg});
   padding: 20px 16px;
   display: flex;
@@ -16,9 +17,12 @@ export const StatItem = styled.div`
   flex: 1;
   flex-direction: column;
   gap: 5px;
+  .skeleton-container {
+    max-height: 16px;
+  }
 `
 
-export const StatTitle = styled.div`
+export const Price = styled.div`
   font-size: 16px;
   font-weight: 600;
   color: ${({ theme }) => theme.color.text};
@@ -26,6 +30,7 @@ export const StatTitle = styled.div`
   display: flex;
   gap: 2px;
 `
+export const SkeletonPrice = styled(Skeleton)``
 
 export const StatText = styled.div`
   font-size: 12px;

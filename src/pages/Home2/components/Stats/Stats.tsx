@@ -1,45 +1,51 @@
 import { FC } from 'react'
+import { fromNano } from '@ton/core'
+import { useQuery } from 'react-query'
+import { getMarketplaceStats, getMarketplaceTokenStats } from 'api'
 import { useTelegram } from 'hooks/useTelegram/useTelegram'
 import { formatNumberWithSeparators } from 'utils/formNumberWithSeparators'
 import * as S from './style'
 
-type StatsBlockProps = {
-  totalVolume: number
-  volume24h: number
-  gramFloorPrice: number
-}
+type StatsBlockProps = {}
 
 export const Stats: FC<StatsBlockProps> = (props) => {
-  const { totalVolume, volume24h, gramFloorPrice } = props
-
   const { tonPrice } = useTelegram()
+  const { data: marketplaceStats } = useQuery(['makretplaceStatsData'], () =>
+    getMarketplaceStats()
+  )
+  const { data: marketplaceGramStats } = useQuery(
+    ['makretplaceGramStatsData'],
+    () => getMarketplaceTokenStats({ tick: 'gram' })
+  )
+
+  const gramFloorPrice = Number(fromNano(marketplaceGramStats?.floor_price || 0));
+  const totalVolume = marketplaceStats?.total_volume;
+  const volume24h = marketplaceStats?.volume_24h;
 
   return (
-    <S.Stats>
+    <S.Wrapper>
       <S.StatItem>
-        <S.StatTitle>
-          ${tonPrice && (tonPrice * gramFloorPrice).toFixed(7)}
-        </S.StatTitle>
+        {!!(tonPrice && gramFloorPrice) ? (
+          <S.Price children={`$${(tonPrice * gramFloorPrice).toFixed(7)}`} />
+        ) : <S.SkeletonPrice containerClassName="skeleton-container" height={16} />}
         <S.Head>
-          <S.StatText>GRAM Price</S.StatText>
+          <S.StatText children="GRAM Price" />
         </S.Head>
       </S.StatItem>
       <S.StatItem>
-        <S.StatTitle>
-          ${tonPrice && formatNumberWithSeparators(tonPrice * volume24h)}
-        </S.StatTitle>
-
+        {!!(tonPrice && volume24h) ? (
+          <S.Price children={`$${formatNumberWithSeparators(tonPrice * volume24h)}`} />
+        ) : <S.SkeletonPrice containerClassName="skeleton-container" height={16} />}
         <S.Head>
-          <S.StatText>24h Volume</S.StatText>
+          <S.StatText children="24h Volume" />
         </S.Head>
       </S.StatItem>
       <S.StatItem>
-        <S.StatTitle>
-          {' '}
-          ${tonPrice && formatNumberWithSeparators(tonPrice * totalVolume)}
-        </S.StatTitle>
+        {!!(tonPrice && totalVolume) ? (
+          <S.Price children={` $${formatNumberWithSeparators(tonPrice * totalVolume)}`} />
+        ) : <S.SkeletonPrice containerClassName="skeleton-container" height={16} />}
         <S.Head>
-          <S.StatText>Total Volume</S.StatText>
+          <S.StatText children="Total Volume" />
         </S.Head>
       </S.StatItem>
       {/* {stats.map((stat) => {
@@ -61,6 +67,6 @@ export const Stats: FC<StatsBlockProps> = (props) => {
           </S.StatItem>
         )
       })} */}
-    </S.Stats>
+    </S.Wrapper>
   )
 }
