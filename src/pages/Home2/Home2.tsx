@@ -19,15 +19,11 @@ import * as S from './style'
 export const Home2 = () => {
   const [currentTab, setCurrentTab] = useState(tabs[0])
 
-  const { data: marketplaceStats } = useQuery(['makretplaceStatsData'], () =>
-    getMarketplaceStats()
-  )
-
   const [searchedValue, setSearchedValue] = useState<string>('')
 
   const debauncedSearchValue = useDebounce(searchedValue)
 
-  const { data: topTokens, isSuccess: isTopTokensLoaded } = useQuery(
+  const { data: topTokens, isLoading: isTopTokensLoading } = useQuery(
     ['topTokens', currentTab.value],
     () => getTopTokensList(currentTab.value as TopTokenFilter)
   )
@@ -36,15 +32,13 @@ export const Home2 = () => {
     setSearchedValue(value)
   }, [])
 
-  const { data: searchedTokens, isSuccess: isSearchedTokensLoaded } = useQuery(
+  const { data: searchedTokens, isLoading: isSearchedTokensLoading } = useQuery(
     ['searchedTokens', debauncedSearchValue],
     () => getSearchedTokensList({ query: debauncedSearchValue.toLowerCase() })
   )
 
-  const { data: marketplaceGramStats } = useQuery(
-    ['makretplaceGramStatsData'],
-    () => getMarketplaceTokenStats({ tick: 'gram' })
-  )
+
+  const loading = isSearchedTokensLoading || isTopTokensLoading;
 
   return (
     <S.Home>
@@ -54,13 +48,7 @@ export const Home2 = () => {
       />
       {!debauncedSearchValue && (
         <>
-          <Stats
-            gramFloorPrice={Number(
-              fromNano(marketplaceGramStats?.floor_price || 0)
-            )}
-            totalVolume={marketplaceStats?.total_volume || 0}
-            volume24h={marketplaceStats?.volume_24h || 0}
-          />
+          <Stats />
           <SpecialOffer />
           <Container>
             <S.TabsWrapper
@@ -73,12 +61,12 @@ export const Home2 = () => {
         </>
       )}
 
-      {isTopTokensLoaded && !Boolean(debauncedSearchValue) && (
-        <Tokens tokens={topTokens} />
+      {!Boolean(debauncedSearchValue) && (
+        <Tokens loading={loading} tokens={topTokens || []} />
       )}
 
-      {Boolean(debauncedSearchValue) && isSearchedTokensLoaded && (
-        <Tokens tokens={searchedTokens} />
+      {Boolean(debauncedSearchValue) && (
+        <Tokens loading={loading} tokens={searchedTokens || []} />
       )}
     </S.Home>
   )
