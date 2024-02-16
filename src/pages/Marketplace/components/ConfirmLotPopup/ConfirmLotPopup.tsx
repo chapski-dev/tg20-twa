@@ -227,8 +227,8 @@ export const ConfirmLotPopup: FC<ConfirmLotProps> = (props) => {
                 address: userContractAddress?.toString() as string,
                 amount: toNano('0.007').toString(),
                 payload: tokenTransferPayload.toBoc().toString('base64'),
-                // @ts-ignore
                 stateInit:
+                  // @ts-ignore
                   userState?.state !== 'active'
                     ? userStateInit?.toBoc().toString('base64')
                     : undefined,
