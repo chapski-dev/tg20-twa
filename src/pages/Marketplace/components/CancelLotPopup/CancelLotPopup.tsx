@@ -28,7 +28,7 @@ export const CancelLotPopup: FC<CancelLotProps> = ({
         <S.PositionsWrapper>
           <S.PositionWrapper>
             <S.PositionText children="Tick" />
-            <S.PositionValue children={`toUpperCase(${ticker})`} />
+            <S.PositionValue children={`${ticker.toUpperCase()}`} />
           </S.PositionWrapper>
           <S.PositionWrapper>
             <S.PositionText children="Amount" />

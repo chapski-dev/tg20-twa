@@ -141,7 +141,10 @@ export const FormInput = styled(Input)`
   height: 44px;
   padding-right: 8px;
   background-color: ${({ theme }) => theme.color.bgSecondary};
-
+  svg {
+    min-width: 22px;
+    min-height: 22px;
+  }
   input {
     background-color: ${({ theme }) => theme.color.bgSecondary};
   }
