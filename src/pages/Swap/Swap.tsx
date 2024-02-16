@@ -1,4 +1,5 @@
-import React, { FC } from 'react'
+import React, { FC, useState } from 'react'
+
 import firstItems from './assets/items.png'
 import secoundItems from './assets/items2.png'
 import * as S from './style'

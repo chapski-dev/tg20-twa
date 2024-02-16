@@ -10,19 +10,26 @@ export const Wrapper = styled.div`
 `
 
 export const StatusText = styled.span`
-  font-size: 20px;
+  font-size: 26px;
   font-weight: 600;
-  line-height: 24px;
+  line-height: 31px;
+  letter-spacing: -0.01em;
+  text-align: center;
+
   color: ${({ theme }) => theme.color.text};
 `
 
 export const StatusDescription = styled.span`
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 20px;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 22px;
+  letter-spacing: -0.01em;
+  text-align: center;
   color: ${({ theme }) => theme.color.hint};
+  padding: 0px 22px;
 `
 
 export const ActionLink = styled.span`
+  margin-top: 22px;
   color: ${({ theme }) => theme.color.link};
 `

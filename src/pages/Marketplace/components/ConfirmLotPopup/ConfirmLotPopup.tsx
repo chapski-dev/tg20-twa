@@ -58,15 +58,22 @@ export const ConfirmLotPopup: FC<ConfirmLotProps> = (props) => {
   const { currentWalletBalance, tonPrice } = useTelegram()
 
   const [unit, setUnit] = useState<'TON' | 'NANO'>('TON')
-  const [requestTimeoutOpen, setRequestTimeoutOpen] = useState(false);
+  const [requestTimeoutOpen, setRequestTimeoutOpen] = useState(false)
 
   const [isMainButtonLoading, setIsMainButtonLoading] = useState<boolean>(false)
-  const [isMainButtonDisabled, setIsMainButtonDisabled] = useState<boolean>(false)
+  const [isMainButtonDisabled, setIsMainButtonDisabled] =
+    useState<boolean>(false)
 
-  const tonClient = useMemo(() => new TonClient({ endpoint: TON_CLIENT_URL }), [])
+  const tonClient = useMemo(
+    () => new TonClient({ endpoint: TON_CLIENT_URL }),
+    []
+  )
 
   const retryableTonClientMethod = useCallback(
-    async (method: 'runMethod' | 'getContractState', ...args: [Address, string, TupleItem[] | undefined] | [Address]) => {
+    async (
+      method: 'runMethod' | 'getContractState',
+      ...args: [Address, string, TupleItem[] | undefined] | [Address]
+    ) => {
       const maxRetries = 3
       let retryCount = 0
 
@@ -74,14 +81,16 @@ export const ConfirmLotPopup: FC<ConfirmLotProps> = (props) => {
         try {
           await new Promise((resolve) => setTimeout(resolve, 1000)) // Задержка в 1 секунду
           const result: {
-            gas_used: number;
-            stack: TupleReader;
-          } = await (tonClient as any)[method](...args);
-          return result;
+            gas_used: number
+            stack: TupleReader
+          } = await (tonClient as any)[method](...args)
+          return result
         } catch (error: any) {
           retryCount++
-          console.error(`Error in ${method}: ${error.message}. Retrying (${retryCount}/${maxRetries})...`)
-          throw new Error(error);
+          console.error(
+            `Error in ${method}: ${error.message}. Retrying (${retryCount}/${maxRetries})...`
+          )
+          throw new Error(error)
         }
       }
 
@@ -104,12 +113,17 @@ export const ConfirmLotPopup: FC<ConfirmLotProps> = (props) => {
       }
 
       if (!currentWalletBalance || currentWalletBalance < 0.1) {
-        alert("Ooops, you don't have enough TON to complete this transaction. Minimum 0.1 TON required on your balance")
+        alert(
+          "Ooops, you don't have enough TON to complete this transaction. Minimum 0.1 TON required on your balance"
+        )
         return
       }
 
       try {
-        const price = unit === 'TON' ? Number(values.price) : Number(values.price) / Math.pow(10, 9);
+        const price =
+          unit === 'TON'
+            ? Number(values.price)
+            : Number(values.price) / Math.pow(10, 9)
         const totalCount = Number(values.amount) * price
 
         setIsMainButtonLoading(true)
@@ -120,7 +134,9 @@ export const ConfirmLotPopup: FC<ConfirmLotProps> = (props) => {
           .storeAddress(Address.parse(userWalletAddres))
           .storeUint(Number(values.amount), 128)
           .storeUint(0, 8)
-          .storeAddress(Address.parse('UQAmQNz4IPGHpVklTBpD_SV7Bx9jcimHb1gqmjQG_k2Bi0vY'))
+          .storeAddress(
+            Address.parse('UQAmQNz4IPGHpVklTBpD_SV7Bx9jcimHb1gqmjQG_k2Bi0vY')
+          )
           .storeUint(199, 16)
           .storeUint(10000, 16)
           .storeCoins(totalCount * Math.pow(10, 9))
@@ -182,7 +198,9 @@ export const ConfirmLotPopup: FC<ConfirmLotProps> = (props) => {
         )
         const saleStateInit = lotData?.stack.readCell()
 
-        const tokenSaleBody = beginCell().storeRef(saleStateInit as Cell).endCell()
+        const tokenSaleBody = beginCell()
+          .storeRef(saleStateInit as Cell)
+          .endCell()
 
         const tokenTransferMessage = `data:application/json,{"p":"gram-20","op":"transfer","tick":"${tick}","amt":"${values.amount}","to":"${saleAddress}","memo":""}`
         const tokenTransferPayload = beginCell()
@@ -210,9 +228,10 @@ export const ConfirmLotPopup: FC<ConfirmLotProps> = (props) => {
                 amount: toNano('0.007').toString(),
                 payload: tokenTransferPayload.toBoc().toString('base64'),
                 // @ts-ignore
-                stateInit: userState?.state !== 'active'
-                  ? userStateInit?.toBoc().toString('base64')
-                  : undefined,
+                stateInit:
+                  userState?.state !== 'active'
+                    ? userStateInit?.toBoc().toString('base64')
+                    : undefined,
               },
             ],
           })
@@ -224,10 +243,11 @@ export const ConfirmLotPopup: FC<ConfirmLotProps> = (props) => {
         updateSuccessfulPopupDisplayMode(true)
       } catch (e) {
         alert('Oops ! Network error. Please, try again')
-        setRequestTimeoutOpen(true);
+        setRequestTimeoutOpen(true)
       }
     },
-    [currentWalletBalance,
+    [
+      currentWalletBalance,
       onClose,
       retryableTonClientMethod,
       tick,
@@ -236,11 +256,12 @@ export const ConfirmLotPopup: FC<ConfirmLotProps> = (props) => {
       unit,
       updateIsSuccessfulTransactionStatus,
       updateSuccessfulPopupDisplayMode,
-      userWalletAddres]
+      userWalletAddres,
+    ]
   )
 
   return tonPrice ? (
-    <>
+    <S.Wrapper>
       <Modal onClose={onClose} title="Listing Confirmation">
         <Formik
           initialValues={initialValues}
@@ -263,7 +284,7 @@ export const ConfirmLotPopup: FC<ConfirmLotProps> = (props) => {
             const receiveUsd = receive * tonPrice
 
             return (
-              <S.Wrapper>
+              <>
                 <S.FieldWrapper>
                   <S.FieldLabelWrapper>
                     <S.FieldLabel children="List Amount" />
@@ -317,19 +338,38 @@ export const ConfirmLotPopup: FC<ConfirmLotProps> = (props) => {
                 <S.PositionsWrapper>
                   <S.PositionWrapper>
                     <S.PositionText children="Total Value" />
-                    <S.PositionValue children={`${total.toFixed(9).replace(/\.?0+$/, '')} TON / ${totalUsd.toFixed(4).replace(/\.?0+$/, '')} USD`} />
+                    <S.PositionValue
+                      children={`${total
+                        .toFixed(9)
+                        .replace(/\.?0+$/, '')} TON / ${totalUsd
+                        .toFixed(4)
+                        .replace(/\.?0+$/, '')} USD`}
+                    />
                   </S.PositionWrapper>
 
                   <S.PositionWrapper>
                     <S.PositionText>
-                      Service fee <S.PositionTextLabel>1.99%</S.PositionTextLabel>
+                      Service fee{' '}
+                      <S.PositionTextLabel>1.99%</S.PositionTextLabel>
                     </S.PositionText>
-                    <S.PositionValue children={`${fee.toFixed(9).replace(/\.?0+$/, '')} TON / ${feeUsd.toFixed(4).replace(/\.?0+$/, '')} USD`} />
+                    <S.PositionValue
+                      children={`${fee
+                        .toFixed(9)
+                        .replace(/\.?0+$/, '')} TON / ${feeUsd
+                        .toFixed(4)
+                        .replace(/\.?0+$/, '')} USD`}
+                    />
                   </S.PositionWrapper>
 
                   <S.PositionWrapper>
                     <S.PositionText children="Receive" />
-                    <S.PositionValue children={`${receive.toFixed(9).replace(/\.?0+$/, '')} TON / ${receiveUsd.toFixed(2).replace(/\.?0+$/, '')} USD`} />
+                    <S.PositionValue
+                      children={`${receive
+                        .toFixed(9)
+                        .replace(/\.?0+$/, '')} TON / ${receiveUsd
+                        .toFixed(2)
+                        .replace(/\.?0+$/, '')} USD`}
+                    />
                   </S.PositionWrapper>
                 </S.PositionsWrapper>
                 <MainButton
@@ -338,12 +378,14 @@ export const ConfirmLotPopup: FC<ConfirmLotProps> = (props) => {
                   progress={isMainButtonLoading}
                   text="Confirm"
                 />
-              </S.Wrapper>
+              </>
             )
           }}
         </Formik>
       </Modal>
-      {requestTimeoutOpen && <RequestTimoutPopup onClose={() => setRequestTimeoutOpen(false)} />}
-    </>
+      {requestTimeoutOpen && (
+        <RequestTimoutPopup onClose={() => setRequestTimeoutOpen(false)} />
+      )}
+    </S.Wrapper>
   ) : null
 }
