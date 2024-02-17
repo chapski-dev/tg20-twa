@@ -6,6 +6,7 @@ export const Wrapper = styled.div`
   flex-direction: column;
   gap: 16px;
   width: 100%;
+  padding-bottom: 110px;
 `
 
 export const FormInput = styled(Input)`
