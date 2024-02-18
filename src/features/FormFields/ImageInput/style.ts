@@ -8,15 +8,16 @@ const getLabelColor = (theme: DefaultTheme, error?: boolean) => {
       return theme.color.text
   }
 }
-export const Wrapper = styled.div<{disabled?: boolean}>`
+export const Wrapper = styled.div<{ disabled?: boolean }>`
   display: flex;
   flex-direction: column;
   gap: 2px;
   justify-content: center;
   border-radius: 6px;
   align-items: center;
-  width: 150px;
-  height: 75px;
+  width: 100%;
+  max-width: 361px;
+  height: 361px;
   position: relative;
 
   border: 1px dashed ${({ theme }) => theme.color.hint};
@@ -81,8 +82,8 @@ export const Container = styled.div`
 `
 
 export const Image = styled.img`
-  width: 100%;
-  height: 100%;
+  width: 64px;
+  height: 64px;
   object-fit: cover;
   object-position: center;
 `

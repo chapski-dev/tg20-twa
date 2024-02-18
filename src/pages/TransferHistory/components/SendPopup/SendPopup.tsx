@@ -52,7 +52,8 @@ export const SendPopup: FC<SendPopupProps> = (props) => {
   const { webApp } = useTelegram()
   const { checkTransferValid } = useContext(ActionsStatusContext)
   const [isTransfering, setIsTransfering] = useState<boolean>(false)
-  const [currentConfirmData, setCurrentConfirmData] = useState<CurrentTransferConfirmData | null>(null)
+  const [currentConfirmData, setCurrentConfirmData] =
+    useState<CurrentTransferConfirmData | null>(null)
   const [tonConnectUI] = useTonConnectUI()
   const userWalletAddress = useTonAddress()
 
@@ -60,7 +61,6 @@ export const SendPopup: FC<SendPopupProps> = (props) => {
     async (values, helpers) => {
       try {
         setIsTransfering(true)
-
 
         const tonClient = new TonClient({ endpoint: TON_CLIENT_URL })
         const storedMasterAddress = localStorage.getItem('master_address')
@@ -70,7 +70,8 @@ export const SendPopup: FC<SendPopupProps> = (props) => {
           storedTickData.includes('userContractAddress') &&
           JSON.parse(storedTickData)
 
-        const storedUserContractAddress = parsedStoredTickData?.userContractAddress
+        const storedUserContractAddress =
+          parsedStoredTickData?.userContractAddress
 
         if (
           (storedMasterAddress && storedMasterAddress !== masterAddress) ||
@@ -93,15 +94,22 @@ export const SendPopup: FC<SendPopupProps> = (props) => {
               .endCell()
 
             try {
-              const currentWalletAdddressTokenBalance = await getTokenWalletBalance(userWalletAddress, tick)
+              const currentWalletAdddressTokenBalance =
+                await getTokenWalletBalance(userWalletAddress, tick)
 
               if (!Address.isFriendly(values.address)) {
                 setIsTransfering(false)
-                helpers.setFieldError('address', 'Incorrect wallet address format')
+                helpers.setFieldError(
+                  'address',
+                  'Incorrect wallet address format'
+                )
                 return
               }
 
-              if (Number(values.amount) > currentWalletAdddressTokenBalance.balance) {
+              if (
+                Number(values.amount) >
+                currentWalletAdddressTokenBalance.balance
+              ) {
                 setIsTransfering(false)
 
                 helpers.setFieldError(
@@ -191,7 +199,7 @@ export const SendPopup: FC<SendPopupProps> = (props) => {
                   }, 1000)
                 }, 1000)
 
-                setIsTransfering(false);
+                setIsTransfering(false)
                 return
               }
             })
@@ -208,11 +216,15 @@ export const SendPopup: FC<SendPopupProps> = (props) => {
                 const lastMinted = userContractResult.stack.readNumber()
                 const interval = userContractResult.stack.readNumber()
                 const currentTime = Date.now()
-                const isCanMint = lastMinted * 1000 + interval > currentTime ? false : true
+                const isCanMint =
+                  lastMinted * 1000 + interval > currentTime ? false : true
 
                 if (!isCanMint) {
-                  const timeToWaitInSeconds = lastMinted + interval - currentTime
-                  alert(`Please, wait ${timeToWaitInSeconds} seconds, and try to mint again.`)
+                  const timeToWaitInSeconds =
+                    lastMinted + interval - currentTime
+                  alert(
+                    `Please, wait ${timeToWaitInSeconds} seconds, and try to mint again.`
+                  )
                   setIsTransfering(false)
                   return
                 }
@@ -220,7 +232,8 @@ export const SendPopup: FC<SendPopupProps> = (props) => {
                 setTimeout(async () => {
                   try {
                     const currentUserBalance = await tonClient.getBalance(
-                      Address.parse(userWalletAddress))
+                      Address.parse(userWalletAddress)
+                    )
 
                     setCurrentConfirmData({
                       address: values.address,
@@ -317,6 +330,12 @@ export const SendPopup: FC<SendPopupProps> = (props) => {
     onClose,
   ])
 
+  const [containerStyle, setContainerStyle] = useState({})
+
+  const handleFocus = () => {
+    setContainerStyle({ transform: 'translateY(-25px)' })
+  }
+
   return (
     <Modal onClose={onClose} title="Send">
       {currentConfirmData ? (
@@ -331,7 +350,9 @@ export const SendPopup: FC<SendPopupProps> = (props) => {
 
             <S.ConfirmFieldWrapper>
               <S.Label children="TO:" />
-              <S.ValueLabel children={shortenAddress(currentConfirmData.address)} />
+              <S.ValueLabel
+                children={shortenAddress(currentConfirmData.address)}
+              />
             </S.ConfirmFieldWrapper>
 
             <S.Line />
@@ -345,14 +366,24 @@ export const SendPopup: FC<SendPopupProps> = (props) => {
           <S.ConfirmFieldsWrapper>
             <S.ConfirmFieldWrapper>
               <S.Label children="TOTAL AMOUNT:" />
-              <S.ValueLabel children={`${(Number(toNano('0.008')) / 1e9).toString()} TON`} />
+              <S.ValueLabel
+                children={`${(Number(toNano('0.008')) / 1e9).toString()} TON`}
+              />
             </S.ConfirmFieldWrapper>
           </S.ConfirmFieldsWrapper>
 
           <Button
-            children={CURRENT_TOTAL_AMOUNT > currentConfirmData.balance ? 'Buy TON' : 'Confirm transfer'}
+            children={
+              CURRENT_TOTAL_AMOUNT > currentConfirmData.balance
+                ? 'Buy TON'
+                : 'Confirm transfer'
+            }
             isLoading={isTransfering}
-            onClick={CURRENT_TOTAL_AMOUNT > currentConfirmData.balance ? handleBuyTonClick : signTransferTransaction}
+            onClick={
+              CURRENT_TOTAL_AMOUNT > currentConfirmData.balance
+                ? handleBuyTonClick
+                : signTransferTransaction
+            }
           />
         </S.ConfirmBlockWrapper>
       ) : (
@@ -362,7 +393,7 @@ export const SendPopup: FC<SendPopupProps> = (props) => {
           validationSchema={validationSchema}
         >
           {({ handleSubmit }) => (
-            <S.Wrapper>
+            <S.Wrapper onFocus={handleFocus} style={containerStyle}>
               <S.FormInput label="Amount" name="amount" placeholder="10.000" />
               <S.FormInput
                 label="Receiver address"
