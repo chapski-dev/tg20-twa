@@ -1,5 +1,5 @@
-import { keyframes, styled } from 'styled-components';
-import { SvgClose } from 'ui/icons';
+import { keyframes, styled } from 'styled-components'
+import { SvgClose } from 'ui/icons'
 
 const fadeIn = keyframes`
   from {
@@ -10,7 +10,7 @@ const fadeIn = keyframes`
     opacity: 1;
     transform: translateY(0);
   }
-`;
+`
 
 export const WrapModal = styled.div`
   position: fixed;
@@ -26,7 +26,7 @@ export const WrapModal = styled.div`
   flex-direction: column;
   background: rgba(0, 0, 0, 0.32);
   transition: height 0.5s ease;
-`;
+`
 
 export const CardWrapper = styled.div`
   width: 100%;
@@ -39,7 +39,7 @@ export const CardWrapper = styled.div`
   transition: height 0.3s ease;
   animation: ${fadeIn} 0.3s ease;
   position: relative;
-`;
+`
 
 export const Title = styled.h4`
   font-size: 26px;
@@ -47,14 +47,17 @@ export const Title = styled.h4`
   font-weight: 700;
   line-height: 32px;
   color: ${({ theme }) => theme.color.text};
-`;
+  position: absolute;
+  top: 14px;
+  left: 20px;
+`
 
 export const Flex = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-`;
+`
 export const Description = styled.h4`
   font-weight: 400;
   font-size: 14px;
@@ -62,7 +65,7 @@ export const Description = styled.h4`
   letter-spacing: -0.03em;
   text-align: center;
   color: ${({ theme }) => theme.color.hint};
-`;
+`
 
 export const Close = styled(SvgClose)`
   cursor: pointer;
@@ -79,4 +82,4 @@ export const Close = styled(SvgClose)`
   path {
     fill: ${({ theme }) => theme.color.text} !important;
   }
-`;
+`

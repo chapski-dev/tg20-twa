@@ -5,7 +5,7 @@ import * as S from './style'
 
 type TokensProps = {
   tokens: TopToken[]
-  loading: boolean;
+  loading: boolean
 }
 
 export const Tokens: FC<TokensProps> = (props) => {
@@ -18,9 +18,9 @@ export const Tokens: FC<TokensProps> = (props) => {
         <S.HeaderTitle children="24h Volume" align="right" />
       </S.Header>
       <S.Tokens>
-        {loading ? [1, 2, 3].map(() => <SkeletonToken />) : (
-          tokens.map((token) => <Token key={token.tick} token={token} />)
-        )}
+        {loading
+          ? [1, 2, 3].map(() => <SkeletonToken />)
+          : tokens.map((token) => <Token key={token.tick} token={token} />)}
       </S.Tokens>
     </S.Container>
   )

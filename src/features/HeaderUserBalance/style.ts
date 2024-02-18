@@ -8,7 +8,7 @@ export const Wrapper = styled.div`
   align-items: center;
   gap: 10px;
   padding: 5px 8px;
-  background-color: ${({ theme }) => theme.color.bg};
+  background-color: ${({ theme }) => theme.color.bgSecondary};
 `
 
 export const Text = styled(UIText)`

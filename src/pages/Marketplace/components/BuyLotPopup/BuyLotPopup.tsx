@@ -48,7 +48,7 @@ export const BuyLotPopup: FC<BuyLotProps> = (props) => {
             <S.ValueLabel children={formatNumberWithSeparators(toAmount)} />
             <S.TokenLabel children={ticker} />
           </S.FieldWrapper>
-          <S.For children="for" />
+          <S.For children="to" />
           <S.FieldWrapper>
             <S.ValueLabel children={formaterToFixed9(fromAmount)} />
             <S.TokenWrapper>
@@ -62,7 +62,7 @@ export const BuyLotPopup: FC<BuyLotProps> = (props) => {
           <S.PositionWrapper>
             <S.PositionText children="Price" />
             <S.PositionValue
-              children={`${formaterToFixed9(priceTon)} TON / ${formaterToFixed9(
+              children={`${formaterToFixed9(priceTon)} TON ~ ${formaterToFixed9(
                 priceUsd
               )} USD`}
             />
@@ -71,7 +71,7 @@ export const BuyLotPopup: FC<BuyLotProps> = (props) => {
           <S.PositionWrapper>
             <S.PositionText children="Gas fee" />
             <S.PositionValue
-              children={`${+GAS_FEE.toFixed(6)} TON / ${+gasFeeUsd.toFixed(
+              children={`${+GAS_FEE.toFixed(6)} TON ~ ${+gasFeeUsd.toFixed(
                 4
               )} USD`}
             />
@@ -82,7 +82,7 @@ export const BuyLotPopup: FC<BuyLotProps> = (props) => {
               Service fee <S.PositionTextLabel children="1.99%" />
             </S.PositionText>
             <S.PositionValue
-              children={`${formaterToFixed9(fee)} TON / ${formaterToFixed9(
+              children={`${formaterToFixed9(fee)} TON ~ ${formaterToFixed9(
                 feeUsd
               )} USD`}
             />
@@ -93,7 +93,7 @@ export const BuyLotPopup: FC<BuyLotProps> = (props) => {
             <S.PositionValue
               children={`${formaterToFixed9(
                 totalWithFee
-              )} TON / ${formaterToFixed9(totalWithFeeUsd)} USD`}
+              )} TON ~ ${formaterToFixed9(totalWithFeeUsd)} USD`}
             />
           </S.PositionWrapper>
         </S.PositionsContainer>

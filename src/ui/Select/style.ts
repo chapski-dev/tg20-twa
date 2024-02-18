@@ -37,7 +37,7 @@ export const Select = styled(RSelect)`
   }
   .select__menu {
     color: ${({ theme }) => theme.color.text};
-    background: #ebebeb;
+    background: ${({ theme }) => theme.color.bg};
   }
   .select__value-container {
     padding: 2px 0 2px 10px;
@@ -75,7 +75,7 @@ export const Select = styled(RSelect)`
       color: ${({ theme }) => theme.color.hint};
     }
     &:hover {
-      background: #ebebeb;
+      background: ${({ theme }) => theme.color.bgSecondary};
     }
   }
 `

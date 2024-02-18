@@ -14,7 +14,7 @@ export const Container = styled.div`
   position: sticky;
   bottom: 0;
   z-index: 3;
-  margin-top: 10px;
+  margin-top: -10px;
 `
 
 export const NavItem = styled(NavLink)`

@@ -22,7 +22,7 @@ export const DontHaveTransfersBlock = styled.div`
   font-style: normal;
   font-weight: 400;
   color: ${({ theme }) => theme.color.hint};
-  padding: 12px 0;
+  padding: 24px 12px;
 `
 
 export const DateWrapper = styled.div`
