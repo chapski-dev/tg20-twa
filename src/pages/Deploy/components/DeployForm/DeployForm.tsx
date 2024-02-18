@@ -7,43 +7,51 @@ import { useDebounce } from 'hooks/useDebounce/useDebounce'
 import { CurrentConfirmData } from 'pages/Deploy/Deploy'
 import { Button } from 'ui'
 import { Input } from 'ui/Input/Input'
+import Stepper from 'ui/Stepper/Stepper'
 import * as S from './style'
 import { ConfirmPopup } from '../ConfirmPopup/ConfirmPopup'
 
 type DeployFormProps = {
-  loading: boolean;
+  loading: boolean
   currentConfirmData: CurrentConfirmData | null
   intervalFreeze: number
   signConfirmTransaction: () => Promise<void>
-  setCurrentConfirmData: React.Dispatch<React.SetStateAction<CurrentConfirmData | null>>;
+  setCurrentConfirmData: React.Dispatch<
+    React.SetStateAction<CurrentConfirmData | null>
+  >
 }
 
 export const DeployForm: FC<DeployFormProps> = (props) => {
-  const { loading, currentConfirmData, intervalFreeze, signConfirmTransaction, setCurrentConfirmData } = props;
-  const { handleSubmit } = useFormikContext();
+  const {
+    loading,
+    currentConfirmData,
+    intervalFreeze,
+    signConfirmTransaction,
+    setCurrentConfirmData,
+  } = props
+  const { handleSubmit } = useFormikContext()
   const userWalletAddress = useTonAddress()
-  const [tickField, tickMeta, tickHepler] = useField<string>('tick');
-  const [amountField, amountMeta] = useField('amount');
-  const [limitField, limitMeta] = useField('limit');
+  const [tickField, tickMeta, tickHepler] = useField<string>('tick')
+  const [amountField, amountMeta] = useField('amount')
+  const [limitField, limitMeta] = useField('limit')
 
-
-  const tickValueDebounce = useDebounce(tickField.value, 500);
+  const tickValueDebounce = useDebounce(tickField.value, 500)
 
   const { data } = useQuery(
     ['token-data-by-search-param'],
     () => getTokenInfo(tickValueDebounce.toLowerCase()),
     {
       enabled: tickValueDebounce.length === 4,
-      onError: (error) => console.error("getTokenInfo error", error)
+      onError: (error) => console.error('getTokenInfo error', error),
     }
-  );
+  )
 
   useEffect(() => {
-    if(data?.tick) {
+    if (data?.tick) {
       tickHepler.setError('Tick already exist, select different tick name')
     }
-  }, [data, tickHepler]);
-  
+  }, [data, tickHepler])
+
   const buttonText = useMemo(() => {
     switch (true) {
       case !userWalletAddress:
@@ -57,6 +65,7 @@ export const DeployForm: FC<DeployFormProps> = (props) => {
 
   return (
     <S.FormWrapper>
+      <Stepper step={0} totalSteps={2} />
       <S.Wrapper>
         <S.FieldsWrapper>
           <Input
