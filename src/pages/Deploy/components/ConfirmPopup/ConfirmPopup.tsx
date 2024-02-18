@@ -39,7 +39,7 @@ export const ConfirmPopup: FC<ConfirmPopupProps> = (props) => {
   return (
     <Modal onClose={onClose}>
       <S.Flex>
-        <S.Image alt="image" src={values.file} />
+        {values.file && <S.Image alt="image" src={values.file} />}
         <S.Title children="Confirm Deploy" />
         <S.Description children="Confirm in your wallet to deploy" />
       </S.Flex>
@@ -72,7 +72,7 @@ export const ConfirmPopup: FC<ConfirmPopupProps> = (props) => {
           <S.Label children="Processing Fees:" />
           <S.TotalFeeValueContainer>
             <SvgToncoinIcon />
-            <S.ValueLabel children={` ${totalFeeTon}TON ~ $${totalFeeUsd}`} />
+            <S.ValueLabel children={` 0.1 TON ~ $${0.1 * (tonPrice || 2.2)}`} />
           </S.TotalFeeValueContainer>
         </S.TotalFeeContainer>
       </S.Wrapper>

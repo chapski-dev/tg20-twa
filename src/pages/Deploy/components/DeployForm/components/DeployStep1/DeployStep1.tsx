@@ -48,6 +48,7 @@ export const DeployStep1: FC = () => {
         label="Set Total Supply"
         name="amount"
         placeholder="210 000 000 000"
+        type="number"
       />
       <Input
         {...limitField}
@@ -56,6 +57,7 @@ export const DeployStep1: FC = () => {
         label="Set Limit/Mint"
         name="limit"
         placeholder="0"
+        type="number"
       />
       {/* // TODO: Вернуть когда будут степы */}
       {/* <ImageInput

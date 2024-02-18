@@ -3,12 +3,14 @@ import { Address, TonClient, beginCell, fromNano, toNano } from '@ton/ton'
 import { useTonAddress, useTonConnectUI } from '@tonconnect/ui-react'
 import dayjs from 'dayjs'
 import { Formik, FormikConfig } from 'formik'
+import { getTokenInfo } from 'api'
 import { TON_CLIENT_URL } from 'constants/api'
 import { CurrentConfirmData } from 'pages/Deploy/Deploy'
 import { getValidationSchema } from 'pages/Deploy/validationSchema'
 import { ActionStatusData } from 'pages/Inscribe/types'
 import { ActionsStatusContext } from 'providers/ActionsStatusProvider'
 import { Button } from 'ui'
+import Stepper from 'ui/Stepper/Stepper'
 import { DeployStep1, DeployStep2 } from './components'
 import * as S from './style'
 import { InitialValues } from './types'
@@ -71,15 +73,12 @@ export const DeployForm: FC<DeployFormProps> = (props) => {
     FormikConfig<InitialValues>['onSubmit']
   >(
     async (values) => {
-      if (currentDeployStep === 1) {
-        setCurrentDeployStep((prev) => prev + 1)
-        return
-      }
-
       if (!userWalletAddress) {
         tonConnectUI.openModal()
         return
       }
+
+      setLoading(true)
 
       const tonClient = new TonClient({ endpoint: TON_CLIENT_URL })
       const zeroOpcode = 0
@@ -103,42 +102,44 @@ export const DeployForm: FC<DeployFormProps> = (props) => {
         localStorage.removeItem(values.tick.toString())
       }
 
-      setLoading(true)
+      if (currentDeployStep === 1) {
+        const deployPayload = `data:application/json,{"p":"gram-20","op":"deploy","tick":"${values.tick}","max":"${values.amount}","limit":"${values.limit}","start":"0","interval":"10","penalty":"10"}`
 
-      const deployPayload = `data:application/json,{"p":"gram-20","op":"deploy","tick":"${values.tick}","max":"${values.amount}","limit":"${values.limit}","start":"0","interval":"10","penalty":"10"}`
+        setTimeout(async () => {
+          try {
+            const currentUserBalance = await tonClient.getBalance(
+              Address.parse(userWalletAddress)
+            )
 
-      setTimeout(async () => {
-        try {
-          const currentUserBalance = await tonClient.getBalance(
-            Address.parse(userWalletAddress)
-          )
+            const tokenDeployBody = beginCell()
+              .storeUint(zeroOpcode, 32)
+              .storeStringTail(deployPayload)
+              .endCell()
 
-          const tokenDeployBody = beginCell()
-            .storeUint(zeroOpcode, 32)
-            .storeStringTail(deployPayload)
-            .endCell()
+            setCurrentConfirmData({
+              fee: '0',
+              tick: values.tick,
+              messages: [
+                {
+                  address: masterAddress,
+                  amount: toNano('0.1').toString(),
+                  payload: tokenDeployBody.toBoc().toString('base64'),
+                },
+              ],
+              balance: Number(fromNano(currentUserBalance)),
+              interval: null,
+            })
 
-          setCurrentConfirmData({
-            fee: '0',
-            tick: values.tick,
-            messages: [
-              {
-                address: masterAddress,
-                amount: toNano('0.1').toString(),
-                payload: tokenDeployBody.toBoc().toString('base64'),
-              },
-            ],
-            balance: Number(fromNano(currentUserBalance)),
-            interval: null,
-          })
+            setLoading(false)
+          } catch (err) {
+            setLoading(false)
 
-          setLoading(false)
-        } catch (err) {
-          setLoading(false)
+            console.log(err)
+          }
+        }, 1000)
 
-          console.log(err)
-        }
-      }, 1000)
+        return
+      }
     },
     [currentDeployStep, setCurrentConfirmData, tonConnectUI, userWalletAddress]
   )
@@ -148,43 +149,76 @@ export const DeployForm: FC<DeployFormProps> = (props) => {
       return
     }
 
-    try {
-      setLoading(true)
-      const trx = await tonConnectUI.sendTransaction(
-        {
-          validUntil: Math.floor(Date.now() / 1000) + 180,
-          messages: currentConfirmData.messages,
-        },
-        { returnStrategy: 'none' }
-      )
-
-      if (trx.boc) {
-        setLoading(false)
-        const actionStatusData: ActionStatusData[] = [
+    if (currentDeployStep === 1) {
+      try {
+        setLoading(true)
+        const trx = await tonConnectUI.sendTransaction(
           {
-            tick: currentConfirmData.tick,
-            type: 'deploy',
-            status: 'in_progress',
-            current_value: '',
-            time: dayjs() as any,
+            validUntil: Math.floor(Date.now() / 1000) + 180,
+            messages: currentConfirmData.messages,
           },
-        ]
+          { returnStrategy: 'none' }
+        )
 
-        localStorage.setItem('action_status', JSON.stringify(actionStatusData))
-        updateRenderActionStatusData!(actionStatusData)
+        if (trx.boc) {
+          setCurrentConfirmData(null)
 
-        checkContractDeployStatus!()
+          let attempts = 0
 
-        alert(`Your Deploy application is successfully processed, waiting!`)
+          const interval = setInterval(async () => {
+            attempts++
+            console.log('try to get')
 
-        setCurrentConfirmData(null)
+            const currentTickData = await getTokenInfo(currentConfirmData.tick)
+
+            console.log(currentTickData)
+
+            if (Boolean(currentTickData?.address) || attempts >= 8) {
+              clearInterval(interval)
+              if (Boolean(currentTickData?.address)) {
+                const actionStatusData: ActionStatusData[] = [
+                  {
+                    tick: currentConfirmData.tick,
+                    type: 'deploy',
+                    status: 'in_progress',
+                    current_value: '',
+                    time: dayjs() as any,
+                  },
+                ]
+
+                localStorage.setItem(
+                  'action_status',
+                  JSON.stringify(actionStatusData)
+                )
+                updateRenderActionStatusData!(actionStatusData)
+
+                checkContractDeployStatus!()
+
+                alert(
+                  `Your Deploy application is successfully processed, waiting!`
+                )
+
+                setCurrentDeployStep((prev) => prev + 1)
+
+                setLoading(false)
+              } else {
+                setLoading(false)
+
+                alert(
+                  `Oops, something went wrong. Try to update your token metadata later.`
+                )
+              }
+            }
+          }, 10000)
+        }
+      } catch (err) {
+        setLoading(false)
       }
-    } catch (err) {
-      setLoading(false)
     }
   }, [
     checkContractDeployStatus,
     currentConfirmData,
+    currentDeployStep,
     setCurrentConfirmData,
     tonConnectUI,
     updateRenderActionStatusData,
@@ -200,6 +234,8 @@ export const DeployForm: FC<DeployFormProps> = (props) => {
     >
       {({ handleSubmit }) => (
         <S.FormWrapper>
+          <Stepper step={currentDeployStep - 1} totalSteps={2} />
+
           <S.Wrapper>{currentDeployStepForm}</S.Wrapper>
 
           {!currentConfirmData && (

@@ -31,7 +31,7 @@ export const HoldersTable: FC<HoldersTableProps> = (props) => {
     () =>
       getPaginatedTokenHoldersList(tick as string, {
         count: ITEMS_ON_PAGE,
-        offset: currentPage * ITEMS_ON_PAGE,
+        offset: currentPage === 1 ? 0 : currentPage * ITEMS_ON_PAGE,
       }),
     {
       enabled: !!tick,
@@ -54,37 +54,33 @@ export const HoldersTable: FC<HoldersTableProps> = (props) => {
         {isHoldersLoading && <S.Loader />}
         {isHoldersLoaded && (
           <div>
-            {
-              holdersList.results.map(({ balance, holder }, idx) => {
-                const holderBalancePercent = ((balance / supplied) * 100).toFixed(
-                  2
-                )
+            {holdersList.results.map(({ balance, holder }, idx) => {
+              const holderBalancePercent = ((balance / supplied) * 100).toFixed(
+                2
+              )
 
-                const currentIndex = (currentPage - 1) * ITEMS_ON_PAGE + idx + 1
+              const currentIndex = (currentPage - 1) * ITEMS_ON_PAGE + idx + 1
 
-                return (
-                  <S.TableRow key={idx}>
-                    <S.TableData>{currentIndex}</S.TableData>
-                    <S.TableData>{shortenAddress(holder)}</S.TableData>
-                    <S.TableData>{holderBalancePercent}</S.TableData>
-                    <S.TableData>{balance}</S.TableData>
-                  </S.TableRow>
-                )
-              })
-            }
+              return (
+                <S.TableRow key={idx}>
+                  <S.TableData>{currentIndex}</S.TableData>
+                  <S.TableData>{shortenAddress(holder)}</S.TableData>
+                  <S.TableData>{holderBalancePercent}</S.TableData>
+                  <S.TableData>{balance}</S.TableData>
+                </S.TableRow>
+              )
+            })}
           </div>
         )}
       </S.Table>
 
-      {
-        isHoldersLoaded && holdersList.totalPages > 1 && (
-          <Pagination
-            currentPage={currentPage}
-            onChange={handleChangePage}
-            totalPages={holdersList.totalPages - 1}
-          />
-        )
-      }
-    </S.Wrapper >
+      {isHoldersLoaded && holdersList.totalPages > 1 && (
+        <Pagination
+          currentPage={currentPage}
+          onChange={handleChangePage}
+          totalPages={holdersList.totalPages - 1}
+        />
+      )}
+    </S.Wrapper>
   )
 }
