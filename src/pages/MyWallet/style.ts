@@ -18,46 +18,10 @@ export const TopWrapperBlock = styled.div`
   flex-direction: column;
 `
 
-export const TopBlock = styled.div`
+export const LogoutBlock = styled.div`
   display: flex;
-  justify-content: center;
-  gap: 8px;
-  padding-top: 16px;
-  background-color: ${({ theme }) => theme.color.bgSecondary};
-  background-image: url('../../pages/MyWallet/assets/li_search.png');
-  background-repeat: no-repeat;
-`
-
-export const Search = styled.form`
-  display: flex;
-`
-
-export const SearchInput = styled(Input)`
-  width: 310.68px;
-  height: 42px;
-  border: none;
-  border-radius: 6px;
-  color: ${({ theme }) => theme.color.text};
-  background-color: ${({ theme }) => theme.color.bg};
-  svg {
-    path {
-      fill: ${({ theme }) => theme.color.hint};
-    }
-  }
-  input {
-    &::placeholder {
-      color: ${({ theme }) => theme.color.hint};
-    }
-    background-color: ${({ theme }) => theme.color.bg};
-
-    svg {
-      path {
-        fill {
-          color: ${({ theme }) => theme.color.hint};
-        }
-      }
-    }
-  }
+  align-items: flex-end;
+  justify-content: flex-end;
 `
 
 export const LogOut = styled.div`
@@ -80,10 +44,11 @@ export const BalanceBlock = styled.div`
 
 export const BalanceBlockInner = styled.div`
   background: url(${Vectors});
-  background-size: 100%;
-  padding-top: 23.5px;
+  background-size: cover;
+  padding-top: 10px;
   padding-bottom: 23.4px;
   padding-left: 20px;
+  padding-right: 10px;
 `
 
 export const TotlaBalance = styled.div`
@@ -195,7 +160,7 @@ export const RecieveButton = styled.button`
 
   svg {
     path {
-      stroke: ${({ theme }) => theme.color.text};
+      stroke: ${({ theme }) => theme.color.btn};
     }
   }
 `
@@ -226,7 +191,7 @@ export const SwapButton = styled.button`
 
   svg {
     path {
-      stroke: ${({ theme }) => theme.color.text};
+      stroke: ${({ theme }) => theme.color.btn};
     }
   }
 `

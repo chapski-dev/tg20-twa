@@ -11,7 +11,6 @@ import {
   SvgIconWalletTg,
   SvgLogout,
   SvgRecieveSquare,
-  SvgSearch,
 } from 'ui/icons'
 
 import { type Tab } from 'ui/TabsFilled/TabsFilled'
@@ -50,6 +49,8 @@ export const MyWallet: FC = () => {
     setIsReceiveModalOpen((prev) => !prev)
   }
 
+  const [showSwapBtn, setShowSwapBtn] = useState(false)
+
   const currentWalletContent = useMemo(() => {
     if (currentTab.value === 'assets') {
       return <MyAssets />
@@ -65,25 +66,17 @@ export const MyWallet: FC = () => {
   return (
     <S.Wrapper>
       <S.TopWrapperBlock>
-        <S.TopBlock>
-          <S.Search>
-            <S.SearchInput
-              icon={<SvgSearch />}
-              isSearchInput={false}
-              onChange={() => {}}
-              placeholder="Search tokens"
-            />
-          </S.Search>
-          <S.LogOut
-            onClick={() => {
-              tonConnectUI.disconnect()
-            }}
-          >
-            <SvgLogout />
-          </S.LogOut>
-        </S.TopBlock>
         <S.BalanceBlock>
           <S.BalanceBlockInner>
+            <S.LogoutBlock>
+              <S.LogOut
+                onClick={() => {
+                  tonConnectUI.disconnect()
+                }}
+              >
+                <SvgLogout />
+              </S.LogOut>
+            </S.LogoutBlock>
             <S.TotlaBalance>Total Balance</S.TotlaBalance>
             <S.Balance>${currentWalletBalance}</S.Balance>
             <S.InfoChange>
@@ -109,12 +102,16 @@ export const MyWallet: FC = () => {
           </S.RecieveButton>
           <S.RecieveText>Recieve</S.RecieveText>
         </S.RecieveBlockWrapper>
-        <S.SwapBlockWrapper onClick={() => navigate(AppRoutes.Swap)}>
-          <S.SwapButton>
-            <SvgArrowSwap />
-          </S.SwapButton>
-          <S.SwapText>Swap</S.SwapText>
-        </S.SwapBlockWrapper>
+        {typeof currentWalletBalance === 'number' &&
+        currentWalletBalance > 0 &&
+        showSwapBtn ? (
+          <S.SwapBlockWrapper onClick={() => navigate(AppRoutes.Swap)}>
+            <S.SwapButton>
+              <SvgArrowSwap />
+            </S.SwapButton>
+            <S.SwapText>Swap</S.SwapText>
+          </S.SwapBlockWrapper>
+        ) : null}
       </S.WalletFunctions>
       <S.Line />
 
