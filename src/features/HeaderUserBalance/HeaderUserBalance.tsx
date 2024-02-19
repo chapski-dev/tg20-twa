@@ -12,9 +12,9 @@ export const HeaderUserBalance: FC = () => {
   const navigate = useNavigate()
 
   return (
-    <S.Wrapper>
+    <S.Wrapper onClick={() => navigate(AppRoutes.MyWallet)}>
       <S.SvgWrapper>
-        <S.SvgWallet onClick={() => navigate(AppRoutes.MyWallet)} />
+        <S.SvgWallet />
       </S.SvgWrapper>
       <S.SumContainer>
         <SvgToncoinIcon />

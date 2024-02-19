@@ -1,5 +1,5 @@
 import { FC, useContext, useEffect, useState } from 'react'
-import { SendTransactionRequest } from '@tonconnect/ui-react'
+import { SendTransactionRequest, useTonAddress } from '@tonconnect/ui-react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { AppRoutes } from 'constants/app'
 import { BackButton } from 'features/BackButton'
@@ -28,9 +28,12 @@ export const Deploy: FC = () => {
   const [currentConfirmData, setCurrentConfirmData] =
     useState<CurrentConfirmData | null>(null)
   const [intervalFreeze, setIntervalFreeze] = useState(0)
+
   const fromSearchParam = searchParams.get('from')
 
   const { renderActionStatusData } = useContext(ActionsStatusContext)
+
+  const userWalletAddress = useTonAddress()
 
   useEffect(() => {
     if (intervalFreeze && intervalFreeze > 0) {
@@ -46,7 +49,7 @@ export const Deploy: FC = () => {
 
   return (
     <>
-      <HeaderUserBalance />
+      {userWalletAddress && <HeaderUserBalance />}
       <BackButton
         onClick={() =>
           fromSearchParam === 'start_param'

@@ -98,3 +98,8 @@ export type TopTokenFilter =
   | 'trending'
   | 'holders'
   | 'usage'
+
+export type ValidateImageStatus = {
+  status: string
+  mime: string
+}

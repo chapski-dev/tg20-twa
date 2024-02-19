@@ -1,5 +1,6 @@
 import { ChangeEvent, FC, useRef, useState } from 'react'
 import { useField } from 'formik'
+import { validateImage } from 'api'
 import { SvgExit, SvgPlus } from 'ui/icons'
 import * as S from './style'
 
@@ -18,7 +19,7 @@ export const ImageInput: FC<FormInputProps> = (props) => {
   const [field, meta, helpers] = useField(name)
   const { value, ...restFieldParams } = field
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleChange = async (e: ChangeEvent<HTMLInputElement>) => {
     if (disabled) {
       return
     }
@@ -29,7 +30,19 @@ export const ImageInput: FC<FormInputProps> = (props) => {
 
     let reader = new FileReader()
     reader.readAsDataURL(file)
-    reader.onload = () => helpers.setValue(reader.result)
+    reader.onload = async () => {
+      const validatedImageData = await validateImage(file)
+
+      if (validatedImageData.status === 'Error') {
+        alert(validatedImageData.mime)
+
+        setFileUrl('')
+
+        return
+      }
+
+      helpers.setValue(reader.result)
+    }
   }
 
   const onClear = () => {
