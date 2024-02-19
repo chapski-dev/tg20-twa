@@ -9,6 +9,7 @@ export const Wrapper = styled.div`
   gap: 10px;
   padding: 5px 8px;
   background-color: ${({ theme }) => theme.color.bg};
+  cursor: pointer;
 `
 
 export const Text = styled(UIText)`
@@ -33,7 +34,6 @@ export const SumContainer = styled.div`
   }
 `
 export const SvgWrapper = styled.div`
-  cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
