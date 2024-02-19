@@ -1,8 +1,10 @@
 import { FC, useCallback } from 'react'
 import { useTonAddress } from '@tonconnect/ui-react'
+import Skeleton from 'react-loading-skeleton'
 import { useQuery } from 'react-query'
 import { getTransfersHistory } from 'api'
 import { TransferHistoryType } from 'api/types'
+import { theme } from 'assets/style/theme'
 import { Container } from 'ui/Container/Container'
 import { TransferCard } from 'ui/TransferCard/TransferCard'
 import { transformTransferHistoryByDate } from 'utils/transformTransferHistoryByDate'
@@ -22,10 +24,6 @@ export const MyTransactions: FC = () => {
       []
     ),
   })
-
-  if (isTransferHistoryLoading) {
-    return <S.Loader />
-  }
 
   return (
     <Container>
@@ -60,7 +58,16 @@ export const MyTransactions: FC = () => {
             You dont have any transactions
           </S.DontHaveTransfersBlock>
         )}
+        {isTransferHistoryLoading && <SkeletonMyTrans />}
       </S.Wrapper>
     </Container>
   )
 }
+
+export const SkeletonMyTrans = () => (
+  <S.SkeletonTrans>
+    <div style={{ width: '65%' }}>
+      <Skeleton height={'26px'} />
+    </div>
+  </S.SkeletonTrans>
+)

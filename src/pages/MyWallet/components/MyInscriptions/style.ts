@@ -10,6 +10,15 @@ export const Wrapper = styled.div`
   align-self: center;
 `
 
+export const SkeletonTrans = styled.div`
+  height: 26px;
+  border-radius: 10px;
+  padding: 34px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
 export const TopBlockWrapper = styled.div`
   display: flex;
   gap: 12px;

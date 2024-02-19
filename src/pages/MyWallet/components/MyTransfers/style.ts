@@ -7,6 +7,14 @@ export const Wrapper = styled.div`
   flex-direction: column;
   gap: 24px;
 `
+export const SkeletonTrans = styled.div`
+  height: 26px;
+  border-radius: 10px;
+  padding: 34px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
 
 export const Loader = styled(UILoader)`
   width: 100%;

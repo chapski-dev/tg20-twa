@@ -8,6 +8,13 @@ export const Wrapper = styled.div`
   width: 100%;
 `
 
+export const Wrap = styled.div`
+  display: flex;
+  max-height: 91px;
+  height: 91px;
+  flex: 1 1 90%;
+`
+
 export const PositionsWrapper = styled.div`
   display: flex;
   flex-direction: column;

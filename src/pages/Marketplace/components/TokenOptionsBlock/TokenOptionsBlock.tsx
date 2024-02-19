@@ -1,5 +1,6 @@
 import React, { FC, useCallback, useState } from 'react'
 import { fromNano } from '@ton/core'
+import Skeleton from 'react-loading-skeleton'
 import { useQuery } from 'react-query'
 import {
   getCurrentMaketplaceTicks,
@@ -8,6 +9,7 @@ import {
 } from 'api'
 import { MarketplaceTokenStats } from 'api/types'
 // import { useDebounce } from 'hooks/useDebounce/useDebounce'
+import { theme } from 'assets/style/theme'
 import { useTelegram } from 'hooks/useTelegram/useTelegram'
 import { MarketplaceTabsValueEnum } from 'pages/Marketplace/Marketplace'
 import { Accordion } from 'ui'
@@ -40,7 +42,7 @@ export const TokenOptionsBlock: FC<TokenOptionsBlockProps> = (props) => {
     onShowPriceIn,
   } = props
 
-  const { data: marketPlaceTicks, isSuccess: isMarketplaceTicksLoaded } =
+  const { data: marketplaceTicks, isSuccess: isMarketplaceTicksLoaded } =
     useQuery(['currentMarketplaceTicks'], () => getCurrentMaketplaceTicks(), {
       select: (data: string[]) =>
         data.map((item: string) => ({ label: item, value: item })),
@@ -77,12 +79,14 @@ export const TokenOptionsBlock: FC<TokenOptionsBlockProps> = (props) => {
   return (
     <S.Wrapper>
       <S.TokenSelectContentWrapper>
-        {isMarketplaceTicksLoaded && (
+        {isMarketplaceTicksLoaded ? (
           <S.SelectWrap
             onChange={(event) => onTokenChange(event.value)}
-            options={marketPlaceTicks}
-            value={marketPlaceTicks.find((el) => el.value === tick) as any}
+            options={marketplaceTicks || []}
+            value={marketplaceTicks?.find((el) => el.value === tick) as any}
           />
+        ) : (
+          <SkeletonSelect />
         )}
         <S.Button children="List order" onClick={onListing} />
       </S.TokenSelectContentWrapper>
@@ -168,37 +172,32 @@ const Listings: FC<ListingsProps> = (props) => {
       ),
     }
   )
-
-  const isLoading = isMarketplaceGramStatsLoading && isCurrentTickDataLoading
+  const isLoading = isMarketplaceGramStatsLoading || isCurrentTickDataLoading
 
   return (
     <>
       <Accordion height="210px" title="Inscription Details">
         <S.InfoWrapper>
-          {isLoading ? (
-            <S.Loader />
-          ) : (
-            marketplaceGramStats?.map(({ label, value, description }, i) => (
-              <S.InfoBlockWrapper key={label}>
-                <S.Label $isAccent>{label}</S.Label>
-                <S.BalanceBlock>
-                  {i !== marketplaceGramStats?.length - 1 ? (
-                    <>
-                      <SvgToncoinIcon />
-                      {Number(value)}
-                    </>
-                  ) : (
-                    <S.Link
-                      children={value}
-                      href={`https://tonviewer.com/${value}`}
-                      target="_blank"
-                    />
-                  )}
-                </S.BalanceBlock>
-                <S.Label children={description} />
-              </S.InfoBlockWrapper>
-            ))
-          )}
+          {marketplaceGramStats?.map(({ label, value, description }, i) => (
+            <S.InfoBlockWrapper key={label}>
+              <S.Label $isAccent>{label}</S.Label>
+              <S.BalanceBlock>
+                {i !== marketplaceGramStats?.length - 1 ? (
+                  <>
+                    <SvgToncoinIcon />
+                    {Number(value)}
+                  </>
+                ) : (
+                  <S.Link
+                    children={value}
+                    href={`https://tonviewer.com/${value}`}
+                    target="_blank"
+                  />
+                )}
+              </S.BalanceBlock>
+              <S.Label children={description} />
+            </S.InfoBlockWrapper>
+          ))}
         </S.InfoWrapper>
       </Accordion>
 
@@ -212,7 +211,7 @@ const Listings: FC<ListingsProps> = (props) => {
 
       <S.Flex>
         {isLoading ? (
-          <S.Loader />
+          <SkeletonSelect />
         ) : (
           <S.Block>
             <S.BlockTitle>
@@ -225,11 +224,16 @@ const Listings: FC<ListingsProps> = (props) => {
             />
           </S.Block>
         )}
-        <Select
-          onChange={(event) => onSortSelectChange(event.value)}
-          options={sortOptions}
-          value={sortOptions.find((el) => el.value === tick) as any}
-        />
+
+        {isLoading ? (
+          <SkeletonSelect />
+        ) : (
+          <Select
+            onChange={(event) => onSortSelectChange(event.value)}
+            options={sortOptions}
+            value={sortOptions.find((el) => el.value === tick) as any}
+          />
+        )}
       </S.Flex>
     </>
   )
@@ -252,6 +256,7 @@ const MyOrdres: FC<MyOrdresProps> = (props) => {
         options={sortOptions}
         value={sortOptions.find((el) => el.value === tick) as any}
       />
+
       <ButtonGroup activeFilter={priceFilter as any} onClick={onShowPriceIn} />
     </S.ActivitiesWrapper>
   )
@@ -313,3 +318,11 @@ const sortOptions = [
     value: 'total_cost_asc',
   },
 ]
+
+export const SkeletonSelect = () => (
+  <S.Wrap>
+    <div style={{ width: '100%' }}>
+      <Skeleton height={'100%'} baseColor={theme.color.bg} />
+    </div>
+  </S.Wrap>
+)
