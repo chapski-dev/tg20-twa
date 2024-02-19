@@ -39,7 +39,7 @@ export const MainBlock = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 14.34px 50px 26.46px 50px;
+  padding: 26px 50px 26.46px 50px;
   background-color: ${({ theme }) => theme.color.bg};
 `
 
@@ -56,6 +56,7 @@ export const IconsBlock = styled.div`
   flex-direction: column;
   background-color: ${({ theme }) => theme.color.bg};
   gap: 6.51px;
+  padding-top: 10px;
 `
 
 export const Icons = styled.div`

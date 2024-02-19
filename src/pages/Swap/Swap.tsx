@@ -1,5 +1,6 @@
 import React, { FC, useState } from 'react'
 
+import { SvgIconsFirst, SvgIconsSecound } from 'ui/icons'
 import firstItems from './assets/items.png'
 import secoundItems from './assets/items2.png'
 import * as S from './style'
@@ -22,10 +23,10 @@ export const Swap: FC = () => {
         </S.MainBlock>
         <S.IconsBlock>
           <S.Icons>
-            <img alt="first-items" src={firstItems} />
+            <SvgIconsFirst />
           </S.Icons>
           <S.SecoundIcons>
-            <img alt="secound-items" src={secoundItems} />
+            <SvgIconsSecound />
           </S.SecoundIcons>
         </S.IconsBlock>
       </S.Wrapper>
