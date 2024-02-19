@@ -12,7 +12,7 @@ const Stepper: FC<StepperProps> = (props) => {
   return (
     <S.Wrapper>
       <S.Label>
-        {step} of {totalSteps}
+        {step + 1} of {totalSteps}
       </S.Label>
       <S.StepperContainer>
         {[...Array(totalSteps)].map((_, index) => (
