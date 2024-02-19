@@ -14,10 +14,7 @@ import { TransactionStatusModal } from 'ui/TransactionStatusModal/TransactionSta
 import { TokenOptionsBlock } from './components'
 import { ActivityDetailsPopup } from './components/ActivityDetailsPopup/ActivityDetailsPopup'
 import { BuyLotPopup } from './components/BuyLotPopup/BuyLotPopup'
-import {
-  CancelLotPopup,
-  SkeletCancelPopup,
-} from './components/CancelLotPopup/CancelLotPopup'
+import { CancelLotPopup } from './components/CancelLotPopup/CancelLotPopup'
 import { ConfirmLotPopup } from './components/ConfirmLotPopup/ConfirmLotPopup'
 import { Tabs } from './components/Tab/Tab'
 import * as S from './style'
