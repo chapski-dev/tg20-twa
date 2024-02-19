@@ -7,6 +7,7 @@ import { getTokenWalletBalance } from 'api'
 import { LotSort, LotSortDirection } from 'api/types'
 import { HeaderUserBalance } from 'features/HeaderUserBalance'
 import { MainButton } from 'features/MainButton'
+import { useDebounce } from 'hooks/useDebounce/useDebounce'
 import { useTelegram } from 'hooks/useTelegram/useTelegram'
 import { type Tab } from 'ui/Tabs/Tabs'
 import { TransactionStatusModal } from 'ui/TransactionStatusModal/TransactionStatusModal'
@@ -80,10 +81,18 @@ export const Marketplace: FC = () => {
 
   const [priceFilter, setPriceFilter] = useState<'TON' | 'USD'>('TON')
 
+  const [searchedValue, setSearchedValue] = useState<string>('')
+
+  const debauncedSearchValue = useDebounce(searchedValue)
+
   const onShowPriceIn = () =>
     setPriceFilter((prevSt) => (prevSt === 'TON' ? 'USD' : 'TON'))
 
   const { currentWalletBalance } = useTelegram()
+
+  const updateSearchedValue = useCallback((value: string) => {
+    setSearchedValue(value)
+  }, [])
 
   const { data: currentWalletTickerData } = useQuery(
     ['currentTickerBalance', address, tick],
@@ -206,6 +215,7 @@ export const Marketplace: FC = () => {
           <ListedLotsTab
             direction={direction}
             onBuyClick={handleBuyClick}
+            searchedId={debauncedSearchValue}
             sort={sort}
             tick={tick}
             userBalance={currentWalletBalance}
@@ -245,6 +255,7 @@ export const Marketplace: FC = () => {
     [
       address,
       currentWalletBalance,
+      debauncedSearchValue,
       direction,
       handleActivityDetailsClick,
       handleBuyClick,
@@ -308,7 +319,9 @@ export const Marketplace: FC = () => {
 
           <TokenOptionsBlock
             activeTab={activeTab}
+            debaunceSearchValue={searchedValue}
             onListing={handleConfirmLotClick}
+            onSearchChange={updateSearchedValue}
             onShowPriceIn={onShowPriceIn}
             onSortSelectChange={handleSortSelectChange}
             onTokenChange={setTick}

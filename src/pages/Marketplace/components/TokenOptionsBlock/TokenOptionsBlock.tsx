@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useState } from 'react'
+import React, { FC, useCallback } from 'react'
 import { fromNano } from '@ton/core'
 import Skeleton from 'react-loading-skeleton'
 import { useQuery } from 'react-query'
@@ -8,7 +8,6 @@ import {
   getTokenInfo,
 } from 'api'
 import { MarketplaceTokenStats } from 'api/types'
-// import { useDebounce } from 'hooks/useDebounce/useDebounce'
 import { theme } from 'assets/style/theme'
 import { useTelegram } from 'hooks/useTelegram/useTelegram'
 import { MarketplaceTabsValueEnum } from 'pages/Marketplace/Marketplace'
@@ -29,6 +28,8 @@ type TokenOptionsBlockProps = {
   activeTab: MarketplaceTabsValueEnum
   priceFilter: 'TON' | 'USD'
   onShowPriceIn: () => void
+  onSearchChange: (value: string) => void
+  debaunceSearchValue: string
 }
 
 export const TokenOptionsBlock: FC<TokenOptionsBlockProps> = (props) => {
@@ -40,6 +41,8 @@ export const TokenOptionsBlock: FC<TokenOptionsBlockProps> = (props) => {
     activeTab,
     priceFilter,
     onShowPriceIn,
+    onSearchChange,
+    debaunceSearchValue,
   } = props
 
   const { data: marketplaceTicks, isSuccess: isMarketplaceTicksLoaded } =
@@ -51,7 +54,14 @@ export const TokenOptionsBlock: FC<TokenOptionsBlockProps> = (props) => {
   const renderSpecificOption = () => {
     switch (activeTab) {
       case MarketplaceTabsValueEnum.LISTED:
-        return <Listings onSortSelectChange={onSortSelectChange} tick={tick} />
+        return (
+          <Listings
+            debaunceSearchValue={debaunceSearchValue}
+            onSearchChange={onSearchChange}
+            onSortSelectChange={onSortSelectChange}
+            tick={tick}
+          />
+        )
       case MarketplaceTabsValueEnum.ACTIVITIES:
         return (
           <Activities
@@ -98,17 +108,18 @@ export const TokenOptionsBlock: FC<TokenOptionsBlockProps> = (props) => {
 type ListingsProps = {
   tick: string
   onSortSelectChange: (sortValue: string) => void
+  onSearchChange: (searchValue: string) => void
+  debaunceSearchValue: string
 }
 
 const Listings: FC<ListingsProps> = (props) => {
-  const { tick, onSortSelectChange } = props
-
-  const [searchedValue, setSearchedValue] = useState<string>('')
+  const { tick, onSortSelectChange, onSearchChange, debaunceSearchValue } =
+    props
 
   // const debauncedSearchValue = useDebounce(searchedValue)
 
   const onChangeInput = (evt: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchedValue(evt.target.value)
+    onSearchChange(evt.target.value)
   }
 
   const { tonPrice } = useTelegram()
@@ -206,7 +217,7 @@ const Listings: FC<ListingsProps> = (props) => {
         isSearchInput={false}
         onChange={onChangeInput}
         placeholder="Search order by number"
-        value={searchedValue}
+        value={debaunceSearchValue}
       />
 
       <S.Flex>
@@ -322,7 +333,7 @@ const sortOptions = [
 export const SkeletonSelect = () => (
   <S.Wrap>
     <div style={{ width: '100%' }}>
-      <Skeleton height={'100%'} baseColor={theme.color.bg} />
+      <Skeleton baseColor={theme.color.bg} height={'100%'} />
     </div>
   </S.Wrap>
 )

@@ -26,10 +26,10 @@ export const ReceivePopup: FC<ReceivePopupProps> = ({ onClose }) => {
       <S.WrapperModal>
         <S.QrCodeWrapper>
           <QRCodeSVG
-            size={220}
-            value={userWalletAddress}
             bgColor={theme.color.bg}
             fgColor={theme.color.bgSecondary}
+            size={220}
+            value={userWalletAddress}
           />
           <S.Label>{userWalletAddress}</S.Label>
         </S.QrCodeWrapper>

@@ -1,8 +1,8 @@
 import { FC, useCallback, useEffect, useMemo, useState } from 'react'
 import { useTonAddress } from '@tonconnect/ui-react'
 import { useInView } from 'react-intersection-observer'
-import { useInfiniteQuery } from 'react-query'
-import { getPaginatedListedLots } from 'api'
+import { useInfiniteQuery, useQuery } from 'react-query'
+import { getPaginatedListedLots, getSearchedLot } from 'api'
 import { LotSort, LotSortDirection, MarketplaceLot } from 'api/types'
 import { useTelegram } from 'hooks/useTelegram/useTelegram'
 import { LotInfo } from 'pages/Marketplace/Marketplace'
@@ -16,12 +16,13 @@ type ListedLotsTabProps = {
   direction: LotSortDirection
   userBalance?: number
   onBuyClick: (lotInfo: LotInfo) => void
+  searchedId: string
 }
 
 const ITEMS_ON_PAGE = 50
 
 export const ListedLotsTab: FC<ListedLotsTabProps> = (props) => {
-  const { onBuyClick, tick, sort, direction } = props
+  const { onBuyClick, tick, sort, direction, searchedId } = props
 
   const { tonPrice } = useTelegram()
 
@@ -45,8 +46,9 @@ export const ListedLotsTab: FC<ListedLotsTabProps> = (props) => {
         direction: direction,
         offset: pageParam * ITEMS_ON_PAGE,
         sort: sort,
+        id: searchedId,
       }),
-    [direction, sort, tick]
+    [direction, searchedId, sort, tick]
   )
 
   const {
@@ -57,19 +59,37 @@ export const ListedLotsTab: FC<ListedLotsTabProps> = (props) => {
     isError: isListedLotsDataError,
     isSuccess: isListedLotsDataLoaded,
     isFetchingNextPage: isListedLotsDataNextPageFetching,
-  } = useInfiniteQuery(['listed-lots', tick, sort, direction], getListedLots, {
-    getNextPageParam: (lastPage, pages) => {
-      const { total } = lastPage
-      const currentTotalItems = pages.reduce(
-        (acc, page) => acc + page.items.length,
-        0
-      )
+  } = useInfiniteQuery(
+    ['listed-lots', tick, sort, direction, searchedId],
+    getListedLots,
+    {
+      getNextPageParam: (lastPage, pages) => {
+        const { total } = lastPage
+        const currentTotalItems = pages.reduce(
+          (acc, page) => acc + page.items.length,
+          0
+        )
 
-      const isCurrentLessTotal = currentTotalItems < total
+        const isCurrentLessTotal = currentTotalItems < total
 
-      return isCurrentLessTotal ? currentTotalItems / ITEMS_ON_PAGE : undefined
-    },
-  })
+        return isCurrentLessTotal
+          ? currentTotalItems / ITEMS_ON_PAGE
+          : undefined
+      },
+    }
+  )
+
+  const {
+    data: searchedLot,
+    isLoading: isSearchedMarketplaceLotLoading,
+    isSuccess: isSearchedMarketplaceLotLoaded,
+  } = useQuery(
+    ['searched-marketplace-lot', searchedId],
+    () => getSearchedLot(searchedId),
+    {
+      enabled: !!searchedId,
+    }
+  )
 
   const { ref, inView } = useInView({
     threshold: 0,
@@ -89,6 +109,18 @@ export const ListedLotsTab: FC<ListedLotsTabProps> = (props) => {
     return listedLotsData.pages.flatMap((page) => page.items)
   }, [listedLotsData])
 
+  const isLoading = useMemo(
+    () =>
+      isListedLotsDataLoading ||
+      !isWalletConnectionEstablished ||
+      isSearchedMarketplaceLotLoading,
+    [
+      isListedLotsDataLoading,
+      isSearchedMarketplaceLotLoading,
+      isWalletConnectionEstablished,
+    ]
+  )
+
   if (isListedLotsDataError) {
     return (
       <S.Wrapper>
@@ -97,38 +129,72 @@ export const ListedLotsTab: FC<ListedLotsTabProps> = (props) => {
     )
   }
 
+  if (searchedId && !searchedLot?.id) {
+    return (
+      <S.Wrapper>
+        <S.ErrorText>Lot with this id does not exist</S.ErrorText>
+      </S.Wrapper>
+    )
+  }
+
   if (!tonPrice) {
     return <S.Loader />
   }
 
-  const isLoading = isListedLotsDataLoading || !isWalletConnectionEstablished
-
   return (
-    <S.LotCardsWrapper>
-      {isLoading
-        ? [1, 2, 3, 4].map(() => <SkeletonLotCard />)
-        : listedLots?.map((lot: MarketplaceLot, index) => (
-            <LotCard
-              key={index}
-              amount={lot.amount}
-              lotId={lot.id}
-              lotPrice={lot.price}
-              lotTotal={lot.total}
-              onBuyClick={(pricesData) => {
-                onBuyClick({
-                  address: lot.address,
-                  amount: lot.amount,
-                  buyer: lot.buyer,
-                  closedAt: lot.closed_at,
-                  createdAt: lot.created_at,
-                  seller: lot.seller,
-                  ...pricesData,
-                })
-              }}
-              tick={lot.tick}
-            />
+    <>
+      <S.LotCardsWrapper>
+        {isLoading && [1, 2, 3, 4].map(() => <SkeletonLotCard />)}
+
+        {isListedLotsDataLoaded &&
+          listedLots?.map((lot: MarketplaceLot, index) => (
+            <>
+              <LotCard
+                key={index}
+                amount={lot.amount}
+                lotId={lot.id}
+                lotPrice={lot.price}
+                lotTotal={lot.total}
+                onBuyClick={(pricesData) => {
+                  onBuyClick({
+                    address: lot.address,
+                    amount: lot.amount,
+                    buyer: lot.buyer,
+                    closedAt: lot.closed_at,
+                    createdAt: lot.created_at,
+                    seller: lot.seller,
+                    ...pricesData,
+                  })
+                }}
+                tick={lot.tick}
+              />
+              <div ref={ref} />
+            </>
           ))}
-      <div ref={ref} />
-    </S.LotCardsWrapper>
+      </S.LotCardsWrapper>
+
+      {isSearchedMarketplaceLotLoaded && searchedLot && searchedId && (
+        <S.LotCardsWrapper>
+          <LotCard
+            amount={searchedLot.amount}
+            lotId={searchedLot.id}
+            lotPrice={searchedLot.price}
+            lotTotal={searchedLot.total}
+            onBuyClick={(pricesData) => {
+              onBuyClick({
+                address: searchedLot.address,
+                amount: searchedLot.amount,
+                buyer: searchedLot.buyer,
+                closedAt: searchedLot.closed_at,
+                createdAt: searchedLot.created_at,
+                seller: searchedLot.seller,
+                ...pricesData,
+              })
+            }}
+            tick={searchedLot.tick}
+          />
+        </S.LotCardsWrapper>
+      )}
+    </>
   )
 }

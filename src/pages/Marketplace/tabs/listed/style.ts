@@ -59,8 +59,7 @@ export const EndLoader = styled(UILoader)`
 `
 
 export const ErrorText = styled.span`
-  font-size: 20px;
-  font-weight: 600;
-  line-height: 24px;
+  font-size: 16px;
+  font-weight: 400;
   color: ${({ theme }) => theme.color.text};
 `

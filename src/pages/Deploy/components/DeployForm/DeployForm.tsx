@@ -1,14 +1,11 @@
-import { FC, useCallback, useContext, useMemo, useState } from 'react'
+import { FC, useCallback, useMemo, useState } from 'react'
 import { Address, TonClient, beginCell, fromNano, toNano } from '@ton/ton'
 import { useTonAddress, useTonConnectUI } from '@tonconnect/ui-react'
-import dayjs from 'dayjs'
 import { Formik, FormikConfig } from 'formik'
 import { getTokenInfo } from 'api'
 import { TON_CLIENT_URL } from 'constants/api'
 import { CurrentConfirmData } from 'pages/Deploy/Deploy'
 import { getValidationSchema } from 'pages/Deploy/validationSchema'
-import { ActionStatusData } from 'pages/Inscribe/types'
-import { ActionsStatusContext } from 'providers/ActionsStatusProvider'
 import { Button } from 'ui'
 import Stepper from 'ui/Stepper/Stepper'
 import { DeployStep1, DeployStep2 } from './components'
@@ -26,9 +23,6 @@ type DeployFormProps = {
 
 export const DeployForm: FC<DeployFormProps> = (props) => {
   const { currentConfirmData, intervalFreeze, setCurrentConfirmData } = props
-
-  const { updateRenderActionStatusData, checkContractDeployStatus } =
-    useContext(ActionsStatusContext)
 
   const [loading, setLoading] = useState<boolean>(false)
 
@@ -187,28 +181,6 @@ export const DeployForm: FC<DeployFormProps> = (props) => {
             if (Boolean(currentTickData?.address) || attempts >= 8) {
               clearInterval(interval)
               if (Boolean(currentTickData?.address)) {
-                const actionStatusData: ActionStatusData[] = [
-                  {
-                    tick: currentConfirmData.tick,
-                    type: 'deploy',
-                    status: 'in_progress',
-                    current_value: '',
-                    time: dayjs() as any,
-                  },
-                ]
-
-                localStorage.setItem(
-                  'action_status',
-                  JSON.stringify(actionStatusData)
-                )
-                updateRenderActionStatusData!(actionStatusData)
-
-                checkContractDeployStatus!()
-
-                alert(
-                  `Your Deploy application is successfully processed, waiting!`
-                )
-
                 setCurrentDeployStep((prev) => prev + 1)
 
                 setLoading(false)
@@ -232,12 +204,10 @@ export const DeployForm: FC<DeployFormProps> = (props) => {
       setLoading(false)
     }
   }, [
-    checkContractDeployStatus,
     currentConfirmData,
     currentDeployStep,
     setCurrentConfirmData,
     tonConnectUI,
-    updateRenderActionStatusData,
   ])
 
   return (

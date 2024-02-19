@@ -94,6 +94,7 @@ export const getPaginatedListedLots = async (
     offset: number
     sort: ApiTypes.LotSort
     direction: ApiTypes.LotSortDirection
+    id: string
   }
 ) => {
   const { data } =
@@ -174,6 +175,14 @@ export const validateImage = async (imageData: File) => {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
     }
+  )
+
+  return data
+}
+
+export const getSearchedLot = async (lotId: string) => {
+  const { data } = await AXIOS_INSTANCE.get(
+    `${ApiRoutes.SearchedOrder}/${lotId}`
   )
 
   return data

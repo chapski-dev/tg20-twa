@@ -69,7 +69,11 @@ root.render(
               <ActionsStatusProvider>
                 <TelegramProvider>
                   <GlobalStyle />
-                  <SkeletonTheme baseColor={theme.color.bgSecondary} duration={3} highlightColor={'#ffffff30'}>
+                  <SkeletonTheme
+                    baseColor={theme.color.bgSecondary}
+                    duration={3}
+                    highlightColor={'#ffffff30'}
+                  >
                     <App />
                   </SkeletonTheme>
                 </TelegramProvider>

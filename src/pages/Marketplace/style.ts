@@ -10,7 +10,7 @@ export const Wrapper = styled.div`
   gap: 16px;
   background: ${({ theme }) => theme.color.bgSecondary};
   color: ${({ theme }) => theme.color.bg};
-  padding-top: 24px;
+  padding: 24px 0;
 `
 
 export const Label = styled.span`
