@@ -164,3 +164,17 @@ export const getCurrentMaketplaceTicks = async () => {
 
   return data
 }
+
+export const validateImage = async (imageData: File) => {
+  const { data } = await AXIOS_INSTANCE.post<ApiTypes.ValidateImageStatus>(
+    ApiRoutes.ImageValidate,
+    imageData,
+    {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    }
+  )
+
+  return data
+}

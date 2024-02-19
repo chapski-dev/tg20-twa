@@ -18,4 +18,5 @@ export const ApiRoutes = {
   MarketplaceStats: '/stats/marketplace',
   SearchTokens: '/search',
   MaketplaceTicks: '/marketplace_ticks',
+  ImageValidate: '/image',
 } as const

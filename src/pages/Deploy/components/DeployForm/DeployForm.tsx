@@ -102,44 +102,58 @@ export const DeployForm: FC<DeployFormProps> = (props) => {
         localStorage.removeItem(values.tick.toString())
       }
 
-      if (currentDeployStep === 1) {
-        const deployPayload = `data:application/json,{"p":"gram-20","op":"deploy","tick":"${values.tick}","max":"${values.amount}","limit":"${values.limit}","start":"0","interval":"10","penalty":"10"}`
-
-        setTimeout(async () => {
-          try {
-            const currentUserBalance = await tonClient.getBalance(
-              Address.parse(userWalletAddress)
-            )
-
-            const tokenDeployBody = beginCell()
-              .storeUint(zeroOpcode, 32)
-              .storeStringTail(deployPayload)
-              .endCell()
-
-            setCurrentConfirmData({
-              fee: '0',
-              tick: values.tick,
-              messages: [
-                {
-                  address: masterAddress,
-                  amount: toNano('0.1').toString(),
-                  payload: tokenDeployBody.toBoc().toString('base64'),
-                },
-              ],
-              balance: Number(fromNano(currentUserBalance)),
-              interval: null,
-            })
-
-            setLoading(false)
-          } catch (err) {
-            setLoading(false)
-
-            console.log(err)
-          }
-        }, 1000)
-
-        return
+      const currentDeployData: Record<
+        number,
+        { payload: string; amount: string }
+      > = {
+        1: {
+          payload: `data:application/json,{"p":"gram-20","op":"deploy","tick":"${values.tick}","max":"${values.amount}","limit":"${values.limit}","start":"0","interval":"10","penalty":"10"}`,
+          amount: '0.1',
+        },
+        2: {
+          payload: `data:application/json,{"p":"gram-20","op":"metadata","tick":"${
+            values.tick
+          }","image":"${values.file.substring(
+            'data:image/png;base64,'.length
+          )}"}`,
+          amount: '0.05',
+        },
       }
+
+      setTimeout(async () => {
+        try {
+          const currentUserBalance = await tonClient.getBalance(
+            Address.parse(userWalletAddress)
+          )
+
+          const tokenDeployBody = beginCell()
+            .storeUint(zeroOpcode, 32)
+            .storeStringTail(currentDeployData[currentDeployStep].payload)
+            .endCell()
+
+          setCurrentConfirmData({
+            fee: currentDeployData[currentDeployStep].amount,
+            tick: values.tick,
+            messages: [
+              {
+                address: masterAddress,
+                amount: toNano(
+                  currentDeployData[currentDeployStep].amount
+                ).toString(),
+                payload: tokenDeployBody.toBoc().toString('base64'),
+              },
+            ],
+            balance: Number(fromNano(currentUserBalance)),
+            interval: null,
+          })
+
+          setLoading(false)
+        } catch (err) {
+          setLoading(false)
+
+          console.log(err)
+        }
+      }, 1000)
     },
     [currentDeployStep, setCurrentConfirmData, tonConnectUI, userWalletAddress]
   )
@@ -149,29 +163,26 @@ export const DeployForm: FC<DeployFormProps> = (props) => {
       return
     }
 
-    if (currentDeployStep === 1) {
-      try {
-        setLoading(true)
-        const trx = await tonConnectUI.sendTransaction(
-          {
-            validUntil: Math.floor(Date.now() / 1000) + 180,
-            messages: currentConfirmData.messages,
-          },
-          { returnStrategy: 'none' }
-        )
+    try {
+      setLoading(true)
+      const trx = await tonConnectUI.sendTransaction(
+        {
+          validUntil: Math.floor(Date.now() / 1000) + 180,
+          messages: currentConfirmData.messages,
+        },
+        { returnStrategy: 'none' }
+      )
 
-        if (trx.boc) {
+      if (trx.boc) {
+        if (currentDeployStep === 1) {
           setCurrentConfirmData(null)
 
           let attempts = 0
 
           const interval = setInterval(async () => {
             attempts++
-            console.log('try to get')
 
             const currentTickData = await getTokenInfo(currentConfirmData.tick)
-
-            console.log(currentTickData)
 
             if (Boolean(currentTickData?.address) || attempts >= 8) {
               clearInterval(interval)
@@ -210,10 +221,15 @@ export const DeployForm: FC<DeployFormProps> = (props) => {
               }
             }
           }, 10000)
+
+          return
         }
-      } catch (err) {
+
+        alert('Your image successfully uploaded!')
         setLoading(false)
       }
+    } catch (err) {
+      setLoading(false)
     }
   }, [
     checkContractDeployStatus,
@@ -244,7 +260,11 @@ export const DeployForm: FC<DeployFormProps> = (props) => {
               className="button"
               isDisabled={intervalFreeze !== null && intervalFreeze > 0}
               isLoading={loading}
-              onClick={handleSubmit}
+              onClick={
+                userWalletAddress
+                  ? () => handleSubmit()
+                  : () => tonConnectUI.openModal()
+              }
             />
           )}
           {currentConfirmData !== null && (
@@ -253,6 +273,7 @@ export const DeployForm: FC<DeployFormProps> = (props) => {
               isLoading={loading}
               onClose={() => setCurrentConfirmData(null)}
               onConfirm={signConfirmTransaction}
+              type={currentDeployStep === 1 ? 'deploy' : 'metadata'}
               userBalance={currentConfirmData.balance}
             />
           )}
