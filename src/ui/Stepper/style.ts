@@ -1,5 +1,11 @@
 import styled from 'styled-components'
 
+export const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+`
+
 export const StepperContainer = styled.div`
   display: flex;
   justify-content: center;
@@ -13,4 +19,10 @@ export const Step = styled.div<{ isActive: boolean }>`
   flex: 1;
   background-color: ${({ isActive, theme }) =>
     isActive ? theme.color.btn : theme.color.bgSecondary};
+`
+
+export const Label = styled.span`
+  color: ${({ theme }) => theme.color.text};
+  font-size: 14px;
+  font-weight: 400;
 `

@@ -10,11 +10,16 @@ const Stepper: FC<StepperProps> = (props) => {
   const { step, totalSteps } = props
 
   return (
-    <S.StepperContainer>
-      {[...Array(totalSteps)].map((_, index) => (
-        <S.Step key={index} isActive={index < step} />
-      ))}
-    </S.StepperContainer>
+    <S.Wrapper>
+      <S.Label>
+        {step} of {totalSteps}
+      </S.Label>
+      <S.StepperContainer>
+        {[...Array(totalSteps)].map((_, index) => (
+          <S.Step key={index} isActive={index < step} />
+        ))}
+      </S.StepperContainer>
+    </S.Wrapper>
   )
 }
 
