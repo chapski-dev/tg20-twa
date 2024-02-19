@@ -4,6 +4,11 @@ export const Wrapper = styled.div`
   display: flex;
 `
 
+export const SkeletonLotCardWrapper = styled.div`
+  height: 106px;
+  border-radius: 10px;
+`
+
 export const ContentWrapper = styled.div`
   padding: 8px;
   width: 100%;

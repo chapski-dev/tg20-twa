@@ -12,6 +12,13 @@ export const Wrapper = styled.div`
   gap: 16px;
 `
 
+export const Wrap = styled.div`
+  display: flex;
+  max-height: 42px;
+  height: 42px;
+  flex: 1 1 48%;
+`
+
 export const Flex = styled.div`
   display: flex;
   justify-content: space-between;

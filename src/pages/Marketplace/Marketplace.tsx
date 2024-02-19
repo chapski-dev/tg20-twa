@@ -13,7 +13,10 @@ import { TransactionStatusModal } from 'ui/TransactionStatusModal/TransactionSta
 import { TokenOptionsBlock } from './components'
 import { ActivityDetailsPopup } from './components/ActivityDetailsPopup/ActivityDetailsPopup'
 import { BuyLotPopup } from './components/BuyLotPopup/BuyLotPopup'
-import { CancelLotPopup } from './components/CancelLotPopup/CancelLotPopup'
+import {
+  CancelLotPopup,
+  SkeletCancelPopup,
+} from './components/CancelLotPopup/CancelLotPopup'
 import { ConfirmLotPopup } from './components/ConfirmLotPopup/ConfirmLotPopup'
 import { Tabs } from './components/Tab/Tab'
 import * as S from './style'
@@ -302,6 +305,7 @@ export const Marketplace: FC = () => {
             selectedTab={tabs[activeTab]}
             tabs={tabs}
           />
+
           <TokenOptionsBlock
             activeTab={activeTab}
             onListing={handleConfirmLotClick}
@@ -311,7 +315,7 @@ export const Marketplace: FC = () => {
             priceFilter={priceFilter}
             sortSelectValue={`${sort}_${direction}`}
             tick={tick}
-          />{' '}
+          />
         </S.ActionsContainer>
         <S.TabContentWrapper>{tabs[activeTab].component}</S.TabContentWrapper>
         {isConfirmLotModalOpen && (

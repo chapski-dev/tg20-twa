@@ -1,6 +1,8 @@
 import { FC, useMemo } from 'react'
+import Skeleton from 'react-loading-skeleton'
 import { generatePath, useNavigate } from 'react-router-dom'
 import { AppRoutes } from 'constants/app'
+
 import { convertNumberToShortFormat } from 'utils/convertNumberToShortFormat'
 import * as S from './style'
 
@@ -59,3 +61,11 @@ export const TokenCard: FC<TokenCardProps> = (props) => {
     </S.Wrapper>
   )
 }
+
+export const SkeletonTokenCard = () => (
+  <S.Wrapper>
+    <div style={{ width: '100%' }}>
+      <Skeleton height={'100%'} />
+    </div>
+  </S.Wrapper>
+)

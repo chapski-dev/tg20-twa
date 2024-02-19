@@ -1,4 +1,6 @@
 import React, { useMemo } from 'react'
+import Skeleton from 'react-loading-skeleton'
+import { theme } from 'assets/style/theme'
 import { useTelegram } from 'hooks/useTelegram/useTelegram'
 import { SvgToncoinIcon } from 'ui/icons'
 import { formatNumberWithSeparators } from 'utils/formNumberWithSeparators'
@@ -82,3 +84,11 @@ export const LotCard: React.FC<LotCardProps> = (props) => {
     </S.Wrapper>
   )
 }
+
+export const SkeletonLotCard = () => (
+  <S.SkeletonLotCardWrapper>
+    <div style={{ width: '100%' }}>
+      <Skeleton baseColor={theme.color.bg} height={'106px'} />
+    </div>
+  </S.SkeletonLotCardWrapper>
+)

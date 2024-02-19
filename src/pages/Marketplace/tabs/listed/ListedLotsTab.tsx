@@ -7,6 +7,7 @@ import { LotSort, LotSortDirection, MarketplaceLot } from 'api/types'
 import { useTelegram } from 'hooks/useTelegram/useTelegram'
 import { LotInfo } from 'pages/Marketplace/Marketplace'
 import { LotCard } from './components'
+import { SkeletonLotCard } from './components/LotCard/LotCard'
 import * as S from './style'
 
 type ListedLotsTabProps = {
@@ -88,10 +89,6 @@ export const ListedLotsTab: FC<ListedLotsTabProps> = (props) => {
     return listedLotsData.pages.flatMap((page) => page.items)
   }, [listedLotsData])
 
-  if (isListedLotsDataLoading || !isWalletConnectionEstablished) {
-    return <S.Loader />
-  }
-
   if (isListedLotsDataError) {
     return (
       <S.Wrapper>
@@ -104,11 +101,13 @@ export const ListedLotsTab: FC<ListedLotsTabProps> = (props) => {
     return <S.Loader />
   }
 
+  const isLoading = isListedLotsDataLoading || !isWalletConnectionEstablished
+
   return (
-    <>
-      {isListedLotsDataLoaded && listedLots && (
-        <S.LotCardsWrapper>
-          {listedLots.map((lot: MarketplaceLot, index) => (
+    <S.LotCardsWrapper>
+      {isLoading
+        ? [1, 2, 3, 4].map(() => <SkeletonLotCard />)
+        : listedLots?.map((lot: MarketplaceLot, index) => (
             <LotCard
               key={index}
               amount={lot.amount}
@@ -129,9 +128,7 @@ export const ListedLotsTab: FC<ListedLotsTabProps> = (props) => {
               tick={lot.tick}
             />
           ))}
-          <div ref={ref} />
-        </S.LotCardsWrapper>
-      )}
-    </>
+      <div ref={ref} />
+    </S.LotCardsWrapper>
   )
 }

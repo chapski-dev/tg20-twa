@@ -1,5 +1,6 @@
 import { FC } from 'react'
 import { useTonAddress } from '@tonconnect/ui-react'
+import Skeleton from 'react-loading-skeleton'
 import { useQuery } from 'react-query'
 import { getWalletTokensBalances } from 'api'
 import { useTelegram } from 'hooks/useTelegram/useTelegram'
@@ -23,20 +24,17 @@ export const MyAssets: FC = () => {
     }
   )
 
-  if (isMyInscriptionsLoading || !userWalletAddress) {
-    return <S.Loader />
-  }
-
   return (
     <S.Wrapper>
       <S.InscriptionsWrapper>
         {isMyInscriptionsLoaded && !myInscriptions.length && (
           <S.DontHaveInscriptionsBlock children=" You dont have any inscriptions" />
         )}
+        {isMyInscriptionsLoading && <SkeletonMyTrans />}
         {!!currentWalletBalance && (
           <>
             <InscriptionCard balance={currentWalletBalance} tick={'ton'} />
-            {(isMyInscriptionsLoaded && myInscriptions.length > 0) && <S.Line />}
+            {isMyInscriptionsLoaded && myInscriptions.length > 0 && <S.Line />}
           </>
         )}
 
@@ -51,3 +49,11 @@ export const MyAssets: FC = () => {
     </S.Wrapper>
   )
 }
+
+export const SkeletonMyTrans = () => (
+  <S.SkeletonTrans>
+    <div style={{ width: '65%' }}>
+      <Skeleton height={'26px'} />
+    </div>
+  </S.SkeletonTrans>
+)

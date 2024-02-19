@@ -6,12 +6,13 @@ import { TopTokenFilter } from 'api/types'
 import { AppRoutes } from 'constants/app'
 import { SpecialOffer } from 'features/SpecialOffer'
 import { useDebounce } from 'hooks/useDebounce/useDebounce'
+import { Tokens } from 'pages/Home2/components'
 import { Tabs } from 'ui'
 import { SvgCoinsSet, SvgLoop, SvgVerified } from 'ui/icons'
 import { Input } from 'ui/Input/Input'
-
 import { Tab } from 'ui/Tabs/Tabs'
 import { TokenCard } from './components'
+import { SkeletonTokenCard } from './components/TokenCard/TokenCard'
 import * as S from './style'
 
 export const Inscriptions: FC = () => {
@@ -52,6 +53,8 @@ export const Inscriptions: FC = () => {
     [currentTab.value]
   )
 
+  const loading = isSearchedTokensLoading || isTopTokensLoading
+
   return (
     <S.Wrapper>
       {!Boolean(debauncedSearchValue) && (
@@ -65,7 +68,6 @@ export const Inscriptions: FC = () => {
           </S.IconsBlock>
         </S.ExploreBlock>
       )}
-
       <S.InputWrapper>
         <Input
           icon={<SvgLoop />}
@@ -75,7 +77,6 @@ export const Inscriptions: FC = () => {
           value={searchedValue}
         />
       </S.InputWrapper>
-
       {!Boolean(debauncedSearchValue) && (
         <>
           <S.InputWrapper>
@@ -101,94 +102,70 @@ export const Inscriptions: FC = () => {
         </>
       )}
 
-      {isTopTokensLoading || isSearchedTokensLoading ? (
-        <S.Loader />
-      ) : (
-        <S.TokenCardsWrapper>
-          {!debauncedSearchValue &&
-            isTopTokensLoaded &&
-            topTokens
-              .slice(0, 8)
-              .map((token, i) => <TokenCard key={i} {...token} />)}
+      <S.TokenCardsWrapper>
+        {loading && [1, 2, 3, 4].map(() => <SkeletonTokenCard />)}
+        {!debauncedSearchValue &&
+          isTopTokensLoaded &&
+          topTokens
+            .slice(0, 8)
+            .map((token, i) => <TokenCard key={i} {...token} />)}
 
-          {Boolean(debauncedSearchValue) &&
-            isSearchedTokensLoaded &&
-            searchedTokens
-              .slice(0, 8)
-              .map(
-                ({
-                  tick,
-                  holders,
-                  supply,
-                  total_supply,
-                  mintable,
-                  verified,
-                }) => (
-                  <TokenCard
-                    key={tick}
-                    holders={holders}
-                    mintable={mintable}
-                    supply={supply}
-                    tick={tick}
-                    total_supply={total_supply}
-                    verified={verified}
-                  />
-                )
-              )}
+        {Boolean(debauncedSearchValue) &&
+          isSearchedTokensLoaded &&
+          searchedTokens
+            .slice(0, 8)
+            .map(
+              ({ tick, holders, supply, total_supply, mintable, verified }) => (
+                <TokenCard
+                  key={tick}
+                  holders={holders}
+                  mintable={mintable}
+                  supply={supply}
+                  tick={tick}
+                  total_supply={total_supply}
+                  verified={verified}
+                />
+              )
+            )}
 
-          {!debauncedSearchValue && <SpecialOffer />}
+        {!debauncedSearchValue && <SpecialOffer />}
 
-          {!debauncedSearchValue &&
-            isTopTokensLoaded &&
-            topTokens
-              .slice(8)
-              .map(
-                ({
-                  tick,
-                  holders,
-                  supply,
-                  total_supply,
-                  mintable,
-                  verified,
-                }) => (
-                  <TokenCard
-                    key={tick}
-                    holders={holders}
-                    mintable={mintable}
-                    supply={supply}
-                    tick={tick}
-                    total_supply={total_supply}
-                    verified={verified}
-                  />
-                )
-              )}
+        {!debauncedSearchValue &&
+          isTopTokensLoaded &&
+          topTokens
+            .slice(8)
+            .map(
+              ({ tick, holders, supply, total_supply, mintable, verified }) => (
+                <TokenCard
+                  key={tick}
+                  holders={holders}
+                  mintable={mintable}
+                  supply={supply}
+                  tick={tick}
+                  total_supply={total_supply}
+                  verified={verified}
+                />
+              )
+            )}
 
-          {Boolean(debauncedSearchValue) &&
-            isSearchedTokensLoaded &&
-            searchedTokens
-              .slice(8)
-              .map(
-                ({
-                  tick,
-                  holders,
-                  supply,
-                  total_supply,
-                  mintable,
-                  verified,
-                }) => (
-                  <TokenCard
-                    key={tick}
-                    holders={holders}
-                    mintable={mintable}
-                    supply={supply}
-                    tick={tick}
-                    total_supply={total_supply}
-                    verified={verified}
-                  />
-                )
-              )}
-        </S.TokenCardsWrapper>
-      )}
+        {Boolean(debauncedSearchValue) &&
+          isSearchedTokensLoaded &&
+          searchedTokens
+            .slice(8)
+            .map(
+              ({ tick, holders, supply, total_supply, mintable, verified }) => (
+                <TokenCard
+                  key={tick}
+                  holders={holders}
+                  mintable={mintable}
+                  supply={supply}
+                  tick={tick}
+                  total_supply={total_supply}
+                  verified={verified}
+                />
+              )
+            )}
+      </S.TokenCardsWrapper>
       {isTopTokensLoaded && !topTokens.length && (
         <S.NotTokensBlock children="Gram20 is launching soon....." />
       )}

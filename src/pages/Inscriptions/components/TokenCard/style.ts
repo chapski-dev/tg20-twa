@@ -1,16 +1,17 @@
+import Skeleton from 'react-loading-skeleton'
 import styled from 'styled-components'
-import {  SvgLogo2, SvgVerified } from 'ui/icons'
-import bgImg from './card-bg.png';
+import { SvgLogo2, SvgVerified } from 'ui/icons'
+import bgImg from './card-bg.png'
 
 export const Wrapper = styled.div`
   display: flex;
   max-height: 91px;
   height: 91px;
-  cursor: pointer;
-  flex: 1;
+  flex: 1 1 35%;
 `
 
 export const ContentWrapper = styled.div`
+  cursor: pointer;
   padding: 10px 6px 10px 10px;
   width: 100%;
   display: flex;

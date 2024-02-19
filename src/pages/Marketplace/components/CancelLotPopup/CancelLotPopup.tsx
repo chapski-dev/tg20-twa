@@ -1,4 +1,5 @@
 import React, { FC } from 'react'
+import Skeleton from 'react-loading-skeleton'
 import { Modal } from 'ui/Modal/Modal'
 import * as S from './style'
 
@@ -60,3 +61,11 @@ export const CancelLotPopup: FC<CancelLotProps> = ({
     </S.Wrapper>
   )
 }
+
+export const SkeletCancelPopup = () => (
+  <S.Wrap>
+    <div style={{ width: '100%' }}>
+      <Skeleton height={'100%'} />
+    </div>
+  </S.Wrap>
+)
