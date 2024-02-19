@@ -9,6 +9,7 @@ export const Wrapper = styled.div`
   width: 100%;
   gap: 6px;
   padding-top: 15px;
+  overflow: hidden;
 `
 
 export const Button = styled(UIButton)`
