@@ -49,13 +49,19 @@ const CURRENT_TOTAL_AMOUNT = Number(toNano('0.008')) / 1e9
 
 export const SendPopup: FC<SendPopupProps> = (props) => {
   const { onClose, tick } = props
-  const { webApp } = useTelegram()
-  const { checkTransferValid } = useContext(ActionsStatusContext)
+
   const [isTransfering, setIsTransfering] = useState<boolean>(false)
+
   const [currentConfirmData, setCurrentConfirmData] =
     useState<CurrentTransferConfirmData | null>(null)
+
+  const { checkTransferValid } = useContext(ActionsStatusContext)
+
   const [tonConnectUI] = useTonConnectUI()
+
   const userWalletAddress = useTonAddress()
+
+  const { webApp } = useTelegram()
 
   const handleSubmit = useCallback<FormikConfig<InitialValues>['onSubmit']>(
     async (values, helpers) => {

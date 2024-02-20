@@ -116,7 +116,7 @@ export const TransferHistory: FC = () => {
         action: () => navigate(AppRoutes.Marketplace),
       },
     ],
-    []
+    [navigate]
   )
 
   return (

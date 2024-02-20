@@ -147,6 +147,7 @@ export const ListedLotsTab: FC<ListedLotsTabProps> = (props) => {
         {isLoading && [1, 2, 3, 4].map(() => <SkeletonLotCard />)}
 
         {isListedLotsDataLoaded &&
+          !Boolean(searchedId) &&
           listedLots?.map((lot: MarketplaceLot, index) => (
             <>
               <LotCard

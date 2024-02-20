@@ -1,6 +1,8 @@
 import { FC, useMemo, useState } from 'react'
 import { useTonAddress, useTonConnectUI } from '@tonconnect/ui-react'
+import { useQuery } from 'react-query'
 import { useNavigate } from 'react-router-dom'
+import { getWalletTokensBalances } from 'api'
 import { AppRoutes } from 'constants/app'
 import { PromoSlider } from 'features/PromoSlider/PromoSlider'
 import { useTelegram } from 'hooks/useTelegram/useTelegram'
@@ -37,7 +39,7 @@ export const MyWallet: FC = () => {
 
   const userWalletAddress = useTonAddress()
 
-  const { currentWalletBalance } = useTelegram()
+  const { currentWalletBalance, tonPrice } = useTelegram()
 
   const [tonConnectUI] = useTonConnectUI()
 
@@ -49,7 +51,13 @@ export const MyWallet: FC = () => {
     setIsReceiveModalOpen((prev) => !prev)
   }
 
-  const [showSwapBtn, setShowSwapBtn] = useState(false)
+  const { data: myInscriptions } = useQuery(
+    ['my-inscriptions'],
+    () => getWalletTokensBalances(userWalletAddress),
+    {
+      enabled: !!userWalletAddress,
+    }
+  )
 
   const currentWalletContent = useMemo(() => {
     if (currentTab.value === 'assets') {
@@ -58,6 +66,28 @@ export const MyWallet: FC = () => {
 
     return <MyTransactions />
   }, [currentTab.value])
+
+  const totalBalance = useMemo(() => {
+    if (!tonPrice || !myInscriptions || !currentWalletBalance) {
+      return
+    }
+
+    // const userGramBalance = myInscriptions.find(({ tick }) => tick === 'gram')
+    // const nanoGramBalance = myInscriptions.find(({ tick }) => tick === 'nano')
+
+    // const gramConvertedBalance = userGramBalance
+    //   ? userGramBalance.balance * 0.12
+    //   : 0
+
+    // const nanoConvertedBalance = nanoGramBalance
+    //   ? nanoGramBalance.balance * 0.08
+    //   : 0
+
+    const tonConvertedBalance = currentWalletBalance * tonPrice
+
+    // return tonConvertedBalance + nanoConvertedBalance + gramConvertedBalance
+    return tonConvertedBalance
+  }, [currentWalletBalance, myInscriptions, tonPrice])
 
   if (!userWalletAddress) {
     return <NotAuthorized />
@@ -78,7 +108,9 @@ export const MyWallet: FC = () => {
               </S.LogOut>
             </S.LogoutBlock>
             <S.TotlaBalance>Total Balance</S.TotlaBalance>
-            <S.Balance>${currentWalletBalance}</S.Balance>
+            <S.Balance>
+              ${totalBalance ? totalBalance.toFixed(4) : '0.00'}
+            </S.Balance>
             <S.InfoChange>
               {/* <S.Time>24h change</S.Time> */}
               {/* <S.Procent>{PROCENT_MOCK.procent}%</S.Procent> */}
@@ -103,15 +135,14 @@ export const MyWallet: FC = () => {
           <S.RecieveText>Recieve</S.RecieveText>
         </S.RecieveBlockWrapper>
         {typeof currentWalletBalance === 'number' &&
-        currentWalletBalance > 0 &&
-        showSwapBtn ? (
-          <S.SwapBlockWrapper onClick={() => navigate(AppRoutes.Swap)}>
-            <S.SwapButton>
-              <SvgArrowSwap />
-            </S.SwapButton>
-            <S.SwapText>Swap</S.SwapText>
-          </S.SwapBlockWrapper>
-        ) : null}
+          currentWalletBalance > 0 && (
+            <S.SwapBlockWrapper onClick={() => navigate(AppRoutes.Swap)}>
+              <S.SwapButton>
+                <SvgArrowSwap />
+              </S.SwapButton>
+              <S.SwapText>Swap</S.SwapText>
+            </S.SwapBlockWrapper>
+          )}
       </S.WalletFunctions>
       <S.Line />
 
