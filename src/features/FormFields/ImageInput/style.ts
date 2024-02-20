@@ -94,3 +94,9 @@ export const ErrorMessage = styled.span`
   font-size: 10px;
   /* line-height: 17px; */
 `
+
+export const TopWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`

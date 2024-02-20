@@ -2,8 +2,10 @@ import { FC, useCallback, useMemo, useState } from 'react'
 import { Address, TonClient, beginCell, fromNano, toNano } from '@ton/ton'
 import { useTonAddress, useTonConnectUI } from '@tonconnect/ui-react'
 import { Formik, FormikConfig } from 'formik'
+import { generatePath, useNavigate } from 'react-router-dom'
 import { getTokenInfo } from 'api'
 import { TON_CLIENT_URL } from 'constants/api'
+import { AppRoutes } from 'constants/app'
 import { CurrentConfirmData } from 'pages/Deploy/Deploy'
 import { getValidationSchema } from 'pages/Deploy/validationSchema'
 import { Button } from 'ui'
@@ -31,6 +33,8 @@ export const DeployForm: FC<DeployFormProps> = (props) => {
   const userWalletAddress = useTonAddress()
 
   const [tonConnectUI] = useTonConnectUI()
+
+  const navigate = useNavigate()
 
   const initialValues: InitialValues = {
     tick: '',
@@ -198,9 +202,15 @@ export const DeployForm: FC<DeployFormProps> = (props) => {
 
           return
         }
+        setCurrentConfirmData(null)
 
         alert('Your image successfully uploaded!')
         setLoading(false)
+
+        const path = generatePath(AppRoutes.Token, {
+          id: currentConfirmData.tick,
+        })
+        navigate(path)
       }
     } catch (err) {
       setLoading(false)
@@ -208,6 +218,7 @@ export const DeployForm: FC<DeployFormProps> = (props) => {
   }, [
     currentConfirmData,
     currentDeployStep,
+    navigate,
     setCurrentConfirmData,
     tonConnectUI,
   ])

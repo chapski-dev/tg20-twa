@@ -53,10 +53,17 @@ export const ImageInput: FC<FormInputProps> = (props) => {
 
   return (
     <S.Container>
-      <S.Label
-        children={label}
-        error={meta.touched && meta.error !== undefined}
-      />
+      <S.TopWrapper>
+        <S.Label
+          children={label}
+          error={meta.touched && meta.error !== undefined}
+        />
+        <S.Label
+          children={'Size 64 x 64px'}
+          error={meta.touched && meta.error !== undefined}
+        />
+      </S.TopWrapper>
+
       <S.Wrapper disabled={disabled}>
         <S.Input
           {...restFieldParams}
