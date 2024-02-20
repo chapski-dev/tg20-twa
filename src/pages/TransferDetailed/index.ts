@@ -1,0 +1,1 @@
+export { TransferDetailed } from './TransferDetailed';
