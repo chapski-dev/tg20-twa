@@ -58,7 +58,7 @@ export const Token: FC = () => {
 
     return (
       <S.Wrapper>
-        <BackButton onClick={() => navigate(AppRoutes.Inscriptions)} />
+        <BackButton />
 
         <S.TokenCardHeader>
           <S.TokenCardHeaderLeftSideWrapper>

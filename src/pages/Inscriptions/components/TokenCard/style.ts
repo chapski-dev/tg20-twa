@@ -1,4 +1,3 @@
-import Skeleton from 'react-loading-skeleton'
 import styled from 'styled-components'
 import { SvgLogo2, SvgVerified } from 'ui/icons'
 import bgImg from './card-bg.png'
@@ -8,6 +7,8 @@ export const Wrapper = styled.div`
   max-height: 91px;
   height: 91px;
   flex: 1 1 35%;
+  border-radius: 10px;
+  overflow: hidden;
 `
 
 export const ContentWrapper = styled.div`

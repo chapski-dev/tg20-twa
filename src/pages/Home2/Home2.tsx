@@ -1,9 +1,6 @@
 import { useState, useCallback } from 'react'
-import { fromNano } from '@ton/core'
 import { useQuery } from 'react-query'
 import {
-  getMarketplaceStats,
-  getMarketplaceTokenStats,
   getTopTokensList,
   getSearchedTokensList,
 } from 'api'

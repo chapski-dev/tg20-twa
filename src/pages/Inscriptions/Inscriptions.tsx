@@ -1,12 +1,11 @@
 import { ChangeEvent, FC, useCallback, useState } from 'react'
 import { useQuery } from 'react-query'
-import { createSearchParams, useNavigate } from 'react-router-dom'
+import { createSearchParams, useLocation, useNavigate } from 'react-router-dom'
 import { getSearchedTokensList, getTopTokensList } from 'api'
 import { TopTokenFilter } from 'api/types'
 import { AppRoutes } from 'constants/app'
 import { SpecialOffer } from 'features/SpecialOffer'
 import { useDebounce } from 'hooks/useDebounce/useDebounce'
-import { Tokens } from 'pages/Home2/components'
 import { Tabs } from 'ui'
 import { SvgCoinsSet, SvgLoop, SvgVerified } from 'ui/icons'
 import { Input } from 'ui/Input/Input'
@@ -16,11 +15,28 @@ import { SkeletonTokenCard } from './components/TokenCard/TokenCard'
 import * as S from './style'
 
 export const Inscriptions: FC = () => {
-  const [searchedValue, setSearchedValue] = useState<string>('')
-  const [currentTab, setCurrentTab] = useState<Tab>(tabs[0])
-
+  const location = useLocation();
   const navigate = useNavigate()
+  const [searchedValue, setSearchedValue] = useState<string>('')
   const debauncedSearchValue = useDebounce(searchedValue)
+
+  const searchParams = new URLSearchParams(location.search);
+  const initialTab = searchParams.get('tab');
+
+  const [currentTab, setCurrentTab] = useState<Tab>(
+    initialTab && tabs[initialTab] ? tabs[initialTab] : tabs.all
+  );
+
+  const handleSetCurrentTab = (tab: Tab) => {
+    if (currentTab.value !== tab.value) {
+      setCurrentTab(tab);
+      navigate({
+        pathname: AppRoutes.Inscriptions,
+        search: createSearchParams({ tab: tab.value?.toString() }).toString(),
+      });
+    }
+  }
+
 
   const {
     data: topTokens,
@@ -45,7 +61,7 @@ export const Inscriptions: FC = () => {
   const updateSeachedValue = useCallback(
     (evt: ChangeEvent<HTMLInputElement>) => {
       if (currentTab.value !== 'all') {
-        setCurrentTab(tabs[0])
+        setCurrentTab(tabs.all)
       }
 
       setSearchedValue(evt.target.value)
@@ -57,7 +73,7 @@ export const Inscriptions: FC = () => {
 
   return (
     <S.Wrapper>
-      {!Boolean(debauncedSearchValue) && (
+      {!debauncedSearchValue && (
         <S.ExploreBlock>
           <S.InfoBlock>
             <S.Title children="Explore the big world of TG20 tokens!" />
@@ -77,9 +93,10 @@ export const Inscriptions: FC = () => {
           value={searchedValue}
         />
       </S.InputWrapper>
-      {!Boolean(debauncedSearchValue) && (
+      {!debauncedSearchValue && (
         <>
           <S.InputWrapper>
+
             <S.DeployTokenBlock
               onClick={() =>
                 navigate({
@@ -98,7 +115,12 @@ export const Inscriptions: FC = () => {
               <S.ArrowIcon />
             </S.DeployTokenBlock>
           </S.InputWrapper>
-          <Tabs onChange={setCurrentTab} selectedTab={currentTab} tabs={tabs} />
+
+          <Tabs
+            onChange={handleSetCurrentTab}
+            selectedTab={currentTab}
+            tabs={Object.values(tabs)}
+          />
         </>
       )}
 
@@ -173,30 +195,32 @@ export const Inscriptions: FC = () => {
   )
 }
 
-const tabs: Tab[] = [
-  {
+const tabs: {
+  [x: string]: Tab
+} = {
+  all: {
     label: 'All',
     value: 'all',
   },
-  {
+  new: {
     label: 'New',
     value: 'new',
   },
-  {
+  verified: {
     label: 'Verified',
     value: 'verified',
     icon: <SvgVerified />,
   },
-  {
+  volume: {
     label: 'Volume',
     value: 'volume',
   },
-  {
+  trending: {
     label: 'Trending',
     value: 'trending',
   },
-  {
+  holders: {
     label: 'Holders',
     value: 'holders',
   },
-]
+};
