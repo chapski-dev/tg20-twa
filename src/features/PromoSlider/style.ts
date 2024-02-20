@@ -14,3 +14,7 @@ export const CarouselContainer = styled.div`
   padding-top: 15px;
   padding-bottom: 15px;
 `
+
+export const PromoImage = styled.img`
+  width: 257px;
+`

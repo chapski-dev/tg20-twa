@@ -1,5 +1,5 @@
-import { PromoProps } from 'ui/Promo/type'
-
-export type PromoSlide = PromoProps & {
-  id: number
+export type PromoSlide = {
+  image: string
+  link: string
+  isExternal?: boolean
 }

@@ -34,8 +34,7 @@ export const Home2 = () => {
     () => getSearchedTokensList({ query: debauncedSearchValue.toLowerCase() })
   )
 
-
-  const loading = isSearchedTokensLoading || isTopTokensLoading;
+  const loading = isSearchedTokensLoading || isTopTokensLoading
 
   return (
     <S.Home>
@@ -46,7 +45,9 @@ export const Home2 = () => {
       {!debauncedSearchValue && (
         <>
           <Stats />
-          <SpecialOffer />
+          <S.SpecialOfferBlock>
+            <SpecialOffer />
+          </S.SpecialOfferBlock>
           <Container>
             <S.TabsWrapper
               containerClassName="tabs"

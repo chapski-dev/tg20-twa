@@ -1,56 +1,55 @@
 import styled from 'styled-components'
+import gramGradient from './GramGradient.png'
 import specialBg from './specialBg.png'
 
 export const Container = styled.div`
   width: 100%;
+  height: 83px;
+  padding: 24px 16px;
 `
 
 export const Wrapper = styled.div`
   display: flex;
-
   align-items: center;
-  background: url(${specialBg});
+  background-image: url(${specialBg});
   background-size: cover;
   border-radius: 10px;
-  width: 100%;
-  color: ${({ theme }) => theme.color.text};
   position: relative;
-  gap: 10px;
-  padding: 5px 56px 0px 22px;
+  gap: 34px;
+  padding: 12.19px 25px 11.81px 27px;
 `
 
-export const ImgWrap = styled.div``
-
-export const ContantWrap = styled.div``
-
-export const IconWrapper = styled.div`
-  flex: 1;
-  justify-content: center;
-  align-items: center;
+export const SvgWrap = styled.div`
   display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 54px;
+  width: 54px;
+  height: 54px;
+  min-height: 54px;
+  border-radius: 50%;
+  background-image: url(${gramGradient});
+  background-size: cover;
 `
 
-export const Info = styled.div`
+export const ContantWrap = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 5px;
-  flex: 1;
+  gap: 9px;
 `
 
 export const Title = styled.p`
   font-size: 14px;
   font-style: normal;
   font-weight: 600;
-  line-height: 17.288px;
-  color: ${({ theme }) => theme.color.text};
+  line-height: 14px;
 `
 
 export const Description = styled.p`
-  font-size: 8px;
-  font-style: normal;
+  font-size: 9px;
   font-weight: 500;
-  line-height: 16.3px;
-  color: ${({ theme }) => theme.color.text};
+  line-height: 12px;
+  width: 219px;
 `
 
 export const Button = styled.button`
@@ -87,8 +86,7 @@ export const CrossBtn = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: ${({ theme }) => theme.color.hint};
-  font-size: 18px;
+  font-size: 14px;
   position: absolute;
   top: 0;
   right: 0;

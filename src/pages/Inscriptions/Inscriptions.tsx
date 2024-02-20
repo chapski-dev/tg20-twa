@@ -3,11 +3,12 @@ import { useQuery } from 'react-query'
 import { createSearchParams, useLocation, useNavigate } from 'react-router-dom'
 import { getSearchedTokensList, getTopTokensList } from 'api'
 import { TopTokenFilter } from 'api/types'
-import { AppRoutes } from 'constants/app'
-import { SpecialOffer } from 'features/SpecialOffer'
+import { verified } from 'assets/banners/big'
+import { AppRoutes, getVerifiedLink } from 'constants/app'
 import { useDebounce } from 'hooks/useDebounce/useDebounce'
+import { useTelegram } from 'hooks/useTelegram/useTelegram'
 import { Tabs } from 'ui'
-import { SvgCoinsSet, SvgLoop, SvgVerified } from 'ui/icons'
+import { SvgLoop, SvgTg20LogoExplore, SvgVerified } from 'ui/icons'
 import { Input } from 'ui/Input/Input'
 import { Tab } from 'ui/Tabs/Tabs'
 import { TokenCard } from './components'
@@ -19,6 +20,8 @@ export const Inscriptions: FC = () => {
   const navigate = useNavigate()
   const [searchedValue, setSearchedValue] = useState<string>('')
   const debauncedSearchValue = useDebounce(searchedValue)
+
+  const { webApp } = useTelegram()
 
   const searchParams = new URLSearchParams(location.search);
   const initialTab = searchParams.get('tab');
@@ -76,11 +79,11 @@ export const Inscriptions: FC = () => {
       {!debauncedSearchValue && (
         <S.ExploreBlock>
           <S.InfoBlock>
-            <S.Title children="Explore the big world of TG20 tokens!" />
-            <S.Description children="With TG20 platform you can easily deploy, mint and transfer tokens based on BRC-20 standards." />
+            <S.Title children="Explore the big world of inscriptions!" />
+            <S.Description children="With TG20 platform you can easily deploy, mint and transfer tokens based on BRC-20 standards on multiple chains." />
           </S.InfoBlock>
           <S.IconsBlock>
-            <SvgCoinsSet />
+            <SvgTg20LogoExplore />
           </S.IconsBlock>
         </S.ExploreBlock>
       )}
@@ -93,7 +96,7 @@ export const Inscriptions: FC = () => {
           value={searchedValue}
         />
       </S.InputWrapper>
-      {!debauncedSearchValue && (
+      {!Boolean(debauncedSearchValue) && (
         <>
           <S.InputWrapper>
 
@@ -150,7 +153,12 @@ export const Inscriptions: FC = () => {
               )
             )}
 
-        {!debauncedSearchValue && <SpecialOffer />}
+        {!debauncedSearchValue && (
+          <S.BannerImage
+            onClick={() => webApp?.openLink(getVerifiedLink)}
+            src={verified}
+          />
+        )}
 
         {!debauncedSearchValue &&
           isTopTokensLoaded &&

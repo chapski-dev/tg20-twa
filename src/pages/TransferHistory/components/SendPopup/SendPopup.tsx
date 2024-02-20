@@ -339,7 +339,7 @@ export const SendPopup: FC<SendPopupProps> = (props) => {
   const [containerStyle, setContainerStyle] = useState({})
 
   const handleFocus = () => {
-    setContainerStyle({ transform: 'translateY(-25px)' })
+    setContainerStyle({ height: '81dvh', transform: 'translateY(-25px)' })
   }
 
   return (

@@ -17,3 +17,12 @@ export const TabsWrapper = styled(Tabs)`
     font-weight: 200;
   }
 `
+
+export const SpecialOfferBlock = styled.div`
+  /* padding-top: 8px; */
+  padding-bottom: 30px;
+`
+
+export const BannerImage = styled.img`
+  width: 100%;
+`

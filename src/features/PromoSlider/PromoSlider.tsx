@@ -1,12 +1,15 @@
-import { FC, useCallback, useState } from 'react'
+import { FC } from 'react'
+import { useNavigate } from 'react-router-dom'
+
 import { Swiper, SwiperSlide } from 'swiper/react'
-import { Promo } from 'ui/Promo'
 
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import 'swiper/css/scrollbar'
+import { useTelegram } from 'hooks/useTelegram/useTelegram'
 import * as S from './style'
+
 import { PromoSlide } from './types'
 
 type PromoSliderProps = {
@@ -16,12 +19,19 @@ type PromoSliderProps = {
 export const PromoSlider: FC<PromoSliderProps> = (props) => {
   const { slides } = props
 
-  const [currentPromoSlides, setCurrentPromoSlides] =
-    useState<PromoSlide[]>(slides)
+  const { webApp } = useTelegram()
 
-  const handlePromoCloseClick = useCallback((closedId: number) => {
-    setCurrentPromoSlides((prev) => prev.filter(({ id }) => id !== closedId))
-  }, [])
+  const navigate = useNavigate()
+
+  const handlePromoSlideClick = (link: string, isExternal?: boolean) => {
+    if (isExternal) {
+      webApp?.openLink(link)
+
+      return
+    }
+
+    navigate(link)
+  }
 
   return (
     <S.CarouselContainer>
@@ -33,18 +43,25 @@ export const PromoSlider: FC<PromoSliderProps> = (props) => {
         slidesPerView={2}
         spaceBetween={170}
       >
-        {currentPromoSlides.map(({ id, subtitle, title, variant }) => (
+        {/* {slides.map(({ id, subtitle, title, variant }) => (
           <SwiperSlide>
             <Promo
               key={id}
-              onClose={() => handlePromoCloseClick(id)}
               subtitle={subtitle}
               title={title}
               variant={variant}
             />
           </SwiperSlide>
+        ))} */}
+        {slides.map(({ image, link, isExternal }) => (
+          <SwiperSlide
+            key={image}
+            onClick={() => handlePromoSlideClick(link, isExternal)}
+          >
+            <S.PromoImage alt="promo_banner" src={image} />
+          </SwiperSlide>
         ))}
-        {currentPromoSlides.length > 0 && (
+        {slides.length > 0 && (
           <SwiperSlide>
             <S.EmptySlide />
           </SwiperSlide>

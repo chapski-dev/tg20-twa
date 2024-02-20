@@ -2,11 +2,17 @@ import { FC, useMemo, useState } from 'react'
 import { useTonAddress, useTonConnectUI } from '@tonconnect/ui-react'
 import { useQuery } from 'react-query'
 import { useNavigate } from 'react-router-dom'
+import {
+  marketplaceBanner,
+  verified,
+  swapBanner,
+  launchBanner,
+} from 'assets/banners'
+import { AppRoutes, getVerifiedLink } from 'constants/app'
 import { getWalletTokensBalances } from 'api'
 import { AppRoutes } from 'constants/app'
 import { PromoSlider } from 'features/PromoSlider/PromoSlider'
 import { useTelegram } from 'hooks/useTelegram/useTelegram'
-import { promoSlides } from 'mocks/promosMock'
 import { Container } from 'ui/Container/Container'
 import {
   SvgArrowSwap,
@@ -19,7 +25,6 @@ import { type Tab } from 'ui/TabsFilled/TabsFilled'
 import { MyAssets } from './components'
 import { MyTransactions } from './components/MyTransfers/MyTransfers'
 import { NotAuthorized } from './components/NotAuthorized/NotAuthorized'
-// import { PROCENT_MOCK } from './mock'
 import * as S from './style'
 import { ReceivePopup } from '../../ui/ReceivePopup/ReceivePopup'
 
@@ -31,6 +36,26 @@ const tabs: Tab[] = [
   {
     label: 'Transactions',
     value: 'transactions',
+  },
+]
+
+const promoSlides = [
+  {
+    image: marketplaceBanner,
+    link: AppRoutes.Marketplace,
+  },
+  {
+    image: verified,
+    link: getVerifiedLink,
+    isExternal: true,
+  },
+  {
+    image: swapBanner,
+    link: AppRoutes.Swap,
+  },
+  {
+    image: launchBanner,
+    link: AppRoutes.Deploy,
   },
 ]
 

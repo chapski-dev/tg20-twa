@@ -84,3 +84,13 @@ export const StatusBlockLabel = styled.span<{
   line-height: 20px;
   color: ${({ theme, $status }) => $status && getColorLabel($status, theme)};
 `
+
+export const BannerWrapper = styled.div`
+  background-color: ${({ theme }) => theme.color.bg};
+  padding: 16px;
+`
+
+export const BannerImage = styled.img`
+  width: 100%;
+  cursor: pointer;
+`

@@ -3,10 +3,16 @@ import dayjs from 'dayjs'
 import { useQuery } from 'react-query'
 import { createSearchParams, useNavigate, useParams } from 'react-router-dom'
 import { getTokenInfo } from 'api'
-import { AppRoutes } from 'constants/app'
+import {
+  marketplaceBanner,
+  verified,
+  swapBanner,
+  launchBanner,
+} from 'assets/banners'
+import { AppRoutes, getVerifiedLink } from 'constants/app'
 import { BackButton } from 'features/BackButton'
 import { PromoSlider } from 'features/PromoSlider/PromoSlider'
-import { promoSlides } from 'mocks/promosMock'
+
 import { Accordion } from 'ui'
 import { Button } from 'ui/Button/Button'
 import { SvgVerified } from 'ui/icons'
@@ -14,6 +20,26 @@ import { convertNumberToShortFormat } from 'utils/convertNumberToShortFormat'
 import { formatNumberWithSeparators } from 'utils/formNumberWithSeparators'
 import { HoldersTable, TransferPopup } from './components'
 import * as S from './style'
+
+const promoSlides = [
+  {
+    image: marketplaceBanner,
+    link: AppRoutes.Marketplace,
+  },
+  {
+    image: verified,
+    link: getVerifiedLink,
+    isExternal: true,
+  },
+  {
+    image: swapBanner,
+    link: AppRoutes.Swap,
+  },
+  {
+    image: launchBanner,
+    link: AppRoutes.Deploy,
+  },
+]
 
 export const Token: FC = () => {
   const { id: tick } = useParams()

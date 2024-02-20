@@ -14,9 +14,11 @@ export const Container = styled.div<Theme>`
   align-items: center;
   gap: 16px;
   ${({ variant }) =>
-    variant === 'purple' && 'background-color: rgba(214, 183, 255, 0.2);'}
+    variant === 'purple' && 'background-color: rgba(245, 242, 251, 1);'}
   ${({ variant }) =>
-    variant === 'yellow' && 'background-color: rgba(255, 217, 75, 0.18);'}
+    variant === 'yellow' && 'background-color: rgba(254, 249, 230, 1);'}
+  ${({ variant }) =>
+    variant === 'blue' && 'background-color: rgba(238, 247, 255, 1);'}
 
   #exit_1 {
     fill: ${({ theme }) => theme.color.hint};
@@ -36,7 +38,6 @@ export const Img = styled.img`
 `
 
 export const Title = styled.div`
-  color: ${({ theme }) => theme.color.text};
   font-size: 12px;
   max-width: 100px;
   font-style: normal;
@@ -46,6 +47,7 @@ export const Title = styled.div`
 export const Subtitle = styled(Link)<Theme>`
   ${({ variant }) => variant === 'purple' && 'color: #a45fff;'}
   ${({ variant }) => variant === 'yellow' && 'color: #F69A2F;'}
+  ${({ variant }) => variant === 'blue' && 'color: #007AFF'}
 
   font-size: 12px;
   font-style: normal;

@@ -1,5 +1,8 @@
-import styled, { DefaultTheme } from 'styled-components';
-const statusColoring = (theme: DefaultTheme, status?: 'success' | 'in_progress' | 'failed') => {
+import styled, { DefaultTheme } from 'styled-components'
+const statusColoring = (
+  theme: DefaultTheme,
+  status?: 'success' | 'in_progress' | 'failed'
+) => {
   switch (status) {
     case 'success':
       return '#6AFF70'
@@ -23,7 +26,7 @@ export const Wrapper = styled.div`
 
   .special-offer-container {
     padding: 15px;
-    background-color:${({ theme }) => theme.color.bg} ;
+    background-color: ${({ theme }) => theme.color.bg};
   }
 `
 
@@ -77,4 +80,14 @@ export const StatusBlockLabel = styled.span<{
   font-weight: 600;
   line-height: 20px;
   color: ${({ theme, $status }) => statusColoring(theme, $status)};
-`;
+`
+
+export const BannerWrapper = styled.div`
+  background-color: ${({ theme }) => theme.color.bg};
+  padding: 16px;
+`
+
+export const BannerImage = styled.img`
+  width: 100%;
+  cursor: pointer;
+`

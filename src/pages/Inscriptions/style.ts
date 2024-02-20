@@ -21,19 +21,22 @@ export const ExploreBlock = styled.div`
   background-size: cover;
   width: 100%;
   position: relative;
+  overflow: hidden;
 `
 
 export const InfoBlock = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  padding: 21px 71px 21px 12px;
+  gap: 5px;
+  padding: 10px 112px 10px 13px;
+  width: 236px;
+  height: 102.5px;
 `
 
 export const Title = styled.h2`
   text-align: center;
   white-space: nowrap;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 700;
   line-height: 24px;
   color: ${({ theme }) => theme.color.white};
@@ -41,16 +44,19 @@ export const Title = styled.h2`
 
 export const Description = styled.p`
   text-align: start;
-  font-size: 11px;
+  white-space: pre-wrap;
+  font-size: 10px;
+  height: 42px;
+  width: 210px;
   font-weight: 600;
-  line-height: 15.4px;
+  line-height: 14px;
   color: ${({ theme }) => theme.color.white};
 `
 
 export const IconsBlock = styled.div`
   position: absolute;
-  right: 3px;
-  bottom: 2px;
+  right: 0px;
+  bottom: -2px;
 `
 
 export const InputWrapper = styled.div`
@@ -85,7 +91,9 @@ export const DeployTokenBlock = styled.div`
   height: 50px;
   padding: 0 10px;
   border-radius: 10px;
-  background-color: ${({ theme }) => theme.color.btn};
+  /* background-color: ${({ theme }) => theme.color.btn}; */
+  background: url(${bgExplore});
+  background-size: cover;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -114,4 +122,9 @@ export const ArrowIcon = styled(SvgArrow)`
 
 export const SearchInput = styled(Input)`
   padding: 12px 0;
+`
+
+export const BannerImage = styled.img`
+  width: 100%;
+  cursor: pointer;
 `

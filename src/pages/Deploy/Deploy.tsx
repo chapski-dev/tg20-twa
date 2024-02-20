@@ -1,6 +1,7 @@
 import { FC, useContext, useEffect, useState } from 'react'
 import { SendTransactionRequest, useTonAddress } from '@tonconnect/ui-react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
+import { swapBanner } from 'assets/banners/big'
 import { AppRoutes } from 'constants/app'
 import { BackButton } from 'features/BackButton'
 import { HeaderUserBalance } from 'features/HeaderUserBalance'
@@ -80,6 +81,12 @@ export const Deploy: FC = () => {
             ))}
           </S.StatusBlocks>
         </S.Container>
+        <S.BannerWrapper>
+          <S.BannerImage
+            onClick={() => navigate(AppRoutes.Marketplace)}
+            src={swapBanner}
+          />
+        </S.BannerWrapper>
       </S.Wrapper>
     </>
   )

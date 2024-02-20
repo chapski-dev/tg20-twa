@@ -5,7 +5,6 @@ export const AppRoutes = {
   Inscribe: '/inscribe',
   Marketplace: '/marketplace',
 
-
   Inscriptions: '/inscriptions',
   Deploy: '/inscriptions/deploy',
   Token: '/inscriptions/token/:id',
@@ -18,3 +17,6 @@ export const AppRoutes = {
   TransferHistory: '/my-wallet/transfer-history/:tick',
   TransferDetailed: '/my-wallet/transfer-detailed/:hash',
 } as const
+
+export const getVerifiedLink =
+  'https://docs.tg20.com/introduction/get-your-project-verified'

@@ -1,24 +1,19 @@
-import React, { FC, useState } from 'react'
-import Rare from './Rare.png'
+import { FC } from 'react'
+import { SvgGramLogoHome } from 'ui/icons'
 import * as S from './style'
 
 export const SpecialOffer: FC = () => {
-  const [isOpen, setIsOpen] = useState(true)
-
-  return isOpen ? (
-    <S.Container className="special-offer-container">
-      <S.Wrapper className="special-offer-wrapper">
-        <S.ImgWrap>
-          <S.Img alt="rare" src={Rare} />
-        </S.ImgWrap>
+  return (
+    <S.Container>
+      <S.Wrapper>
+        <S.SvgWrap>
+          <SvgGramLogoHome />
+        </S.SvgWrap>
         <S.ContantWrap>
-          <S.Title children="RARE is now Live!" />
-          <S.Description children="Start Minting Today" />
-          <S.Button children="Let’s Go" />
+          <S.Title children="Discover the Power of GRAM!" />
+          <S.Description children="Inscription token that is heart of TG20 Inscriptions platform. Unique and the most efficient way to take part in BRC-20-like standards on multiple chains." />
         </S.ContantWrap>
-
-        <S.CrossBtn onClick={() => setIsOpen(false)} />
       </S.Wrapper>
     </S.Container>
-  ) : null
+  )
 }

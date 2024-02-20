@@ -1,4 +1,4 @@
-export type ThemeVariants = 'purple' | 'yellow'
+export type ThemeVariants = 'purple' | 'yellow' | 'blue'
 
 export type Theme = { variant: ThemeVariants }
 

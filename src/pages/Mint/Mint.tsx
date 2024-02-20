@@ -9,6 +9,7 @@ import dayjs from 'dayjs'
 import { Formik, FormikConfig } from 'formik'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { getTokenInfo, getTokenWalletBalance } from 'api'
+import { launchBanner } from 'assets/banners/big'
 import { AppRoutes } from 'constants/app'
 import { BackButton } from 'features/BackButton'
 import { HeaderUserBalance } from 'features/HeaderUserBalance'
@@ -17,7 +18,7 @@ import { Container } from 'ui/Container/Container'
 import { MintForm, ConfirmPopup } from './components'
 
 import { InitialValues } from './components/MintForm/types'
-import * as S from './Mint.style'
+import * as S from './style'
 import { ActionStatusData } from './types'
 import { getValidationSchema } from './validationSchema'
 
@@ -30,27 +31,18 @@ export type CurrentConfirmData = {
 }
 
 export const Mint: FC = () => {
-  const [searchParams] = useSearchParams()
-  const userWalletAddress = useTonAddress()
-  const [tonConnectUI] = useTonConnectUI()
-  const navigate = useNavigate()
-
-  //TODO: Доработать, заменив контекст инскрайба на необходимый
-  // const {
-  //   renderActionStatusData,
-  //   updateRenderActionStatusData,
-  //   checkBalanceChange,
-  // } = useContext(ActionsStatusContext)
-  // const actionStatusDictionary = {
-  //   failed: 'Failed',
-  //   in_progress: 'In Progress',
-  //   success: 'Success',
-  // } as const
-
   const [isInscribing, setIsInscribing] = useState<boolean>(false)
   const [currentConfirmData, setCurrentConfirmData] =
     useState<CurrentConfirmData | null>(null)
   const [intervalFreeze, setIntervalFreeze] = useState<number | null>(null)
+
+  const [searchParams] = useSearchParams()
+
+  const userWalletAddress = useTonAddress()
+
+  const [tonConnectUI] = useTonConnectUI()
+
+  const navigate = useNavigate()
 
   const tickSearchParam = searchParams.get('tick')
   const fromSearchParam = searchParams.get('from')
@@ -384,25 +376,15 @@ export const Mint: FC = () => {
               )}
             </S.FormWrapper>
           </Formik>
-          <S.StatusBlocks>
-            {/* //TODO: Доработать, заменив контекст инскрайба на необходимый */}
-            {/* {renderActionStatusData &&
-            renderActionStatusData.map(
-              ({ tick, status }: ActionStatusData, idx: number) => (
-                <S.StatusBlock key={idx}>
-                  <S.StatusBlockLabel
-                    children={`${tick}: MINT`}
-                  />
-                  <S.StatusBlockLabel
-                    children={actionStatusDictionary[status].toUpperCase()}
-                    $status={status}
-                  />
-                </S.StatusBlock>
-              )
-            )} */}
-          </S.StatusBlocks>
         </Container>
-        <SpecialOffer />
+        <S.BannerWrapper>
+          <S.BannerImage
+            onClick={() => navigate(AppRoutes.Deploy)}
+            src={launchBanner}
+          />
+        </S.BannerWrapper>
+
+        {/* <SpecialOffer /> */}
         {/* <MintHistory /> */}
       </S.Wrapper>
     </>

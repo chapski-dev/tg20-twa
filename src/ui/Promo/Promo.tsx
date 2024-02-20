@@ -7,7 +7,7 @@ import * as S from './style'
 import type { PromoProps } from './type'
 
 export const Promo = (props: PromoProps) => {
-  const { variant, title, subtitle, className, onClose } = props
+  const { variant, title, subtitle, className } = props
 
   const currentDisplayedImage = useMemo(
     () => (variant === 'yellow' ? Coins : Credits),
@@ -26,7 +26,7 @@ export const Promo = (props: PromoProps) => {
           <SvgArrowRight />
         </S.SubtitleWrapper>
       </S.Wrapper>
-      <SvgCloseCircle onClick={onClose} />
+      {/* <SvgCloseCircle onClick={onClose} /> */}
     </S.Container>
   )
 }
