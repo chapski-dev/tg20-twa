@@ -11,6 +11,7 @@ export const Wrapper = styled.div`
   align-items: center;
   gap: 23px;
   padding: 0px 16px;
+  margin-bottom: 5px;
 `
 
 export const ExploreBlock = styled.div`
