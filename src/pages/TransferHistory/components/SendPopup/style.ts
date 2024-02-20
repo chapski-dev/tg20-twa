@@ -17,7 +17,6 @@ export const FormInput = styled(Input)`
 `
 
 export const ConfirmBlockWrapper = styled.div`
-  padding: 16px;
   width: 100%;
   display: flex;
   flex-direction: column;

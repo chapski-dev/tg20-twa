@@ -201,7 +201,7 @@ export const SendPopup: FC<SendPopupProps> = (props) => {
                       setIsTransfering(false)
                     } catch (err) {
                       setIsTransfering(false)
-                      alert('Oops, network error. Please try again')
+                      alert('Oops, network error. Please try again 1')
                     }
                   }, 1000)
                 }, 1000)
@@ -209,7 +209,7 @@ export const SendPopup: FC<SendPopupProps> = (props) => {
                 setIsTransfering(false)
                 return
               }
-            })
+            }, 1000)
 
             setTimeout(async () => {
               try {
@@ -258,14 +258,14 @@ export const SendPopup: FC<SendPopupProps> = (props) => {
                     })
                   } catch (err) {
                     setIsTransfering(false)
-                    alert('Oops, network error. Please try again')
+                    alert('Oops, network error. Please try again 2')
                   }
 
                   setIsTransfering(false)
                 }, 1000)
               } catch (error) {
                 setIsTransfering(false)
-                alert('Oops, network error. Please try again')
+                alert('Oops, network error. Please try again 3')
               }
             }, 1000)
           }
