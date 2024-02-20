@@ -2,6 +2,7 @@ import React, { FC, useState, useMemo, useCallback } from 'react'
 import { beginCell, toNano } from '@ton/core'
 import { useTonAddress, useTonConnectUI } from '@tonconnect/ui-react'
 import { useQuery } from 'react-query'
+import { useSearchParams } from 'react-router-dom'
 import { useTheme } from 'styled-components'
 import { getTokenWalletBalance } from 'api'
 import { LotSort, LotSortDirection } from 'api/types'
@@ -65,7 +66,11 @@ export const Marketplace: FC = () => {
 
   const [lotInfo, setLotInfo] = useState<LotInfo | null>(null)
 
-  const [tick, setTick] = useState<string>('gram')
+  const [searchParams] = useSearchParams()
+
+  const initialTick = searchParams.get('tick')
+
+  const [tick, setTick] = useState<string>(initialTick || 'gram')
   const [sort, setSort] = useState<LotSort>('price_per_unit')
   const [direction, setDirection] = useState<LotSortDirection>('asc')
 

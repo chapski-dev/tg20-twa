@@ -2,7 +2,7 @@ import { FC, useCallback, useMemo, useState } from 'react'
 import { fromNano } from '@ton/core'
 import { useTonAddress } from '@tonconnect/ui-react'
 import { useQuery } from 'react-query'
-import { useNavigate, useParams } from 'react-router-dom'
+import { createSearchParams, useNavigate, useParams } from 'react-router-dom'
 import {
   getMarketplaceTokenStats,
   getTokenWalletBalance,
@@ -113,10 +113,14 @@ export const TransferHistory: FC = () => {
       {
         title: 'Trade',
         icon: <SvgTrade />,
-        action: () => navigate(AppRoutes.Marketplace),
+        action: () =>
+          navigate({
+            pathname: AppRoutes.Marketplace,
+            search: createSearchParams({ tick: tick as string }).toString(),
+          }),
       },
     ],
-    [navigate]
+    [navigate, tick]
   )
 
   return (

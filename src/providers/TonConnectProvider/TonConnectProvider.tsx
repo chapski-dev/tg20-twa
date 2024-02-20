@@ -17,5 +17,4 @@ export const TonConnectProvider: FCWithChildren = (props) => {
   )
 }
 
-const MANIFEST_URL =
-  'https://mini-app-livid.vercel.app/tonconnect-manifest.json'
+const MANIFEST_URL = 'https://tg20-app.vercel.app/tonconnect-manifest.json'
