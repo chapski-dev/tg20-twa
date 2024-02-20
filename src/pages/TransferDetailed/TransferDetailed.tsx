@@ -55,14 +55,17 @@ export const TransferDetailed: FC = () => {
         <SvgSettings />
       </S.Settings>
       <S.MoneyInfo>
-        <S.Grey>
+        <S.Title isIncease={isIncrease}>
           {isIncrease && '+'}
           {currentTransfer &&
             `${currentTransfer.delta} ${currentTransfer.tick.toUpperCase()}`}
-        </S.Grey>
+        </S.Title>
         {currentTransfer && currentTransfer.tick === 'gram' && (
           <S.HintMoney>
-            ~ ${(tonPrice && currentTransfer.delta * GRAM_PRICE) || '-.--'}
+            ~ $
+            {(tonPrice &&
+              (currentTransfer.delta * GRAM_PRICE).toString().slice(1)) ||
+              '-.--'}
           </S.HintMoney>
         )}
       </S.MoneyInfo>

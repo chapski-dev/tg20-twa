@@ -25,8 +25,9 @@ export const MoneyInfo = styled.div`
   padding-bottom: 24px;
 `
 
-export const Grey = styled.div`
-  color: ${({ theme }) => theme.color.greenSuccess};
+export const Title = styled.div<{ isIncease?: boolean }>`
+  color: ${({ theme, isIncease }) =>
+    isIncease ? theme.color.greenSuccess : theme.color.redAlert};
   font-size: 26px;
   font-weight: 600;
   line-height: 31px;
