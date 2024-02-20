@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import { Tabs } from 'ui'
 
 export const Home = styled.div`
+  margin-bottom: 13px;
   .tabs {
     padding: 16px 0px;
   }
