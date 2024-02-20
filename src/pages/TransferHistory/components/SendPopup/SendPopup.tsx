@@ -10,6 +10,7 @@ import { Formik, FormikConfig } from 'formik'
 import { getTokenInfo, getTokenWalletBalance, getTransfersHistory } from 'api'
 import { TON_CLIENT_URL } from 'constants/api'
 import { buyTonLink, masterAddress } from 'constants/blockchain'
+import { MainButton } from 'features/MainButton'
 import { useTelegram } from 'hooks/useTelegram/useTelegram'
 import { ActionStatusData } from 'pages/Inscribe/types'
 import { ActionsStatusContext } from 'providers/ActionsStatusProvider'
@@ -336,12 +337,6 @@ export const SendPopup: FC<SendPopupProps> = (props) => {
     onClose,
   ])
 
-  const [containerStyle, setContainerStyle] = useState({})
-
-  const handleFocus = () => {
-    setContainerStyle({ height: '81dvh', transform: 'translateY(-25px)' })
-  }
-
   return (
     <Modal onClose={onClose} title="Send">
       {currentConfirmData ? (
@@ -399,7 +394,7 @@ export const SendPopup: FC<SendPopupProps> = (props) => {
           validationSchema={validationSchema}
         >
           {({ handleSubmit }) => (
-            <S.Wrapper onFocus={handleFocus} style={containerStyle}>
+            <S.Wrapper>
               <S.FormInput label="Amount" name="amount" placeholder="10.000" />
               <S.FormInput
                 label="Receiver address"
@@ -411,10 +406,10 @@ export const SendPopup: FC<SendPopupProps> = (props) => {
                 name="memo"
                 placeholder="Comment"
               />
-              <Button
-                children="Transfer"
-                isLoading={isTransfering}
+              <MainButton
                 onClick={handleSubmit}
+                progress={isTransfering}
+                text="Transfer"
               />
             </S.Wrapper>
           )}

@@ -2,6 +2,7 @@ import { FC, useMemo, useState } from 'react'
 import { useTonAddress, useTonConnectUI } from '@tonconnect/ui-react'
 import { useQuery } from 'react-query'
 import { useNavigate } from 'react-router-dom'
+import { getWalletTokensBalances } from 'api'
 import {
   marketplaceBanner,
   verified,
@@ -9,8 +10,6 @@ import {
   launchBanner,
 } from 'assets/banners'
 import { AppRoutes, getVerifiedLink } from 'constants/app'
-import { getWalletTokensBalances } from 'api'
-import { AppRoutes } from 'constants/app'
 import { PromoSlider } from 'features/PromoSlider/PromoSlider'
 import { useTelegram } from 'hooks/useTelegram/useTelegram'
 import { Container } from 'ui/Container/Container'

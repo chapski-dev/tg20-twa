@@ -13,7 +13,6 @@ import { launchBanner } from 'assets/banners/big'
 import { AppRoutes } from 'constants/app'
 import { BackButton } from 'features/BackButton'
 import { HeaderUserBalance } from 'features/HeaderUserBalance'
-import { SpecialOffer } from 'features/SpecialOffer'
 import { Container } from 'ui/Container/Container'
 import { MintForm, ConfirmPopup } from './components'
 

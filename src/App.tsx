@@ -15,8 +15,6 @@ import { Token } from 'pages/Token/Token'
 import { TransferDetailed } from 'pages/TransferDetailed/TransferDetailed'
 import { TransferHistory } from 'pages/TransferHistory/TransferHistory'
 
-
-
 export const App = memo(() => {
   return (
     <Routes>
@@ -34,6 +32,6 @@ export const App = memo(() => {
         <Route Component={TransferHistory} path={AppRoutes.TransferHistory} />
         <Route Component={TransferDetailed} path={AppRoutes.TransferDetailed} />
       </Route>
-    </Routes >
+    </Routes>
   )
 })
