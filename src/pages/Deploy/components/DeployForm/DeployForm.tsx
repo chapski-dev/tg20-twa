@@ -50,10 +50,12 @@ export const DeployForm: FC<DeployFormProps> = (props) => {
         return `Repeat Deploy after ${intervalFreeze} seconds...`
       case currentDeployStep === 1:
         return 'Continue'
+      case loading:
+        return 'Waiting for deploying'
       default:
         return 'Deploy'
     }
-  }, [currentDeployStep, intervalFreeze, userWalletAddress])
+  }, [currentDeployStep, intervalFreeze, loading, userWalletAddress])
 
   const currentDeployStepForm = useMemo(() => {
     if (currentDeployStep === 1) {
