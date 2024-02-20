@@ -1,6 +1,5 @@
 import styled from 'styled-components'
 import { Tabs as UITabs } from 'ui'
-import { Input } from 'ui/Input/Input'
 import Vectors from './assets/vectors.png'
 
 export const Wrapper = styled.div`
@@ -189,10 +188,8 @@ export const SwapButton = styled.button`
   border: none;
   cursor: pointer;
 
-  svg {
-    path {
-      stroke: ${({ theme }) => theme.color.btn};
-    }
+  svg path {
+    fill: ${({ theme }) => theme.color.btn};
   }
 `
 
