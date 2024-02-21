@@ -85,11 +85,12 @@ export const MyWallet: FC = () => {
   )
 
   const currentWalletContent = useMemo(() => {
-    if (currentTab.value === 'assets') {
-      return <MyAssets />
-    }
-
-    return <MyTransactions />
+    switch (currentTab.value) {
+      case 'assets':
+        return <MyAssets />
+      case 'transactions':
+        return <MyTransactions />
+    };
   }, [currentTab.value])
 
   const totalBalance = useMemo(() => {

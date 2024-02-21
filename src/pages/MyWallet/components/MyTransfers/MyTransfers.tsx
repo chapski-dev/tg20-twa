@@ -4,7 +4,6 @@ import Skeleton from 'react-loading-skeleton'
 import { useQuery } from 'react-query'
 import { getTransfersHistory } from 'api'
 import { TransferHistoryType } from 'api/types'
-import { theme } from 'assets/style/theme'
 import { Container } from 'ui/Container/Container'
 import { TransferCard } from 'ui/TransferCard/TransferCard'
 import { transformTransferHistoryByDate } from 'utils/transformTransferHistoryByDate'
@@ -54,9 +53,7 @@ export const MyTransactions: FC = () => {
             />
           ))} */}
         {isTransferHistoryLoaded && !transfersHistory.length && (
-          <S.DontHaveTransfersBlock>
-            You dont have any transactions
-          </S.DontHaveTransfersBlock>
+          <S.DontHaveTransfersBlock children="You dont have any transactions" />
         )}
         {isTransferHistoryLoading && <SkeletonMyTrans />}
       </S.Wrapper>
