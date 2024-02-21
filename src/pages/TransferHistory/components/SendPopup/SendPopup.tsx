@@ -6,7 +6,7 @@ import {
   useTonConnectUI,
 } from '@tonconnect/ui-react'
 import dayjs from 'dayjs'
-import { Formik, FormikConfig } from 'formik'
+import { Formik, FormikConfig, useField } from 'formik'
 import { getTokenInfo, getTokenWalletBalance, getTransfersHistory } from 'api'
 import { TON_CLIENT_URL } from 'constants/api'
 import { buyTonLink, masterAddress } from 'constants/blockchain'
@@ -15,8 +15,10 @@ import { useTelegram } from 'hooks/useTelegram/useTelegram'
 import { ActionStatusData } from 'pages/Inscribe/types'
 import { ActionsStatusContext } from 'providers/ActionsStatusProvider'
 import { Button } from 'ui'
+import { Input } from 'ui/Input/Input'
 import { Modal } from 'ui/Modal/Modal'
 import { shortenAddress } from 'utils/shortenAddress'
+import { SendPopupForm } from './components'
 import * as S from './style'
 import { validationSchema } from './validationSchema'
 
@@ -391,28 +393,11 @@ export const SendPopup: FC<SendPopupProps> = (props) => {
         <Formik
           initialValues={initialValues}
           onSubmit={handleSubmit}
+          validateOnBlur={true}
+          validateOnChange={true}
           validationSchema={validationSchema}
         >
-          {({ handleSubmit }) => (
-            <S.Wrapper>
-              <S.FormInput label="Amount" name="amount" placeholder="10.000" />
-              <S.FormInput
-                label="Receiver address"
-                name="address"
-                placeholder="Enter address"
-              />
-              <S.FormInput
-                label="MEMO (Optional)"
-                name="memo"
-                placeholder="Comment"
-              />
-              <MainButton
-                onClick={handleSubmit}
-                progress={isTransfering}
-                text="Transfer"
-              />
-            </S.Wrapper>
-          )}
+          <SendPopupForm isTransfering={isTransfering} />
         </Formik>
       )}
     </Modal>

@@ -1,20 +1,5 @@
 import styled from 'styled-components'
-import { FormInput as Input } from 'features/FormFields/FormInput/FormInput'
 
-export const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  width: 100%;
-`
-
-export const FormInput = styled(Input)`
-  background-color: ${({ theme }) => theme.color.bgSecondary};
-
-  input {
-    background-color: ${({ theme }) => theme.color.bgSecondary};
-  }
-`
 
 export const ConfirmBlockWrapper = styled.div`
   width: 100%;
