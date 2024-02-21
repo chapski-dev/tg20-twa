@@ -1,4 +1,5 @@
 import { FC, useMemo, useState } from 'react'
+import { fromNano } from '@ton/core'
 import { useTonAddress, useTonConnectUI } from '@tonconnect/ui-react'
 import { useQuery } from 'react-query'
 import { useNavigate } from 'react-router-dom'
@@ -96,21 +97,21 @@ export const MyWallet: FC = () => {
       return
     }
 
-    // const userGramBalance = myInscriptions.find(({ tick }) => tick === 'gram')
-    // const nanoGramBalance = myInscriptions.find(({ tick }) => tick === 'nano')
+    const userGramBalance = myInscriptions.find(({ tick }) => tick === 'gram')
+    const nanoGramBalance = myInscriptions.find(({ tick }) => tick === 'nano')
 
-    // const gramConvertedBalance = userGramBalance
-    //   ? userGramBalance.balance * 0.12
-    //   : 0
+    const gramConvertedBalance = userGramBalance
+      ? userGramBalance.balance *
+        Number(fromNano(userGramBalance.floor_price || 0))
+      : 0
 
-    // const nanoConvertedBalance = nanoGramBalance
-    //   ? nanoGramBalance.balance * 0.08
-    //   : 0
+    const nanoConvertedBalance = nanoGramBalance
+      ? Number(fromNano(nanoGramBalance.floor_price || 0))
+      : 0
 
     const tonConvertedBalance = currentWalletBalance * tonPrice
 
-    // return tonConvertedBalance + nanoConvertedBalance + gramConvertedBalance
-    return tonConvertedBalance
+    return tonConvertedBalance + nanoConvertedBalance + gramConvertedBalance
   }, [currentWalletBalance, myInscriptions, tonPrice])
 
   if (!userWalletAddress) {

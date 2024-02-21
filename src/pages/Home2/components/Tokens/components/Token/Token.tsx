@@ -3,6 +3,7 @@ import { TopToken } from 'api/types'
 import { AppRoutes } from 'constants/app'
 import { useTelegram } from 'hooks/useTelegram/useTelegram'
 import { SvgGramIcon, SvgVerify } from 'ui/icons'
+import { formatNumberWithSeparators } from 'utils/formNumberWithSeparators'
 import * as S from './style'
 
 type TokenProps = {
@@ -32,10 +33,18 @@ export const Token = ({ token }: TokenProps) => {
             <S.TokenTitle children={token.tick.toUpperCase()} />
             {token.verified && <SvgVerify />}
           </S.TokenTitleWrapper>
-          <S.TokenDescription children={`${token.tick[0].toUpperCase() + token.tick.slice(1)} Token`} />
+          <S.TokenDescription
+            children={`${
+              token.tick[0].toUpperCase() + token.tick.slice(1)
+            } Token`}
+          />
         </S.Wrapper>
       </S.Logo>
-      <S.Volume children={`$${(token.volume_24h * (tonPrice || 0)).toFixed(0)}`} />
+      <S.Volume
+        children={`$${formatNumberWithSeparators(
+          token.volume_24h * (tonPrice || 0)
+        )}`}
+      />
     </S.Box>
   )
 }

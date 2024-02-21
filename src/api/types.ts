@@ -23,6 +23,7 @@ export type TokenBalance = {
   address: string
   tick: string
   balance: number
+  floor_price: number
 }
 
 export type TokenHolder = {

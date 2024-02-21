@@ -3,6 +3,7 @@ import { ApiRoutes, HUOBI_API_URL } from 'constants/api'
 import {
   AXIOS_INSTANCE,
   AXIOS_INSTANCE_V2,
+  AXIOS_INSTANCE_V3,
 } from 'libs/axios-instance/axios-instance'
 import * as ApiTypes from './types'
 
@@ -35,7 +36,7 @@ export const getTokenWalletBalance = async (
 }
 
 export const getWalletTokensBalances = async (walletAddress: string) => {
-  const { data } = await AXIOS_INSTANCE.get<ApiTypes.TokenBalance[]>(
+  const { data } = await AXIOS_INSTANCE_V3.get<ApiTypes.TokenBalance[]>(
     `${ApiRoutes.Balance}/${walletAddress}`
   )
 

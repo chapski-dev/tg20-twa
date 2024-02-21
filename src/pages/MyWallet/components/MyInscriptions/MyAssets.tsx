@@ -39,9 +39,14 @@ export const MyAssets: FC = () => {
         )}
 
         {isMyInscriptionsLoaded &&
-          myInscriptions.map(({ tick, balance }, idx) => (
+          myInscriptions.map(({ tick, balance, floor_price }, idx) => (
             <>
-              <InscriptionCard key={tick} balance={balance} tick={tick} />
+              <InscriptionCard
+                key={tick}
+                balance={balance}
+                floor_price={floor_price}
+                tick={tick}
+              />
               {idx !== myInscriptions.length - 1 && <S.Line />}
             </>
           ))}
