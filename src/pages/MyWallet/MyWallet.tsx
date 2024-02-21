@@ -103,11 +103,11 @@ export const MyWallet: FC = () => {
 
     const gramConvertedBalance = userGramBalance
       ? userGramBalance.balance *
-        Number(fromNano(userGramBalance.floor_price || 0))
+        Number(fromNano(+userGramBalance.floor_price || 0))
       : 0
 
     const nanoConvertedBalance = nanoGramBalance
-      ? Number(fromNano(nanoGramBalance.floor_price || 0))
+      ? Number(fromNano(+nanoGramBalance.floor_price || 0))
       : 0
 
     const tonConvertedBalance = currentWalletBalance * tonPrice
