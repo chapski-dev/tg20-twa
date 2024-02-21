@@ -7,6 +7,7 @@ export const Wrapper = styled.div`
 export const SkeletonLotCardWrapper = styled.div`
   height: 106px;
   border-radius: 10px;
+  overflow: hidden;
 `
 
 export const ContentWrapper = styled.div`

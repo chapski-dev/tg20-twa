@@ -24,7 +24,7 @@ export const Flex = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-top: 16px;
-
+  gap: 10px;
   .select-container {
     margin-left: auto;
   }

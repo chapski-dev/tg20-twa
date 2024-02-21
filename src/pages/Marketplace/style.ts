@@ -11,7 +11,7 @@ export const Wrapper = styled.div`
   background: ${({ theme }) => theme.color.bgSecondary};
   color: ${({ theme }) => theme.color.bg};
   padding: 24px 0;
-  margin-bottom: -13px;
+  flex: 1;
 `
 
 export const Label = styled.span`

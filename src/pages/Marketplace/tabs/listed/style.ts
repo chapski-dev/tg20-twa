@@ -43,7 +43,7 @@ export const Title = styled.h2`
 export const LotCardsWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
   width: 100%;
   padding: 0 16px;
 `

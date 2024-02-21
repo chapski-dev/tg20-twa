@@ -144,7 +144,10 @@ export const ListedLotsTab: FC<ListedLotsTabProps> = (props) => {
   return (
     <>
       <S.LotCardsWrapper>
-        {isLoading && [1, 2, 3, 4].map(() => <SkeletonLotCard />)}
+        {isLoading && [1, 2, 3, 4].map(() => <>
+          <SkeletonLotCard />
+          <div />
+        </>)}
 
         {isListedLotsDataLoaded &&
           !Boolean(searchedId) &&
