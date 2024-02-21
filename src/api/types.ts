@@ -23,7 +23,7 @@ export type TokenBalance = {
   address: string
   tick: string
   balance: number
-  floor_price: number
+  floor_price: number | null
 }
 
 export type TokenHolder = {

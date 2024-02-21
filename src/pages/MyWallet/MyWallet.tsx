@@ -90,7 +90,7 @@ export const MyWallet: FC = () => {
         return <MyAssets />
       case 'transactions':
         return <MyTransactions />
-    };
+    }
   }, [currentTab.value])
 
   const totalBalance = useMemo(() => {
@@ -101,14 +101,17 @@ export const MyWallet: FC = () => {
     const userGramBalance = myInscriptions.find(({ tick }) => tick === 'gram')
     const nanoGramBalance = myInscriptions.find(({ tick }) => tick === 'nano')
 
-    const gramConvertedBalance = userGramBalance
-      ? userGramBalance.balance *
-        Number(fromNano(+userGramBalance.floor_price || 0))
-      : 0
+    const gramConvertedBalance =
+      userGramBalance && userGramBalance.floor_price !== null
+        ? userGramBalance.balance *
+          Number(fromNano(+userGramBalance.floor_price.toFixed(0)))
+        : 0
 
-    const nanoConvertedBalance = nanoGramBalance
-      ? Number(fromNano(+nanoGramBalance.floor_price || 0))
-      : 0
+    const nanoConvertedBalance =
+      nanoGramBalance && nanoGramBalance.floor_price !== null
+        ? nanoGramBalance.balance *
+          Number(fromNano(+nanoGramBalance.floor_price.toFixed(0)))
+        : 0
 
     const tonConvertedBalance = currentWalletBalance * tonPrice
 

@@ -33,7 +33,11 @@ export const MyAssets: FC = () => {
         {isMyInscriptionsLoading && <SkeletonMyTrans />}
         {!!currentWalletBalance && (
           <>
-            <InscriptionCard balance={currentWalletBalance} tick={'ton'} />
+            <InscriptionCard
+              balance={currentWalletBalance}
+              floor_price={null}
+              tick={'ton'}
+            />
             {isMyInscriptionsLoaded && myInscriptions.length > 0 && <S.Line />}
           </>
         )}

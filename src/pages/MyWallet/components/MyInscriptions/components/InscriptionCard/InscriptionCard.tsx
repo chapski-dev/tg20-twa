@@ -9,7 +9,7 @@ import * as S from './style'
 type InscriptionCardProps = {
   tick: string
   balance: number
-  floor_price?: number
+  floor_price: number | null
 }
 
 export const InscriptionCard: FC<InscriptionCardProps> = (props) => {
@@ -18,6 +18,8 @@ export const InscriptionCard: FC<InscriptionCardProps> = (props) => {
   const { tonPrice } = useTelegram()
 
   const navigate = useNavigate()
+
+  console.log(floor_price)
 
   const currentUsdPrice = useMemo(() => {
     if (!tonPrice) {
@@ -28,7 +30,9 @@ export const InscriptionCard: FC<InscriptionCardProps> = (props) => {
       case 'ton':
         return tonPrice
       default:
-        return Number(fromNano(floor_price || 0))
+        return floor_price !== null
+          ? Number(fromNano(+floor_price.toFixed(0)))
+          : 0
     }
   }, [tick, tonPrice, floor_price])
 
