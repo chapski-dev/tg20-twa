@@ -1,10 +1,7 @@
 import { useState, useCallback, useEffect, useMemo } from 'react'
 import { useQuery } from 'react-query'
 import { useSearchParams } from 'react-router-dom'
-import {
-  getTopTokensList,
-  getSearchedTokensList,
-} from 'api'
+import { getTopTokensList, getSearchedTokensList } from 'api'
 import { TopTokenFilter } from 'api/types'
 import { TransferPopup } from 'features'
 import { SpecialOffer } from 'features/SpecialOffer'
@@ -31,25 +28,27 @@ export const Home = () => {
     () => getSearchedTokensList({ query: debauncedSearchValue.toLowerCase() })
   )
 
-
   const updateSearchedValue = useCallback((value: string) => {
     setSearchedValue(value)
   }, [])
 
-  const isLoading = useMemo(() => isSearchedTokensLoading || isTopTokensLoading, [])
+  const isLoading = useMemo(
+    () => isSearchedTokensLoading || isTopTokensLoading,
+    [isSearchedTokensLoading, isTopTokensLoading]
+  )
 
   // const type = searchParams.get('type') || '';
-  const tick = searchParams.get('tick') || '';
-  const amount = searchParams.get('amount') || '';
-  const address = searchParams.get('address') || '';
+  const tick = searchParams.get('tick') || ''
+  const amount = searchParams.get('amount') || ''
+  const address = searchParams.get('address') || ''
   // const from = searchParams.get('from') || '';
-  const memo = searchParams.get('memo') || '';
+  const memo = searchParams.get('memo') || ''
 
   useEffect(() => {
     if (tick) {
-      setTransferPopupOpen(true);
-    };
-  }, [tick]);
+      setTransferPopupOpen(true)
+    }
+  }, [tick])
 
   return (
     <S.Home>
@@ -75,7 +74,7 @@ export const Home = () => {
       )}
 
       <Tokens
-        loading={loading}
+        loading={isLoading}
         tokens={debauncedSearchValue ? searchedTokens : topTokens}
       />
       {transferPopupOpen && (
