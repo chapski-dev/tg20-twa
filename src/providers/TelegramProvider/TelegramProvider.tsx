@@ -1,7 +1,7 @@
 import { createContext, useEffect, useMemo, useState, useCallback } from 'react'
 import { useTonAddress } from '@tonconnect/ui-react'
 import { useQuery } from 'react-query'
-import { createSearchParams, useNavigate } from 'react-router-dom'
+import { createSearchParams, generatePath, useNavigate } from 'react-router-dom'
 import { getTokenWalletBalance, getTonPrice } from 'api'
 import { AppRoutes } from 'constants/app'
 import { FCWithChildren } from 'types/app'
@@ -27,11 +27,9 @@ export const TelegramProvider: FCWithChildren = (props) => {
   const { children } = props
 
   const [webApp, setWebApp] = useState<WebApp | null>(null)
-
   const [isStartParamChecked, setIsStartParamChecked] = useState<boolean>(false)
 
   const userWalletAddress = useTonAddress()
-
   const navigate = useNavigate()
 
   const checkStartParam = useCallback(
@@ -44,29 +42,39 @@ export const TelegramProvider: FCWithChildren = (props) => {
         startParamString.replace(/--/g, '%')
       )
 
-      const currentStartParams = JSON.parse(decodedString)
+      const currentStartParams: {
+        type: string
+        tick: string
+        amount?: string
+        to?: string
+        memo?: string
+      } = JSON.parse(decodedString)
 
       setIsStartParamChecked(true)
 
       switch (true) {
         case currentStartParams.tick &&
           (!currentStartParams?.type || currentStartParams?.type === 'open'):
-          navigate(`${AppRoutes.Token}/${currentStartParams.tick}`)
+          const path = generatePath(AppRoutes.Token, {
+            id: currentStartParams.tick,
+          })
+          navigate(path)
           break
+
         case currentStartParams.tick && currentStartParams?.type === 'mint':
           navigate({
-            pathname: AppRoutes.Inscribe,
+            pathname: AppRoutes.Mint,
             search: createSearchParams({
               type: currentStartParams.type,
               tick: currentStartParams.tick,
               from: 'start_param',
             }).toString(),
           })
-
           break
+
         case currentStartParams?.type === 'transfer':
           navigate({
-            pathname: AppRoutes.Inscribe,
+            pathname: AppRoutes.Home,
             search: createSearchParams({
               type: currentStartParams?.type,
               tick: currentStartParams.tick,
@@ -77,6 +85,7 @@ export const TelegramProvider: FCWithChildren = (props) => {
             }).toString(),
           })
           break
+
         default:
           break
       }
@@ -89,9 +98,7 @@ export const TelegramProvider: FCWithChildren = (props) => {
 
     if (app) {
       app.ready()
-
       app.expand()
-
       app.enableClosingConfirmation()
 
       const startParam = app.initDataUnsafe.start_param
@@ -122,18 +129,20 @@ export const TelegramProvider: FCWithChildren = (props) => {
 
   const { data: tonPrice } = useQuery(['currentTonPrice'], () => getTonPrice())
 
-  const value = useMemo(() => {
-    return webApp
-      ? {
-          webApp,
-          unsafeData: webApp.initDataUnsafe,
-          user: webApp.initDataUnsafe.user,
-          currentGramBalance: currentWalletGramData?.balance,
-          currentWalletBalance,
-          tonPrice,
-        }
-      : {}
-  }, [currentWalletBalance, currentWalletGramData?.balance, tonPrice, webApp])
+  const value = useMemo(
+    () =>
+      webApp
+        ? {
+            webApp,
+            unsafeData: webApp.initDataUnsafe,
+            user: webApp.initDataUnsafe.user,
+            currentGramBalance: currentWalletGramData?.balance,
+            currentWalletBalance,
+            tonPrice,
+          }
+        : {},
+    [currentWalletBalance, currentWalletGramData?.balance, tonPrice, webApp]
+  )
 
   if (webApp && !webApp.initDataUnsafe.user) {
     return <OpenTelegramBlock />

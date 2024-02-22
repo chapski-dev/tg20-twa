@@ -4,7 +4,7 @@ import { Token, SkeletonToken } from './components'
 import * as S from './style'
 
 type TokensProps = {
-  tokens: TopToken[]
+  tokens?: TopToken[]
   loading: boolean
 }
 
@@ -14,13 +14,13 @@ export const Tokens: FC<TokensProps> = (props) => {
   return (
     <S.Container>
       <S.Header>
-        <S.HeaderTitle children={`Token (${tokens.length})`} align="left" />
+        <S.HeaderTitle children={`Token (${tokens?.length || 0})`} align="left" />
         <S.HeaderTitle children="24h Volume" align="right" />
       </S.Header>
       <S.Tokens>
         {loading
           ? [1, 2, 3].map(() => <SkeletonToken />)
-          : tokens.map((token) => <Token key={token.tick} token={token} />)}
+          : tokens?.map((token) => <Token key={token.tick} token={token} />)}
       </S.Tokens>
     </S.Container>
   )

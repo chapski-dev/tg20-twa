@@ -1,4 +1,4 @@
-import { FC, useCallback, useContext, useState } from 'react'
+import { FC, useCallback, useContext, useMemo, useState } from 'react'
 import { Address, TonClient, beginCell, fromNano, toNano } from '@ton/ton'
 import {
   SendTransactionRequest,
@@ -13,14 +13,13 @@ import { buyTonLink, masterAddress } from 'constants/blockchain'
 import { useTelegram } from 'hooks/useTelegram/useTelegram'
 import { ActionStatusData } from 'pages/Inscribe/types'
 import { ActionsStatusContext } from 'providers/ActionsStatusProvider'
-import { Button } from 'ui'
-import { Modal } from 'ui/Modal/Modal'
+import { Button, Modal } from 'ui'
 import { shortenAddress } from 'utils/shortenAddress'
-import { SendPopupForm } from './components'
+import { TransferPopupForm } from './components'
 import * as S from './style'
 import { validationSchema } from './validationSchema'
 
-type SendPopupProps = {
+type TransferPopupProps = Partial<InitialValues> & {
   onClose: () => void
   tick: string
 }
@@ -40,29 +39,26 @@ export type CurrentTransferConfirmData = {
   interval: number | null
 }
 
-const initialValues: InitialValues = {
-  amount: '',
-  address: '',
-  memo: '',
-}
-
 const CURRENT_TOTAL_AMOUNT = Number(toNano('0.008')) / 1e9
 
-export const SendPopup: FC<SendPopupProps> = (props) => {
-  const { onClose, tick } = props
-
+export const TransferPopup: FC<TransferPopupProps> = (props) => {
+  const { onClose, tick, address, amount, memo } = props
+  const { checkTransferValid } = useContext(ActionsStatusContext)
+  const [tonConnectUI] = useTonConnectUI()
+  const userWalletAddress = useTonAddress()
+  const { webApp } = useTelegram()
   const [isTransfering, setIsTransfering] = useState<boolean>(false)
-
   const [currentConfirmData, setCurrentConfirmData] =
     useState<CurrentTransferConfirmData | null>(null)
 
-  const { checkTransferValid } = useContext(ActionsStatusContext)
-
-  const [tonConnectUI] = useTonConnectUI()
-
-  const userWalletAddress = useTonAddress()
-
-  const { webApp } = useTelegram()
+  const initialValues: InitialValues = useMemo(
+    () => ({
+      address: address || '',
+      amount: amount || '',
+      memo: memo || '',
+    }),
+    [address, amount, memo]
+  )
 
   const handleSubmit = useCallback<FormikConfig<InitialValues>['onSubmit']>(
     async (values, helpers) => {
@@ -99,6 +95,8 @@ export const SendPopup: FC<SendPopupProps> = (props) => {
               .storeUint(0, 32)
               .storeStringTail(transferPayload)
               .endCell()
+
+            console.log('timeout 1')
 
             try {
               const currentWalletAdddressTokenBalance =
@@ -152,6 +150,8 @@ export const SendPopup: FC<SendPopupProps> = (props) => {
                     },
                   ]
                 )
+
+                console.log('timeout 2')
 
                 const userStateInit = userData.stack.readCell()
                 const userContractAddress = userData.stack.readAddress()
@@ -268,7 +268,12 @@ export const SendPopup: FC<SendPopupProps> = (props) => {
                 alert('Oops, network error. Please try again 3')
               }
             }, 1000)
+
+            return
           }
+
+          alert(`Oops, that token doesn't exist`)
+          setIsTransfering(false)
         }, 1000)
       } catch (error) {
         setIsTransfering(false)
@@ -395,7 +400,7 @@ export const SendPopup: FC<SendPopupProps> = (props) => {
           validateOnChange={true}
           validationSchema={validationSchema}
         >
-          <SendPopupForm isTransfering={isTransfering} />
+          <TransferPopupForm isTransfering={isTransfering} />
         </Formik>
       )}
     </Modal>

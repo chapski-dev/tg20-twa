@@ -2,7 +2,8 @@ export const tonAddressExplorerLink = 'https://testnet.ton.cx/address/'
 
 export const AppRoutes = {
   Home: '/',
-  Inscribe: '/inscribe',
+  /** Deprecated */
+  Inscribe: '/inscribe', //TODO: Remove in the future.
   Marketplace: '/marketplace',
 
   Inscriptions: '/inscriptions',

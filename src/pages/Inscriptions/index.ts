@@ -1,0 +1,1 @@
+export { Inscriptions } from './Inscriptions'

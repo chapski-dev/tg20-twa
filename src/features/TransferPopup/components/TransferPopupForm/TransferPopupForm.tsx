@@ -4,11 +4,11 @@ import { MainButton } from 'features/MainButton';
 import { Input } from 'ui/Input/Input';
 import * as S from './style';
 
-type SendPopupFormProps = {
+type TransferPopupFormProps = {
   isTransfering: boolean;
 }
 
-export const SendPopupForm: FC<SendPopupFormProps> = (props) => {
+export const TransferPopupForm: FC<TransferPopupFormProps> = (props) => {
   const { isTransfering } = props;
   const { handleSubmit } = useFormikContext();
   const [amountField, amountMeta] = useField("amount");

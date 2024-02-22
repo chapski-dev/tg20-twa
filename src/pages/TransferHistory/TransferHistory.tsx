@@ -10,10 +10,9 @@ import {
 } from 'api'
 import { TransferHistoryType } from 'api/types'
 import { AppRoutes } from 'constants/app'
-import { BackButton } from 'features/BackButton'
+import { BackButton , TransferPopup } from 'features'
 import { useTelegram } from 'hooks/useTelegram/useTelegram'
-import { ReceivePopup } from 'ui'
-import { Container } from 'ui/Container/Container'
+import { ReceivePopup, Container } from 'ui'
 import {
   SvgArrowSwap,
   SvgLogoHistoryToken,
@@ -24,7 +23,6 @@ import {
 import { TransferCard } from 'ui/TransferCard/TransferCard'
 import { convertNumberToShortFormat } from 'utils/convertNumberToShortFormat'
 import { transformTransferHistoryByDate } from 'utils/transformTransferHistoryByDate'
-import { SendPopup } from './components'
 import * as S from './style'
 
 type FunctionalProps = {
@@ -85,7 +83,7 @@ export const TransferHistory: FC = () => {
     return currentWalletTickData.balance * GRAM_PRICE
   }, [currentWalletTickData, tick, tonPrice])
 
-  const [sendPopuplOpen, setSendPopuplOpen] = useState(false)
+  const [transferPopuplOpen, setTransferPopuplOpen] = useState(false)
 
   const [isReceiveModalOpen, setIsReceiveModalOpen] = useState<boolean>(false)
 
@@ -98,7 +96,7 @@ export const TransferHistory: FC = () => {
       {
         title: 'Send',
         icon: <SvgSendSquare />,
-        action: () => setSendPopuplOpen(true),
+        action: () => setTransferPopuplOpen(true),
       },
       {
         title: 'Recieve',
@@ -207,8 +205,8 @@ export const TransferHistory: FC = () => {
           </S.CheckExplorer>
         </S.BtnBlock>
       </S.Wrapper>
-      {sendPopuplOpen && !!tick && (
-        <SendPopup onClose={() => setSendPopuplOpen(false)} tick={tick} />
+      {transferPopuplOpen && !!tick && (
+        <TransferPopup onClose={() => setTransferPopuplOpen(false)} tick={tick} />
       )}
       {isReceiveModalOpen && <ReceivePopup onClose={toggleRecieveModal} />}
     </>

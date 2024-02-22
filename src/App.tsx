@@ -1,25 +1,27 @@
 import { memo } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import { AppRoutes } from 'constants/app'
-import { Layout } from 'features/Layout/Layout'
-import { Deploy } from 'pages/Deploy/Deploy'
-import { Home2 } from 'pages/Home2/Home2'
-import { Inscribe } from 'pages/Inscribe/Inscribe'
-import { Inscriptions } from 'pages/Inscriptions/Inscriptions'
-import { Marketplace } from 'pages/Marketplace/Marketplace'
-import { Mint } from 'pages/Mint/Mint'
-import { MyWallet } from 'pages/MyWallet/MyWallet'
-import { Notifications } from 'pages/Notifications/Notifications'
-import { Swap } from 'pages/Swap/Swap'
-import { Token } from 'pages/Token/Token'
-import { TransferDetailed } from 'pages/TransferDetailed/TransferDetailed'
-import { TransferHistory } from 'pages/TransferHistory/TransferHistory'
+import {
+  Home,
+  Token,
+  TransferDetailed,
+  TransferHistory,
+  Marketplace,
+  Deploy,
+  Inscribe,
+  Inscriptions,
+  MyWallet,
+  Notifications,
+  Swap,
+  Mint
+} from 'pages'
+import { Layout } from 'ui'
 
 export const App = memo(() => {
   return (
     <Routes>
       <Route Component={Layout} path={AppRoutes.Home}>
-        <Route Component={Home2} index />
+        <Route Component={Home} index />
         <Route Component={Inscriptions} path={AppRoutes.Inscriptions} />
         <Route Component={Deploy} path={AppRoutes.Deploy} />
         <Route Component={Token} path={AppRoutes.Token} />

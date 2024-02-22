@@ -10,15 +10,13 @@ import {
   launchBanner,
 } from 'assets/banners'
 import { AppRoutes, getVerifiedLink } from 'constants/app'
-import { BackButton } from 'features/BackButton'
-import { PromoSlider } from 'features/PromoSlider/PromoSlider'
+import { TransferPopup , BackButton , PromoSlider } from 'features'
 
-import { Accordion } from 'ui'
-import { Button } from 'ui/Button/Button'
+import { Accordion , Button } from 'ui'
 import { SvgVerified } from 'ui/icons'
 import { convertNumberToShortFormat } from 'utils/convertNumberToShortFormat'
 import { formatNumberWithSeparators } from 'utils/formNumberWithSeparators'
-import { HoldersTable, TransferPopup } from './components'
+import { HoldersTable } from './components'
 import * as S from './style'
 
 const promoSlides = [
