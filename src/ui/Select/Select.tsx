@@ -1,33 +1,33 @@
-import * as S from './style';
+import * as S from './style'
 
 type Option = {
-  value: string;
-  label: string;
-};
+  value: string
+  label: string
+}
 
 type SelectProps = {
-  onChange: (element: Option) => void;
-  options: Array<Option>;
-  value: Option;
-};
+  onChange: (element: Option) => void
+  options: Array<Option>
+  value: Option
+}
 
 export const Select = (props: SelectProps) => {
-  const { options, onChange, value } = props;
+  const { options, onChange, value } = props
 
   const onChangeFunction = (element: Option) => {
-    onChange?.(element);
-  };
+    onChange?.(element)
+  }
 
   return (
     <S.Select
       className="select-container"
       classNamePrefix="select"
       defaultValue={options[0]}
-      isSearchable={true}
+      isSearchable={false}
       name="color"
       onChange={onChangeFunction as any}
       options={options}
       value={value}
     />
-  );
-};
+  )
+}
