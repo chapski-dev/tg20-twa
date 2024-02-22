@@ -33,7 +33,6 @@ export const InscribeForm: FC<InscribeFormProps> = (props) => {
     {
       enabled: !!tickSearchParam,
       onSuccess: (data) => {
-        console.log(data)
         if (type === 'mint') {
           setCurrentMintAmount(data.mint_limit.toString())
 

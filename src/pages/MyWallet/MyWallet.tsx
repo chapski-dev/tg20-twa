@@ -98,24 +98,18 @@ export const MyWallet: FC = () => {
       return
     }
 
-    const userGramBalance = myInscriptions.find(({ tick }) => tick === 'gram')
-    const nanoGramBalance = myInscriptions.find(({ tick }) => tick === 'nano')
-
-    const gramConvertedBalance =
-      userGramBalance && userGramBalance.floor_price !== null
-        ? userGramBalance.balance *
-          Number(fromNano(+userGramBalance.floor_price.toFixed(0)))
-        : 0
-
-    const nanoConvertedBalance =
-      nanoGramBalance && nanoGramBalance.floor_price !== null
-        ? nanoGramBalance.balance *
-          Number(fromNano(+nanoGramBalance.floor_price.toFixed(0)))
-        : 0
-
     const tonConvertedBalance = currentWalletBalance * tonPrice
 
-    return tonConvertedBalance + nanoConvertedBalance + gramConvertedBalance
+    const totalInscriptionsBalance = myInscriptions.reduce((acc, curr) => {
+      console.log('acc', acc)
+      console.log('curr', curr)
+      return (acc +=
+        curr.floor_price !== null
+          ? curr.balance * +fromNano(curr.floor_price.toFixed(0))
+          : 0)
+    }, tonConvertedBalance)
+
+    return totalInscriptionsBalance
   }, [currentWalletBalance, myInscriptions, tonPrice])
 
   if (!userWalletAddress) {

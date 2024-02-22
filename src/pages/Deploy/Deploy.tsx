@@ -83,7 +83,7 @@ export const Deploy: FC = () => {
         </S.Container>
         <S.BannerWrapper>
           <S.BannerImage
-            onClick={() => navigate(AppRoutes.Marketplace)}
+            onClick={() => navigate(AppRoutes.Swap)}
             src={swapBanner}
           />
         </S.BannerWrapper>

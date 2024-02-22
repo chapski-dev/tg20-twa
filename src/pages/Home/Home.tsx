@@ -68,8 +68,6 @@ export const Home: FC = () => {
     []
   )
 
-  console.log(topTokens)
-
   return (
     <S.Wrapper>
       <Container>

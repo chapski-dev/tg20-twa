@@ -1,5 +1,5 @@
 import { FC, useEffect } from 'react'
-import { useField, useFormikContext } from 'formik'
+import { useField } from 'formik'
 import { useQuery } from 'react-query'
 import { getTokenInfo } from 'api'
 import { useDebounce } from 'hooks/useDebounce/useDebounce'
@@ -7,14 +7,11 @@ import { Input } from 'ui/Input/Input'
 import * as S from './style'
 
 export const DeployStep1: FC = () => {
-  const { values } = useFormikContext()
   const [tickField, tickMeta, tickHepler] = useField<string>('tick')
   const [amountField, amountMeta] = useField('amount')
   const [limitField, limitMeta] = useField('limit')
 
   const tickValueDebounce = useDebounce(tickField.value, 500)
-
-  console.log(values)
 
   const { data } = useQuery(
     ['token-data-by-search-param'],

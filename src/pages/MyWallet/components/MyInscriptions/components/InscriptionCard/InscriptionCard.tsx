@@ -19,7 +19,7 @@ export const InscriptionCard: FC<InscriptionCardProps> = (props) => {
 
   const navigate = useNavigate()
 
-  console.log(floor_price)
+  console.log(tick, floor_price)
 
   const currentUsdPrice = useMemo(() => {
     if (!tonPrice) {
